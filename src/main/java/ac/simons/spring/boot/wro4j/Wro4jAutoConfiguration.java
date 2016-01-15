@@ -112,17 +112,9 @@ public class Wro4jAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean(WroManagerFactory.class)
 	WroManagerFactory wroManagerFactory(final WroModelFactory wroModelFactory, final ProcessorsFactory processorsFactory) {
-		return new BaseWroManagerFactory() {
-			@Override
-			protected WroModelFactory newModelFactory() {
-				return wroModelFactory;
-			}
-
-			@Override
-			protected ProcessorsFactory newProcessorsFactory() {
-				return processorsFactory;
-			}
-		};
+		return new BaseWroManagerFactory()
+			.setModelFactory(wroModelFactory)
+			.setProcessorsFactory(processorsFactory);
 	}
 
 	@Bean
@@ -134,16 +126,34 @@ public class Wro4jAutoConfiguration {
 	}
 
 	Properties wroFilterProperties(Wro4jProperties wro4jProperties) {
-		Properties properties = new Properties();
+		final Properties properties = new Properties();
 
 		properties.setProperty(ConfigConstants.debug.name(), String.valueOf(wro4jProperties.isDebug()));
+		properties.setProperty(ConfigConstants.minimizeEnabled.name(), String.valueOf(wro4jProperties.isMinimizeEnabled()));
 		properties.setProperty(ConfigConstants.gzipResources.name(), String.valueOf(wro4jProperties.isGzipResources()));
+		if (wro4jProperties.getResourceWatcherUpdatePeriod() != null) {
+			properties.setProperty(ConfigConstants.resourceWatcherUpdatePeriod.name(), String.valueOf(wro4jProperties.getResourceWatcherUpdatePeriod()));
+		}
+		properties.setProperty(ConfigConstants.resourceWatcherAsync.name(), String.valueOf(wro4jProperties.isResourceWatcherAsync()));
 		if (wro4jProperties.getCacheUpdatePeriod() != null) {
 			properties.setProperty(ConfigConstants.cacheUpdatePeriod.name(), String.valueOf(wro4jProperties.getCacheUpdatePeriod()));
 		}
 		if (wro4jProperties.getModelUpdatePeriod() != null) {
 			properties.setProperty(ConfigConstants.modelUpdatePeriod.name(), String.valueOf(wro4jProperties.getModelUpdatePeriod()));
 		}
+		if (!(wro4jProperties.getHeader() == null || wro4jProperties.getHeader().trim().isEmpty())) {
+			properties.setProperty(ConfigConstants.header.name(), wro4jProperties.getHeader());
+		}
+		properties.setProperty(ConfigConstants.parallelPreprocessing.name(), String.valueOf(wro4jProperties.isParallelPreprocessing()));
+		if (wro4jProperties.getConnectionTimeout() != null) {
+			properties.setProperty(ConfigConstants.connectionTimeout.name(), String.valueOf(wro4jProperties.getConnectionTimeout()));
+		}
+		if (!(wro4jProperties.getEncoding() == null || wro4jProperties.getEncoding().trim().isEmpty())) {
+			properties.setProperty(ConfigConstants.encoding.name(), wro4jProperties.getEncoding());
+		}
+		properties.setProperty(ConfigConstants.ignoreMissingResources.name(), String.valueOf(wro4jProperties.isIgnoreMissingResources()));
+		properties.setProperty(ConfigConstants.ignoreEmptyGroup.name(), String.valueOf(wro4jProperties.isIgnoreEmptyGroup()));
+		properties.setProperty(ConfigConstants.ignoreFailingProcessor.name(), String.valueOf(wro4jProperties.isIgnoreFailingProcessor()));
 		properties.setProperty(ConfigConstants.cacheGzippedContent.name(), String.valueOf(wro4jProperties.isCacheGzippedContent()));
 		properties.setProperty(ConfigConstants.jmxEnabled.name(), String.valueOf(wro4jProperties.isJmxEnabled()));
 		if (wro4jProperties.getMbeanName() != null) {

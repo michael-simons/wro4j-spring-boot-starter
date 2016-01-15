@@ -41,9 +41,29 @@ public class Wro4jProperties {
 	private boolean debug = true;
 
 	/**
+	 * Flag for turning minimization on/off.
+	 */
+	private boolean minimizeEnabled = true;
+
+	/**
 	 * When this flag is enabled response will be gziped. Defaults to true.
 	 */
 	private boolean gzipResources = true;
+
+	/**
+	 * integer value for specifying how often (in seconds) the resource changes
+	 * should be checked. When this value is 0, the cache is never refreshed.
+	 * When a resource change is detected, the cached group containing changed
+	 * resource will be invalidated. This is useful during development, when
+	 * resources are changed often.
+	 */
+	private Integer resourceWatcherUpdatePeriod = 0;
+
+	/**
+	 * A boolean which enables/disables asynchronous resource watcher. The true
+	 * value does make sense when resourceWatcherUpdatePeriod is greater than 0.
+	 */
+	private boolean resourceWatcherAsync = false;
 
 	/**
 	 * integer value for specifying how often (in seconds) the cache should be
@@ -58,6 +78,52 @@ public class Wro4jProperties {
 	 * Defaults to 0.
 	 */
 	private Integer modelUpdatePeriod = 0;
+
+	/**
+	 * allow explicit configuration of headers (for controlling expiration date,
+	 * etc). The implementation was inspired from
+	 * [http://juliusdev.blogspot.com/2008/06/tomcat-add-expires-header.html
+	 * here]. The headers can be defined using this format: ```:
+	 */
+	private String header;
+
+	/**
+	 * A flag for enabling parallel execution of pre processors which may
+	 * improve overall performance, especially when there are slow
+	 * preProcessors.
+	 */
+	private boolean parallelPreprocessing = false;
+
+	/**
+	 * Timeout (milliseconds) of the url connection for external resources. This
+	 * is used to ensure that locator doesn't spend too much time on slow
+	 * end-point.
+	 */
+	private Long connectionTimeout = 2000L;
+
+	/**
+	 * Encoding to use when reading and writing bytes from/to stream.
+	 */
+	private String encoding = "UTF-8";
+
+	/**
+	 * When this flag is disabled (false), any missing resource will cause an
+	 * exception. This is useful to easy identify invalid resources.
+	 */
+	private boolean ignoreMissingResources = true;
+
+	/**
+	 * When a group is empty and this flag is false, the processing will fail.
+	 * This is useful for runtime solution to allow filter chaining when there
+	 * is nothing to process for a given request.
+	 */
+	private boolean ignoreEmptyGroup = true;
+
+	/**
+	 * Available since 1.4.7. When this flag is true, any failure during
+	 * processing will leave the content unchanged.
+	 */
+	private boolean ignoreFailingProcessor = false;
 
 	/**
 	 * When this flag is enabled, the raw processed content will be gzipped only
@@ -90,8 +156,16 @@ public class Wro4jProperties {
 	 */
 	private String model = "/wro.xml";
 
+	/**
+	 * A comma separated values describing pre processor aliases to be used
+	 * during processing.
+	 */
 	private List<Class<? extends ResourcePreProcessor>> preProcessors;
 
+	/**
+	 * A comma separated values describing post processor aliases to be used
+	 * during processing.
+	 */
 	private List<Class<? extends ResourcePostProcessor>> postProcessors;
 
 	public boolean isDebug() {
@@ -102,12 +176,36 @@ public class Wro4jProperties {
 		this.debug = debug;
 	}
 
+	public boolean isMinimizeEnabled() {
+		return this.minimizeEnabled;
+	}
+
+	public void setMinimizeEnabled(boolean minimizeEnabled) {
+		this.minimizeEnabled = minimizeEnabled;
+	}
+
 	public boolean isGzipResources() {
 		return this.gzipResources;
 	}
 
 	public void setGzipResources(boolean gzipResources) {
 		this.gzipResources = gzipResources;
+	}
+
+	public Integer getResourceWatcherUpdatePeriod() {
+		return this.resourceWatcherUpdatePeriod;
+	}
+
+	public void setResourceWatcherUpdatePeriod(Integer resourceWatcherUpdatePeriod) {
+		this.resourceWatcherUpdatePeriod = resourceWatcherUpdatePeriod;
+	}
+
+	public boolean isResourceWatcherAsync() {
+		return this.resourceWatcherAsync;
+	}
+
+	public void setResourceWatcherAsync(boolean resourceWatcherAsync) {
+		this.resourceWatcherAsync = resourceWatcherAsync;
 	}
 
 	public Integer getCacheUpdatePeriod() {
@@ -124,6 +222,62 @@ public class Wro4jProperties {
 
 	public void setModelUpdatePeriod(Integer modelUpdatePeriod) {
 		this.modelUpdatePeriod = modelUpdatePeriod;
+	}
+
+	public String getHeader() {
+		return this.header;
+	}
+
+	public void setHeader(String header) {
+		this.header = header;
+	}
+
+	public boolean isParallelPreprocessing() {
+		return this.parallelPreprocessing;
+	}
+
+	public void setParallelPreprocessing(boolean parallelPreprocessing) {
+		this.parallelPreprocessing = parallelPreprocessing;
+	}
+
+	public Long getConnectionTimeout() {
+		return this.connectionTimeout;
+	}
+
+	public void setConnectionTimeout(Long connectionTimeout) {
+		this.connectionTimeout = connectionTimeout;
+	}
+
+	public String getEncoding() {
+		return this.encoding;
+	}
+
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
+	}
+
+	public boolean isIgnoreMissingResources() {
+		return this.ignoreMissingResources;
+	}
+
+	public void setIgnoreMissingResources(boolean ignoreMissingResources) {
+		this.ignoreMissingResources = ignoreMissingResources;
+	}
+
+	public boolean isIgnoreEmptyGroup() {
+		return this.ignoreEmptyGroup;
+	}
+
+	public void setIgnoreEmptyGroup(boolean ignoreEmptyGroup) {
+		this.ignoreEmptyGroup = ignoreEmptyGroup;
+	}
+
+	public boolean isIgnoreFailingProcessor() {
+		return this.ignoreFailingProcessor;
+	}
+
+	public void setIgnoreFailingProcessor(boolean ignoreFailingProcessor) {
+		this.ignoreFailingProcessor = ignoreFailingProcessor;
 	}
 
 	public boolean isCacheGzippedContent() {
