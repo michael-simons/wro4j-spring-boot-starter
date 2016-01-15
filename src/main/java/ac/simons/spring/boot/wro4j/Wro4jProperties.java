@@ -156,15 +156,17 @@ public class Wro4jProperties {
 	 */
 	private String model = "/wro.xml";
 
+	private WroManagerFactoryProperties managerFactory;
+
 	/**
-	 * A comma separated list of pre processor classes to be used
-	 * during processing.
+	 * A comma separated list of pre processor classes to be used during
+	 * processing.
 	 */
 	private List<Class<? extends ResourcePreProcessor>> preProcessors;
 
 	/**
-	 * A comma separated list of post processor classes to be used
-	 * during processing.
+	 * A comma separated list of post processor classes to be used during
+	 * processing.
 	 */
 	private List<Class<? extends ResourcePostProcessor>> postProcessors;
 
@@ -320,6 +322,14 @@ public class Wro4jProperties {
 		this.model = model;
 	}
 
+	public WroManagerFactoryProperties getManagerFactory() {
+		return this.managerFactory;
+	}
+
+	public void setManagerFactory(WroManagerFactoryProperties managerFactory) {
+		this.managerFactory = managerFactory;
+	}
+
 	public List<Class<? extends ResourcePreProcessor>> getPreProcessors() {
 		return this.preProcessors;
 	}
@@ -334,5 +344,31 @@ public class Wro4jProperties {
 
 	public void setPostProcessors(List<Class<? extends ResourcePostProcessor>> postProcessors) {
 		this.postProcessors = postProcessors;
+	}
+
+	/**
+	 * Encapsulates all properties for a {@code ConfigurableWroManagerFactory}.
+	 */
+	public static class WroManagerFactoryProperties {
+
+		private String preProcessors;
+
+		private String postProcessors;
+
+		public String getPreProcessors() {
+			return this.preProcessors;
+		}
+
+		public void setPreProcessors(String preProcessors) {
+			this.preProcessors = preProcessors;
+		}
+
+		public String getPostProcessors() {
+			return this.postProcessors;
+		}
+
+		public void setPostProcessors(String postProcessors) {
+			this.postProcessors = postProcessors;
+		}
 	}
 }

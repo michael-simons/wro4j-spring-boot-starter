@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ro.isdc.wro.config.jmx.ConfigConstants;
 import ro.isdc.wro.http.ConfigurableWroFilter;
 import ro.isdc.wro.http.WroFilter;
@@ -30,6 +33,7 @@ import ro.isdc.wro.model.factory.WroModelFactory;
 import ro.isdc.wro.model.factory.XmlModelFactory;
 import ro.isdc.wro.model.resource.processor.ResourcePostProcessor;
 import ro.isdc.wro.model.resource.processor.ResourcePreProcessor;
+import ro.isdc.wro.model.resource.processor.factory.ConfigurableProcessorsFactory;
 import ro.isdc.wro.model.resource.processor.factory.DefaultProcessorsFactory;
 import ro.isdc.wro.model.resource.processor.factory.ProcessorsFactory;
 import ro.isdc.wro.model.resource.processor.factory.SimpleProcessorsFactory;
@@ -41,7 +45,6 @@ import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ro.isdc.wro.model.resource.processor.factory.ConfigurableProcessorsFactory;
 
 /**
  * Configures a Wro4j filter.
@@ -53,6 +56,8 @@ import ro.isdc.wro.model.resource.processor.factory.ConfigurableProcessorsFactor
 @ConditionalOnMissingBean(WroFilter.class)
 @EnableConfigurationProperties(Wro4jProperties.class)
 public class Wro4jAutoConfiguration {
+
+	private final static Logger LOGGER = LoggerFactory.getLogger(Wro4jAutoConfiguration.class.getName());
 
 	@Bean
 	@ConditionalOnMissingBean({WroManagerFactory.class, WroModelFactory.class})
@@ -79,7 +84,7 @@ public class Wro4jAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean({WroManagerFactory.class, ProcessorsFactory.class})
-	ProcessorsFactory defaultProcessorsFactory(final Wro4jProperties wro4jProperties) {
+	ProcessorsFactory processorsFactory(final Wro4jProperties wro4jProperties) {
 		final List<ResourcePreProcessor> preProcessors = new ArrayList<>();
 		if (wro4jProperties.getPreProcessors() != null) {
 			for (Class<? extends ResourcePreProcessor> c : wro4jProperties.getPreProcessors()) {
@@ -94,14 +99,28 @@ public class Wro4jAutoConfiguration {
 		}
 
 		ProcessorsFactory rv;
-		if (preProcessors.isEmpty() && postProcessors.isEmpty()) {
-			rv = new DefaultProcessorsFactory();			
+
+		if (wro4jProperties.getManagerFactory() != null) {
+			final Properties properties = new Properties();
+			if (wro4jProperties.getManagerFactory().getPreProcessors() != null) {
+				System.out.println("SETTING PROPERTIY " + wro4jProperties.getManagerFactory().getPreProcessors());
+				properties.setProperty("preProcessors", wro4jProperties.getManagerFactory().getPreProcessors());
+			}
+			if (wro4jProperties.getManagerFactory().getPostProcessors() != null) {
+				properties.setProperty("postProcessors", wro4jProperties.getManagerFactory().getPostProcessors());
+			}
+			rv = new ConfigurableProcessorsFactory();
+			((ConfigurableProcessorsFactory) rv).setProperties(properties);
+		}
+		else if (preProcessors.isEmpty() && postProcessors.isEmpty()) {
+			rv = new DefaultProcessorsFactory();
 		}
 		else {
 			rv = new SimpleProcessorsFactory();
 			((SimpleProcessorsFactory) rv).setResourcePreProcessors(preProcessors);
 			((SimpleProcessorsFactory) rv).setResourcePostProcessors(postProcessors);
 		}
+		LOGGER.debug("Using ProcessorsFactory of type '{}'", rv.getClass().getName());
 
 		return rv;
 	}
@@ -111,15 +130,16 @@ public class Wro4jAutoConfiguration {
 	 * created if no WroManagerFactory is already registered.
 	 *
 	 * @param wroModelFactory THe model factory to use for the manager factory
-	 * @param processorsFactory The processors factory to use for the manager factory
+	 * @param processorsFactory The processors factory to use for the manager
+	 * factory
 	 * @return A new WroManagerFactory
 	 */
 	@Bean
 	@ConditionalOnMissingBean(WroManagerFactory.class)
 	WroManagerFactory wroManagerFactory(final WroModelFactory wroModelFactory, final ProcessorsFactory processorsFactory) {
 		return new BaseWroManagerFactory()
-			.setModelFactory(wroModelFactory)
-			.setProcessorsFactory(processorsFactory);
+				.setModelFactory(wroModelFactory)
+				.setProcessorsFactory(processorsFactory);
 	}
 
 	@Bean
@@ -163,7 +183,7 @@ public class Wro4jAutoConfiguration {
 		properties.setProperty(ConfigConstants.jmxEnabled.name(), String.valueOf(wro4jProperties.isJmxEnabled()));
 		if (!(wro4jProperties.getMbeanName() == null || wro4jProperties.getMbeanName().trim().isEmpty())) {
 			properties.setProperty(ConfigConstants.mbeanName.name(), wro4jProperties.getMbeanName());
-		}		
+		}
 
 		return properties;
 	}
