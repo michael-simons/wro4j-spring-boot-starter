@@ -157,13 +157,13 @@ public class Wro4jProperties {
 	private String model = "/wro.xml";
 
 	/**
-	 * A comma separated values describing pre processor aliases to be used
+	 * A comma separated list of pre processor classes to be used
 	 * during processing.
 	 */
 	private List<Class<? extends ResourcePreProcessor>> preProcessors;
 
 	/**
-	 * A comma separated values describing post processor aliases to be used
+	 * A comma separated list of post processor classes to be used
 	 * during processing.
 	 */
 	private List<Class<? extends ResourcePostProcessor>> postProcessors;
