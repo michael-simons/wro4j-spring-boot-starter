@@ -41,6 +41,7 @@ import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ro.isdc.wro.model.resource.processor.factory.ConfigurableProcessorsFactory;
 
 /**
  * Configures a Wro4j filter.
@@ -94,7 +95,7 @@ public class Wro4jAutoConfiguration {
 
 		ProcessorsFactory rv;
 		if (preProcessors.isEmpty() && postProcessors.isEmpty()) {
-			rv = new DefaultProcessorsFactory();
+			rv = new DefaultProcessorsFactory();			
 		}
 		else {
 			rv = new SimpleProcessorsFactory();
@@ -160,9 +161,9 @@ public class Wro4jAutoConfiguration {
 		properties.setProperty(ConfigConstants.ignoreFailingProcessor.name(), String.valueOf(wro4jProperties.isIgnoreFailingProcessor()));
 		properties.setProperty(ConfigConstants.cacheGzippedContent.name(), String.valueOf(wro4jProperties.isCacheGzippedContent()));
 		properties.setProperty(ConfigConstants.jmxEnabled.name(), String.valueOf(wro4jProperties.isJmxEnabled()));
-		if (wro4jProperties.getMbeanName() != null) {
+		if (!(wro4jProperties.getMbeanName() == null || wro4jProperties.getMbeanName().trim().isEmpty())) {
 			properties.setProperty(ConfigConstants.mbeanName.name(), wro4jProperties.getMbeanName());
-		}
+		}		
 
 		return properties;
 	}
