@@ -19,9 +19,7 @@ package ac.simons.spring.boot.wro4j;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 import ro.isdc.wro.config.jmx.ConfigConstants;
 import ro.isdc.wro.http.ConfigurableWroFilter;
@@ -81,12 +79,18 @@ public class Wro4jAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean({WroManagerFactory.class, ProcessorsFactory.class})
 	ProcessorsFactory defaultProcessorsFactory(final Wro4jProperties wro4jProperties) {
-		final List<ResourcePreProcessor> preProcessors = Optional.ofNullable(wro4jProperties.getPreProcessors()).orElseGet(ArrayList::new).stream()
-				.map(c -> (ResourcePreProcessor) new BeanWrapperImpl(c).getWrappedInstance())
-				.collect(Collectors.toList());
-		final List<ResourcePostProcessor> postProcessors = Optional.ofNullable(wro4jProperties.getPostProcessors()).orElseGet(ArrayList::new).stream()
-				.map(c -> (ResourcePostProcessor) new BeanWrapperImpl(c).getWrappedInstance())
-				.collect(Collectors.toList());
+		final List<ResourcePreProcessor> preProcessors = new ArrayList<>();
+		if (wro4jProperties.getPreProcessors() != null) {
+			for (Class<? extends ResourcePreProcessor> c : wro4jProperties.getPreProcessors()) {
+				preProcessors.add((ResourcePreProcessor) new BeanWrapperImpl(c).getWrappedInstance());
+			}
+		}
+		final List<ResourcePostProcessor> postProcessors = new ArrayList<>();
+		if (wro4jProperties.getPostProcessors() != null) {
+			for (Class<? extends ResourcePostProcessor> c : wro4jProperties.getPostProcessors()) {
+				postProcessors.add((ResourcePostProcessor) new BeanWrapperImpl(c).getWrappedInstance());
+			}
+		}
 
 		ProcessorsFactory rv;
 		if (preProcessors.isEmpty() && postProcessors.isEmpty()) {
