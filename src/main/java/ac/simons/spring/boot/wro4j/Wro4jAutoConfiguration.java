@@ -24,6 +24,8 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ro.isdc.wro.cache.CacheStrategy;
+import ro.isdc.wro.cache.impl.LruMemoryCacheStrategy;
 import ro.isdc.wro.config.jmx.ConfigConstants;
 import ro.isdc.wro.http.ConfigurableWroFilter;
 import ro.isdc.wro.http.WroFilter;
@@ -39,10 +41,13 @@ import ro.isdc.wro.model.resource.processor.factory.ProcessorsFactory;
 import ro.isdc.wro.model.resource.processor.factory.SimpleProcessorsFactory;
 
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -124,21 +129,39 @@ public class Wro4jAutoConfiguration {
 		return rv;
 	}
 
+	@Bean
+	@ConditionalOnBean(CacheManager.class)
+	@ConditionalOnProperty("wro4j.cacheName")
+	@ConditionalOnMissingBean(CacheStrategy.class)
+	<K, V> CacheStrategy<K, V> defaultCacheStrategy(CacheManager cacheManager, Wro4jProperties wro4jProperties) {
+		LOGGER.debug("Creating cache strategy 'SpringCacheStrategy'");
+		return new SpringCacheStrategy<>(cacheManager, wro4jProperties.getCacheName());
+	}
+
+	@Bean
+	@ConditionalOnMissingBean(CacheStrategy.class)
+	<K, V> CacheStrategy<K, V> springCacheStrategy(CacheManager cacheManager, Wro4jProperties wro4jProperties) {
+		LOGGER.debug("Creating cache strategy 'LruMemoryCacheStrategy'");
+		return new LruMemoryCacheStrategy<>();
+	}
+
 	/**
 	 * Builds the {@link WroManagerFactory} used for the Wro4j filter to be
 	 * created if no WroManagerFactory is already registered.
 	 *
 	 * @param wroModelFactory THe model factory to use for the manager factory
 	 * @param processorsFactory The processors factory to use for the manager
-	 * factory
+	 * @param cacheStrategy The cache strategy to use
+	 *
 	 * @return A new WroManagerFactory
 	 */
 	@Bean
 	@ConditionalOnMissingBean(WroManagerFactory.class)
-	WroManagerFactory wroManagerFactory(final WroModelFactory wroModelFactory, final ProcessorsFactory processorsFactory) {
+	WroManagerFactory wroManagerFactory(final WroModelFactory wroModelFactory, final ProcessorsFactory processorsFactory, final CacheStrategy cacheStrategy) {
 		return new BaseWroManagerFactory()
 				.setModelFactory(wroModelFactory)
-				.setProcessorsFactory(processorsFactory);
+				.setProcessorsFactory(processorsFactory)
+				.setCacheStrategy(cacheStrategy);
 	}
 
 	@Bean

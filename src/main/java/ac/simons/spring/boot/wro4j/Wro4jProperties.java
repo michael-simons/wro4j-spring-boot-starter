@@ -18,10 +18,13 @@ package ac.simons.spring.boot.wro4j;
 
 import java.util.List;
 
+import ro.isdc.wro.cache.CacheStrategy;
 import ro.isdc.wro.model.resource.processor.ResourcePostProcessor;
 import ro.isdc.wro.model.resource.processor.ResourcePreProcessor;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
 
 /**
  * Represents the
@@ -169,6 +172,14 @@ public class Wro4jProperties {
 	 * processing.
 	 */
 	private List<Class<? extends ResourcePostProcessor>> postProcessors;
+
+	/**
+	 * The name of a Spring Cache. If this property is set and a
+	 * {@link CacheManager} is configured (for example through
+	 * {@link EnableCaching @EnableCaching}, then a {@link CacheStrategy} based
+	 * on Spring cache abstraction will be used.
+	 */
+	private String cacheName;
 
 	public boolean isDebug() {
 		return this.debug;
@@ -344,6 +355,14 @@ public class Wro4jProperties {
 
 	public void setPostProcessors(List<Class<? extends ResourcePostProcessor>> postProcessors) {
 		this.postProcessors = postProcessors;
+	}
+
+	public String getCacheName() {
+		return this.cacheName;
+	}
+
+	public void setCacheName(String cacheName) {
+		this.cacheName = cacheName;
 	}
 
 	/**
