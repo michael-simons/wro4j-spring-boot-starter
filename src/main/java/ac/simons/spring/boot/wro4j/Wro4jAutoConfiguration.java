@@ -103,7 +103,6 @@ public class Wro4jAutoConfiguration {
 		if (wro4jProperties.getManagerFactory() != null) {
 			final Properties properties = new Properties();
 			if (wro4jProperties.getManagerFactory().getPreProcessors() != null) {
-				System.out.println("SETTING PROPERTIY " + wro4jProperties.getManagerFactory().getPreProcessors());
 				properties.setProperty("preProcessors", wro4jProperties.getManagerFactory().getPreProcessors());
 			}
 			if (wro4jProperties.getManagerFactory().getPostProcessors() != null) {
