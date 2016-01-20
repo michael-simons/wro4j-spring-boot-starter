@@ -9,7 +9,7 @@
 
     <groupId>eu.michael-simons</groupId>
     <artifactId>spring-boot-starter-wro4j</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
 
     <name>Spring Boot Wro4j Starter</name>
@@ -54,7 +54,8 @@
 	<connection>scm:git:git@github.com:michael-simons/spring-boot-starter-wro4j.git</connection>
 	<developerConnection>scm:git:git@github.com:michael-simons/spring-boot-starter-wro4j.git</developerConnection>
 	<url>https://github.com/michael-simons/spring-boot-starter-wro4j</url>
-    </scm>
+      <tag>0.0.1</tag>
+  </scm>
 
     <build>
 	<plugins>
