@@ -90,13 +90,13 @@ public class Wro4jAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean({WroManagerFactory.class, ProcessorsFactory.class})
 	ProcessorsFactory processorsFactory(final Wro4jProperties wro4jProperties) {
-		final List<ResourcePreProcessor> preProcessors = new ArrayList<>();
+		final List<ResourcePreProcessor> preProcessors = new ArrayList<ResourcePreProcessor>();
 		if (wro4jProperties.getPreProcessors() != null) {
 			for (Class<? extends ResourcePreProcessor> c : wro4jProperties.getPreProcessors()) {
 				preProcessors.add((ResourcePreProcessor) new BeanWrapperImpl(c).getWrappedInstance());
 			}
 		}
-		final List<ResourcePostProcessor> postProcessors = new ArrayList<>();
+		final List<ResourcePostProcessor> postProcessors = new ArrayList<ResourcePostProcessor>();
 		if (wro4jProperties.getPostProcessors() != null) {
 			for (Class<? extends ResourcePostProcessor> c : wro4jProperties.getPostProcessors()) {
 				postProcessors.add((ResourcePostProcessor) new BeanWrapperImpl(c).getWrappedInstance());
@@ -135,14 +135,14 @@ public class Wro4jAutoConfiguration {
 	@ConditionalOnMissingBean(CacheStrategy.class)
 	<K, V> CacheStrategy<K, V> defaultCacheStrategy(CacheManager cacheManager, Wro4jProperties wro4jProperties) {
 		LOGGER.debug("Creating cache strategy 'SpringCacheStrategy'");
-		return new SpringCacheStrategy<>(cacheManager, wro4jProperties.getCacheName());
+		return new SpringCacheStrategy<K, V>(cacheManager, wro4jProperties.getCacheName());
 	}
 
 	@Bean
 	@ConditionalOnMissingBean(CacheStrategy.class)
 	<K, V> CacheStrategy<K, V> springCacheStrategy(CacheManager cacheManager, Wro4jProperties wro4jProperties) {
 		LOGGER.debug("Creating cache strategy 'LruMemoryCacheStrategy'");
-		return new LruMemoryCacheStrategy<>();
+		return new LruMemoryCacheStrategy<K, V>();
 	}
 
 	/**
