@@ -41,6 +41,8 @@ import ro.isdc.wro.model.resource.processor.factory.ProcessorsFactory;
 import ro.isdc.wro.model.resource.processor.factory.SimpleProcessorsFactory;
 
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -61,6 +63,7 @@ import org.springframework.core.annotation.Order;
 @ConditionalOnClass(WroFilter.class)
 @ConditionalOnMissingBean(WroFilter.class)
 @EnableConfigurationProperties(Wro4jProperties.class)
+@AutoConfigureAfter(CacheAutoConfiguration.class)
 public class Wro4jAutoConfiguration {
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(Wro4jAutoConfiguration.class.getName());
@@ -143,7 +146,7 @@ public class Wro4jAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean(CacheStrategy.class)
 	@Order(-90)
-	<K, V> CacheStrategy<K, V> defaultCacheStrategy(CacheManager cacheManager, Wro4jProperties wro4jProperties) {
+	<K, V> CacheStrategy<K, V> defaultCacheStrategy() {
 		LOGGER.debug("Creating cache strategy 'LruMemoryCacheStrategy'");
 		return new LruMemoryCacheStrategy<K, V>();
 	}
