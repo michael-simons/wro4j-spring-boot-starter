@@ -50,6 +50,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 /**
  * Configures a Wro4j filter.
@@ -133,14 +134,16 @@ public class Wro4jAutoConfiguration {
 	@ConditionalOnBean(CacheManager.class)
 	@ConditionalOnProperty("wro4j.cacheName")
 	@ConditionalOnMissingBean(CacheStrategy.class)
-	<K, V> CacheStrategy<K, V> defaultCacheStrategy(CacheManager cacheManager, Wro4jProperties wro4jProperties) {
+	@Order(-100)
+	<K, V> CacheStrategy<K, V> springCacheStrategy(CacheManager cacheManager, Wro4jProperties wro4jProperties) {
 		LOGGER.debug("Creating cache strategy 'SpringCacheStrategy'");
 		return new SpringCacheStrategy<K, V>(cacheManager, wro4jProperties.getCacheName());
 	}
 
 	@Bean
 	@ConditionalOnMissingBean(CacheStrategy.class)
-	<K, V> CacheStrategy<K, V> springCacheStrategy(CacheManager cacheManager, Wro4jProperties wro4jProperties) {
+	@Order(-90)
+	<K, V> CacheStrategy<K, V> defaultCacheStrategy(CacheManager cacheManager, Wro4jProperties wro4jProperties) {
 		LOGGER.debug("Creating cache strategy 'LruMemoryCacheStrategy'");
 		return new LruMemoryCacheStrategy<K, V>();
 	}
