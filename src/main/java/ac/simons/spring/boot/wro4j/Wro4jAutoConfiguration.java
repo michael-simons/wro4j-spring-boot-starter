@@ -213,7 +213,7 @@ public class Wro4jAutoConfiguration {
 	@Bean
 	FilterRegistrationBean wro4jFilterRegistration(ConfigurableWroFilter wroFilter, Wro4jProperties wro4jProperties) {
 		final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(wroFilter);
-		filterRegistrationBean.addUrlPatterns(wro4jProperties.getFilterUrlPattern());
+		filterRegistrationBean.addUrlPatterns(wro4jProperties.getFilterUrl() + "/*");
 		return filterRegistrationBean;
 	}
 }

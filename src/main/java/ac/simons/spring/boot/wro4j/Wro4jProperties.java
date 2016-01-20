@@ -149,10 +149,10 @@ public class Wro4jProperties {
 	private String mbeanName;
 
 	/**
-	 * Url Pattern under which the wro4j filter is registered. Defaults to
-	 * "wro4j/*".
+	 * Url under which the wro4j filter is registered. Defaults to
+	 * "/wro4j".
 	 */
-	private String filterUrlPattern = "/wro4j/*";
+	private String filterUrl = "/wro4j";
 
 	/**
 	 * The model for wro4j. Defaults to /wro.xml.
@@ -317,12 +317,12 @@ public class Wro4jProperties {
 		this.mbeanName = mbeanName;
 	}
 
-	public String getFilterUrlPattern() {
-		return this.filterUrlPattern;
+	public String getFilterUrl() {
+		return this.filterUrl;
 	}
 
-	public void setFilterUrlPattern(String filterUrlPattern) {
-		this.filterUrlPattern = filterUrlPattern;
+	public void setFilterUrl(String filterUrl) {
+		this.filterUrl = filterUrl;
 	}
 
 	public String getModel() {
