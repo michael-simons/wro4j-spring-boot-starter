@@ -16,6 +16,7 @@
 
 package ac.simons.spring.boot.wro4j;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Properties;
 
@@ -25,10 +26,14 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import ro.isdc.wro.config.jmx.ConfigConstants;
 import ro.isdc.wro.http.ConfigurableWroFilter;
+import ro.isdc.wro.manager.factory.WroManagerFactory;
+import ro.isdc.wro.model.resource.processor.ResourcePostProcessor;
+import ro.isdc.wro.model.resource.processor.ResourcePreProcessor;
 import ro.isdc.wro.model.resource.processor.decorator.ProcessorDecorator;
 import ro.isdc.wro.model.resource.processor.factory.ConfigurableProcessorsFactory;
 import ro.isdc.wro.model.resource.processor.factory.DefaultProcessorsFactory;
 import ro.isdc.wro.model.resource.processor.factory.ProcessorsFactory;
+import ro.isdc.wro.model.resource.processor.factory.SimpleProcessorsFactory;
 import ro.isdc.wro.model.resource.processor.impl.js.JSMinProcessor;
 import ro.isdc.wro.model.resource.processor.impl.js.SemicolonAppenderPreProcessor;
 
@@ -58,6 +63,7 @@ public class Wro4jAutoConfigurationTest {
 		managerFactory.setPostProcessors("jsMin");
 
 		processorsFactory = wro4jAutoConfiguration.processorsFactory(wro4jProperties);
+		Assert.assertTrue(processorsFactory instanceof ConfigurableProcessorsFactory);
 		Assert.assertEquals(1, processorsFactory.getPreProcessors().size());
 		Assert.assertTrue(processorsFactory.getPreProcessors().iterator().next() instanceof SemicolonAppenderPreProcessor);
 		Assert.assertEquals(1, processorsFactory.getPostProcessors().size());
@@ -66,6 +72,24 @@ public class Wro4jAutoConfigurationTest {
 		wro4jProperties.setManagerFactory(null);
 		processorsFactory = wro4jAutoConfiguration.processorsFactory(wro4jProperties);
 		Assert.assertTrue(processorsFactory instanceof DefaultProcessorsFactory);
+
+		wro4jProperties.setPreProcessors(Arrays.<Class<? extends ResourcePreProcessor>>asList(SemicolonAppenderPreProcessor.class));
+		wro4jProperties.setPostProcessors(Arrays.<Class<? extends ResourcePostProcessor>>asList(JSMinProcessor.class));
+		processorsFactory = wro4jAutoConfiguration.processorsFactory(wro4jProperties);
+		Assert.assertTrue(processorsFactory instanceof SimpleProcessorsFactory);
+		Assert.assertEquals(1, processorsFactory.getPreProcessors().size());
+		Assert.assertTrue(processorsFactory.getPreProcessors().iterator().next() instanceof SemicolonAppenderPreProcessor);
+		Assert.assertEquals(1, processorsFactory.getPostProcessors().size());
+		Assert.assertTrue(processorsFactory.getPostProcessors().iterator().next() instanceof JSMinProcessor);
+	}
+
+	@Test
+	public void wroFilterShouldWork() {
+		final WroManagerFactory wroManagerFactory = Mockito.mock(WroManagerFactory.class);
+
+		final Wro4jAutoConfiguration wro4jAutoConfiguration = new Wro4jAutoConfiguration();
+		final ConfigurableWroFilter wroFilter = wro4jAutoConfiguration.wroFilter(wroManagerFactory, new Wro4jProperties());
+		Assert.assertSame(wroManagerFactory, wroFilter.getWroManagerFactory());
 	}
 
 	@Test
