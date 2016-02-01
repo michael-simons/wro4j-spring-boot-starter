@@ -8,12 +8,12 @@
     </parent>
 
     <groupId>eu.michael-simons</groupId>
-    <artifactId>spring-boot-starter-wro4j</artifactId>
+    <artifactId>wro4j-spring-boot-starter</artifactId>
     <version>0.0.7-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Spring Boot Wro4j Starter</name>
-    <description>Spring Boot Wro4j Starter</description>
+    <name>Wro4j Spring Boot Starter</name>
+    <description>A starter for Spring Boot that provides autoconfiguration for Wro4j.</description>
     <url>http://projects.spring.io/spring-boot/</url>
 
     <inceptionYear>2015</inceptionYear>
@@ -54,9 +54,9 @@
     </properties>
 
     <scm>
-	<connection>scm:git:git@github.com:michael-simons/spring-boot-starter-wro4j.git</connection>
-	<developerConnection>scm:git:git@github.com:michael-simons/spring-boot-starter-wro4j.git</developerConnection>
-	<url>https://github.com/michael-simons/spring-boot-starter-wro4j</url>
+	<connection>scm:git:git@github.com:michael-simons/wro4j-spring-boot-starter.git</connection>
+	<developerConnection>scm:git:git@github.com:michael-simons/wro4j-spring-boot-starter.git</developerConnection>
+	<url>https://github.com/michael-simons/wro4j-spring-boot-starter</url>
 	<tag>HEAD</tag>
     </scm>
 
