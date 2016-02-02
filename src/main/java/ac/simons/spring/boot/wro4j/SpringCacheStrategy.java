@@ -29,13 +29,13 @@ import org.springframework.cache.CacheManager;
  * @param <V> Type of the values
  * @author Michael J. Simons, 2016-01-18
  */
-public class SpringCacheStrategy<K, V> implements CacheStrategy<K, V> {
+class SpringCacheStrategy<K, V> implements CacheStrategy<K, V> {
 
 	private final CacheManager cacheManager;
 
 	private final String cacheName;
 
-	public SpringCacheStrategy(CacheManager cacheManager, String cacheName) {
+	SpringCacheStrategy(CacheManager cacheManager, String cacheName) {
 		this.cacheManager = cacheManager;
 		this.cacheName = cacheName;
 	}
