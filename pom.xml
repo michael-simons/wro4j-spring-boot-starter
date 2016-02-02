@@ -91,6 +91,7 @@
 		<configuration>
 		    <includes>
 			<include>**/*Test.java</include>
+			<include>**/*Tests.java</include>
 		    </includes>
 		    <argLine>${jacocoArgLine} -Xmx1024m</argLine>
 		</configuration>
