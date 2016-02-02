@@ -16,7 +16,6 @@
 
 package ac.simons.spring.boot.wro4j;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -32,7 +31,6 @@ import ro.isdc.wro.http.WroFilter;
 import ro.isdc.wro.manager.factory.BaseWroManagerFactory;
 import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.model.factory.WroModelFactory;
-import ro.isdc.wro.model.factory.XmlModelFactory;
 import ro.isdc.wro.model.resource.processor.ResourcePostProcessor;
 import ro.isdc.wro.model.resource.processor.ResourcePreProcessor;
 import ro.isdc.wro.model.resource.processor.factory.ConfigurableProcessorsFactory;
@@ -71,12 +69,7 @@ public class Wro4jAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean({WroManagerFactory.class, WroModelFactory.class})
 	WroModelFactory wroModelFactory(final Wro4jProperties wro4jProperties) {
-		return new XmlModelFactory() {
-			@Override
-			protected InputStream getModelResourceAsStream() {
-				return this.getClass().getResourceAsStream(wro4jProperties.getModel());
-			}
-		};
+		return new ConfigurableXmlModelFactory(wro4jProperties.getModel());
 	}
 
 	/**
