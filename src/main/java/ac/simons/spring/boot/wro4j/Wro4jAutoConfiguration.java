@@ -126,6 +126,17 @@ public class Wro4jAutoConfiguration {
 		return rv;
 	}
 
+	/**
+	 * This cache strategy will be configured if there's not already a cache
+	 * strategy, a {@link CacheManager} is present and the name of the cache to
+	 * use is configured.
+	 *
+	 * @param <K> Type of the cache keys
+	 * @param <V> Type of the cache values
+	 * @param cacheManager The cache manager to use
+	 * @param wro4jProperties The properties (needed for the cache name)
+	 * @return The Spring backed cache strategy
+	 */
 	@Bean
 	@ConditionalOnBean(CacheManager.class)
 	@ConditionalOnProperty("wro4j.cacheName")
@@ -136,6 +147,14 @@ public class Wro4jAutoConfiguration {
 		return new SpringCacheStrategy<K, V>(cacheManager, wro4jProperties.getCacheName());
 	}
 
+	/**
+	 * This is the default "Least recently used memory cache" strategy of Wro4j
+	 * which will be configured per default.
+	 *
+	 * @param <K> Type of the cache keys
+	 * @param <V> Type of the cache values
+	 * @return A default Wro4j cache strategy
+	 */
 	@Bean
 	@ConditionalOnMissingBean(CacheStrategy.class)
 	@Order(-90)
@@ -163,6 +182,16 @@ public class Wro4jAutoConfiguration {
 				.setCacheStrategy(cacheStrategy);
 	}
 
+	/**
+	 * The final step in configuring the Wro4j filter based on the existing or
+	 * previously configured {@code WroManagerFactory} and the additional
+	 * properties.
+	 *
+	 * @param wroManagerFactory An existing or the newly configured manager
+	 * @param wro4jProperties The properties used to setup this starter
+	 *
+	 * @return A servlet filter which later is registered through Spring means
+	 */
 	@Bean
 	ConfigurableWroFilter wroFilter(WroManagerFactory wroManagerFactory, Wro4jProperties wro4jProperties) {
 		ConfigurableWroFilter wroFilter = new ConfigurableWroFilter();
@@ -209,6 +238,16 @@ public class Wro4jAutoConfiguration {
 		return properties;
 	}
 
+	/**
+	 * Registeres the {@code wroFilter} through a Spring
+	 * {@link FilterRegistrationBean}.
+	 *
+	 * @param wroFilter The configured {@code wroFilter}
+	 * @param wro4jProperties Needed for the url pattern to which the filter
+	 * should be registered
+	 *
+	 * @return The Spring {@code FilterRegistrationBean}
+	 */
 	@Bean
 	FilterRegistrationBean wro4jFilterRegistration(ConfigurableWroFilter wroFilter, Wro4jProperties wro4jProperties) {
 		final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(wroFilter);
