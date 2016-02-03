@@ -97,3 +97,10 @@ I've been using Wro4j as a runtime solution since 2012 on [dailyfratze.de](https
 As always, the Spring documentation is a valuable resource. Here's how to start your own auto-configuration or starter: [Creating your own auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html). Thanks to all the people involved.
 
 There's a another Wro4j [starter](https://github.com/sbuettner/spring-boot-autoconfigure-wro4j) by Simon Buettner from which i had the basic idea, but i didn't like the fact that it centers around the Groovy model and especially the whole wro4-extensions.
+
+## Examples
+
+* [euregjug.eu](http://www.euregjug.eu), Source code here [github.com/EuregJUG-Maas-Rhine/site](https://github.com/EuregJUG-Maas-Rhine/site). Pretty standard site that uses a theme from [html5up](http://html5up.net), some JQuery.
+* [biking2](http://biking.michael-simons.eu), Source code here [github.com/michael-simons/biking2](https://github.com/michael-simons/biking2). A full blown AngularJS application.
+ 
+[ENERKO Informatik GmbH](http://www.enerko-informatik.de) is using Wro4j and this starter in several products as well.
