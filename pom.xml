@@ -47,7 +47,7 @@
 	<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 	<build-date>${maven.build.timestamp}</build-date>
 
-	<wro4j.version>1.7.9</wro4j.version>
+	<wro4j.version>1.8.0</wro4j.version>
 
 	<maven.compiler.source>${java.version}</maven.compiler.source>
 	<maven.compiler.target>${java.version}</maven.compiler.target>
