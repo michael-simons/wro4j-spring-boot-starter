@@ -37,8 +37,8 @@ import ro.isdc.wro.model.resource.processor.factory.ProcessorsFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -60,7 +60,7 @@ public class Wro4jAutoConfigurationIntegrationTests extends Suite {
 	}
 
 	@RunWith(SpringJUnit4ClassRunner.class)
-	@SpringApplicationConfiguration(ApplicationWithWroFilter.class)
+	@SpringBootTest(classes = ApplicationWithWroFilter.class)
 	public static class NoAutoConfigurationShouldWork {
 
 		@Autowired
@@ -91,7 +91,7 @@ public class Wro4jAutoConfigurationIntegrationTests extends Suite {
 	}
 
 	@RunWith(SpringJUnit4ClassRunner.class)
-	@SpringApplicationConfiguration(EmptyApplication.class)
+	@SpringBootTest(classes = EmptyApplication.class)
 	public static class DefaultConfigurationShouldWork {
 
 		@Autowired
@@ -128,7 +128,7 @@ public class Wro4jAutoConfigurationIntegrationTests extends Suite {
 	}
 
 	@RunWith(SpringJUnit4ClassRunner.class)
-	@SpringApplicationConfiguration(ApplicationWithCacheManager.class)
+	@SpringBootTest(classes = ApplicationWithCacheManager.class)
 	public static class CustomCacheStrategyShouldWork {
 
 		@Autowired
