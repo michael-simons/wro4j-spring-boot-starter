@@ -27,9 +27,11 @@ import org.junit.Test;
  * @author Michael J. Simons, 2016-01-18
  */
 public class RemoveSourceMapsProcessorTest {
-
+	
+	private final String lineSeparator = System.getProperty("line.separator");
+	
 	@Test
-	public void processShouldWork() throws IOException {
+	public void processShouldWork() throws IOException {		
 		final String input
 				= "normal\n"
 				+ " blanks am anfang und ende \n"
@@ -49,13 +51,13 @@ public class RemoveSourceMapsProcessorTest {
 		final RemoveSourceMapsProcessor processor = new RemoveSourceMapsProcessor();
 		processor.process(null, reader, writer);
 		Assert.assertEquals(
-				"normal\n"
-				+ " blanks am anfang und ende \n"
-				+ "Javascript Single line\n"
-				+ "Javascript Multi line\n"
-				+ "CSS Multi line\n"
-				+ "Depecrated formats\n"
-				+ "ende\n",
+				"normal" + lineSeparator
+				+ " blanks am anfang und ende " + lineSeparator
+				+ "Javascript Single line" + lineSeparator
+				+ "Javascript Multi line"  + lineSeparator
+				+ "CSS Multi line"  + lineSeparator
+				+ "Depecrated formats"  + lineSeparator
+				+ "ende" + lineSeparator,
 				writer.toString()
 		);
 	}
