@@ -200,6 +200,7 @@ public class Wro4jAutoConfiguration {
 		return wroFilter;
 	}
 
+	@SuppressWarnings({"squid:MethodCyclomaticComplexity"})
 	Properties wroFilterProperties(Wro4jProperties wro4jProperties) {
 		final Properties properties = new Properties();
 
