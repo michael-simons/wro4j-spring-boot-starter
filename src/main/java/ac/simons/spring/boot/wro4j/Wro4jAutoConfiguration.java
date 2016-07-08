@@ -64,7 +64,7 @@ import org.springframework.core.annotation.Order;
 @AutoConfigureAfter(CacheAutoConfiguration.class)
 public class Wro4jAutoConfiguration {
 
-	private final static Logger LOGGER = LoggerFactory.getLogger(Wro4jAutoConfiguration.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(Wro4jAutoConfiguration.class.getName());
 
 	@Bean
 	@ConditionalOnMissingBean({WroManagerFactory.class, WroModelFactory.class})
