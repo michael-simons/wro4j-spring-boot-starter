@@ -43,22 +43,22 @@ public class RemoveSourceMapsProcessor implements ResourcePreProcessor {
 
 	@Override
 	public void process(Resource resource, Reader reader, Writer writer) throws IOException {
-		BufferedReader _reader = new BufferedReader(reader);
-		BufferedWriter _writer = new BufferedWriter(writer);
+		BufferedReader bufferedReader = new BufferedReader(reader);
+		BufferedWriter bufferedWriter = new BufferedWriter(writer);
 		try {
 
 			String line;
-			while ((line = _reader.readLine()) != null) {
+			while ((line = bufferedReader.readLine()) != null) {
 				if (!SOURCE_MAP_PATTERN.matcher(line).matches()) {
-					_writer.write(line);
-					_writer.newLine();
+					bufferedWriter.write(line);
+					bufferedWriter.newLine();
 				}
 			}
 		}
 		finally {
-			_reader.close();
-			_writer.flush();
-			_writer.close();
+			bufferedReader.close();
+			bufferedWriter.flush();
+			bufferedWriter.close();
 		}
 	}
 }
