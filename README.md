@@ -28,9 +28,11 @@ Just include the starter in your pom.xml:
 <dependency>
     <groupId>eu.michael-simons</groupId>
     <artifactId>wro4j-spring-boot-starter</artifactId>
-    <version>0.0.7</version>	    
+    <version>0.1.1</version>	    
 </dependency>
 ```
+
+*Note*: For Spring Boot 1.4 and later you need to use 0.1.1 or later, for Spring Boot 1.3.x please use 0.0.10.
 
 Add a wro.xml to your resources:
 
