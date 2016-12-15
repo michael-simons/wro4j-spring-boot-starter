@@ -110,8 +110,6 @@ public class Wro4jAutoConfiguration {
 				postProcessors.add(getBeanOrInstantiateProcessor(c));
 			}
 		}
-		System.out.println(">>> " + wro4jProperties.getPreProcessors());
-		System.out.println(">>! " + wro4jProperties.getCacheName());
 
 		ProcessorsFactory rv;
 		
