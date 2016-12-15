@@ -163,13 +163,19 @@ public class Wro4jProperties {
 
 	/**
 	 * A comma separated list of pre processor classes to be used during
-	 * processing.
+	 * processing. Those can either be classes of existing Spring beans or
+	 * "normal" classes. If there is a bean of the given type, than that bean is
+	 * used. Otherwise, it tries to instantiate a new instance using the default
+	 * constructor.
 	 */
 	private List<Class<? extends ResourcePreProcessor>> preProcessors;
 
 	/**
 	 * A comma separated list of post processor classes to be used during
-	 * processing.
+	 * processing. Those can either be classes of existing Spring beans or
+	 * "normal" classes. If there is a bean of the given type, than that bean is
+	 * used. Otherwise, it tries to instantiate a new instance using the default
+	 * constructor.
 	 */
 	private List<Class<? extends ResourcePostProcessor>> postProcessors;
 
