@@ -1,4 +1,5 @@
 # wro4j-spring-boot-starter
+
 A Spring Boot starter and auto-configuration for wro4j:
 
 > [Wro4j](http://alexo.github.io/wro4j/) is a tool for analysis and optimization of web resources. It brings together almost all the modern web tools: JsHint, CssLint, JsMin, Google Closure compressor, YUI Compressor, UglifyJs, Dojo Shrinksafe, Css Variables Support, JSON Compression, Less, Sass, CoffeeScript and much more.
@@ -57,6 +58,16 @@ You can use all processors as described [here](http://wro4j.readthedocs.org/en/s
 For further configuration you can use all properties described under [Available Configuration Options](http://wro4j.readthedocs.org/en/stable/ConfigurationOptions/) under the namespace _wro4j.*_, the options for configuring the pre- and postprocessors are under the subnamespace _wro4j.managerFactory.*_, as _wro4j.managerFactory.preProcessors_ and _wro4j.managerFactory.postProcessors_.
 
 As an alternative, you can add processors via their fully qualified classname as _wro4j.preProcessors_ and _wro4j.postProcessors_. Configuring the processors via name or fully qualified class are mutually exclusive.
+
+### Configuration of Pre- and PostProcessors
+
+You can configure Pre- and PostProcessors at two different points:
+
+If you use `wro4j.managerFactory.preProcessors` and `wro4j.managerFactory.postProcessors` you must use predefined [aliases](http://wro4j.readthedocs.io/en/stable/RegisterCustomProcessors/?highlight=alias) or register your own processor provider as described in the comments of [issue #3](https://github.com/michael-simons/wro4j-spring-boot-starter/issues/3).
+
+You can however use "our" custom options `wro4j.preProcessors` and `wro4j.postProcessors` (note the difference: No manager factory in between!). Those optionse take a comma separated list of classes that must implement `ResourcePreProcessor` and `ResourcePostProcessor` respectively. 
+
+If you do this, the `wro4j-spring-boot-starter` first checks, if a bean of the given type exists in the application context. This way, you can manage your proccessors as normal Spring beans. The only thing you have to take care of is to make sure that those are present in the context before `Wro4jAutoConfiguration` runs. See the example [Wro4jAutoConfigurationIntegrationTests](https://github.com/michael-simons/wro4j-spring-boot-starter/blob/master/src/test/java/ac/simons/spring/boot/wro4j/Wro4jAutoConfigurationIntegrationTests.java#L95).
 
 ### Options not present in the original Wro4j version
 

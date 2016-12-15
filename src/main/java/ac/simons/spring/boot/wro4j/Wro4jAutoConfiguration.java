@@ -39,6 +39,7 @@ import ro.isdc.wro.model.resource.processor.factory.ProcessorsFactory;
 import ro.isdc.wro.model.resource.processor.factory.SimpleProcessorsFactory;
 
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -48,6 +49,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -65,7 +67,16 @@ import org.springframework.core.annotation.Order;
 public class Wro4jAutoConfiguration {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Wro4jAutoConfiguration.class.getName());
+	
+	/**
+	 * We use this to access possible processor beans inside the appplication context.
+	 */
+	private final ApplicationContext applicationContext;
 
+	public Wro4jAutoConfiguration(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
+	
 	@Bean
 	@ConditionalOnMissingBean({WroManagerFactory.class, WroModelFactory.class})
 	WroModelFactory wroModelFactory(final Wro4jProperties wro4jProperties) {
@@ -90,18 +101,20 @@ public class Wro4jAutoConfiguration {
 		final List<ResourcePreProcessor> preProcessors = new ArrayList<ResourcePreProcessor>();
 		if (wro4jProperties.getPreProcessors() != null) {
 			for (Class<? extends ResourcePreProcessor> c : wro4jProperties.getPreProcessors()) {
-				preProcessors.add((ResourcePreProcessor) new BeanWrapperImpl(c).getWrappedInstance());
+				preProcessors.add(getBeanOrInstantiateProcessor(c));
 			}
 		}
 		final List<ResourcePostProcessor> postProcessors = new ArrayList<ResourcePostProcessor>();
 		if (wro4jProperties.getPostProcessors() != null) {
 			for (Class<? extends ResourcePostProcessor> c : wro4jProperties.getPostProcessors()) {
-				postProcessors.add((ResourcePostProcessor) new BeanWrapperImpl(c).getWrappedInstance());
+				postProcessors.add(getBeanOrInstantiateProcessor(c));
 			}
 		}
+		System.out.println(">>> " + wro4jProperties.getPreProcessors());
+		System.out.println(">>! " + wro4jProperties.getCacheName());
 
 		ProcessorsFactory rv;
-
+		
 		if (wro4jProperties.getManagerFactory() != null) {
 			final Properties properties = new Properties();
 			if (wro4jProperties.getManagerFactory().getPreProcessors() != null) {
@@ -123,6 +136,26 @@ public class Wro4jAutoConfiguration {
 		}
 		LOGGER.debug("Using ProcessorsFactory of type '{}'", rv.getClass().getName());
 
+		return rv;
+	}
+	
+	/**
+	 * This method tries to load a processor from the application context by class name.
+	 * 
+	 * If it fails, the processor is instantiated manually bot not added to the context.
+	 * 
+	 * @param <T> Type of the processor to load
+	 * @param c Class of the processor to load
+	 * @return A processor instance
+	 */
+	<T> T getBeanOrInstantiateProcessor(final Class<? extends T> c) {
+		T rv;
+		try {
+			rv = this.applicationContext.getBean(c);
+		} catch (NoSuchBeanDefinitionException e) {
+			LOGGER.warn("Could not get processor from context: {}, instantiating new instance instead", e.getMessage());
+			rv = (T) new BeanWrapperImpl(c).getWrappedInstance();
+		}
 		return rv;
 	}
 

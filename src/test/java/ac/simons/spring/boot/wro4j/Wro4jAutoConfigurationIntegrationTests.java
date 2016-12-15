@@ -44,7 +44,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * Tests various szenarios of Autoconfiguration.
@@ -90,8 +92,9 @@ public class Wro4jAutoConfigurationIntegrationTests extends Suite {
 		}
 	}
 
-	@RunWith(SpringJUnit4ClassRunner.class)
-	@SpringBootTest(classes = EmptyApplication.class)
+	@RunWith(SpringRunner.class)
+	@SpringBootTest(classes = DefaultApplication.class)
+	@TestPropertySource(properties = {"wro4j.preProcessors = ac.simons.spring.boot.wro4j.DefaultResourcePreProcessor"})
 	public static class DefaultConfigurationShouldWork {
 
 		@Autowired
@@ -102,9 +105,11 @@ public class Wro4jAutoConfigurationIntegrationTests extends Suite {
 			final WroModelFactory wroModelFactory = this.applicationContext.getBean(WroModelFactory.class);
 			Assert.assertNotNull(wroModelFactory);
 			Assert.assertTrue(wroModelFactory instanceof ConfigurableXmlModelFactory);
-
+			
 			final ProcessorsFactory processorsFactory = this.applicationContext.getBean(ProcessorsFactory.class);
 			Assert.assertNotNull(processorsFactory);
+			Assert.assertEquals(1, processorsFactory.getPreProcessors().size());			
+			Assert.assertTrue(processorsFactory.getPreProcessors().toArray()[0] instanceof DefaultResourcePreProcessor);
 
 			final CacheStrategy cacheStrategy = this.applicationContext.getBean(CacheStrategy.class);
 			Assert.assertNotNull(cacheStrategy);
@@ -122,11 +127,7 @@ public class Wro4jAutoConfigurationIntegrationTests extends Suite {
 			Assert.assertNotNull(wro4jFilterRegistration);
 		}
 	}
-
-	@EnableAutoConfiguration
-	public static class EmptyApplication {
-	}
-
+	
 	@RunWith(SpringJUnit4ClassRunner.class)
 	@SpringBootTest(classes = ApplicationWithCacheManager.class)
 	public static class CustomCacheStrategyShouldWork {
