@@ -45,7 +45,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -61,7 +60,7 @@ public class Wro4jAutoConfigurationIntegrationTests extends Suite {
 		super(klass, builder);
 	}
 
-	@RunWith(SpringJUnit4ClassRunner.class)
+	@RunWith(SpringRunner.class)
 	@SpringBootTest(classes = ApplicationWithWroFilter.class)
 	public static class NoAutoConfigurationShouldWork {
 
@@ -128,7 +127,7 @@ public class Wro4jAutoConfigurationIntegrationTests extends Suite {
 		}
 	}
 	
-	@RunWith(SpringJUnit4ClassRunner.class)
+	@RunWith(SpringRunner.class)
 	@SpringBootTest(classes = ApplicationWithCacheManager.class)
 	public static class CustomCacheStrategyShouldWork {
 
