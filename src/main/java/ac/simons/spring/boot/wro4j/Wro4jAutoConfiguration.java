@@ -151,7 +151,7 @@ public class Wro4jAutoConfiguration {
 		try {
 			rv = this.applicationContext.getBean(c);
 		} catch (NoSuchBeanDefinitionException e) {
-			LOGGER.warn("Could not get processor from context: {}, instantiating new instance instead", e.getMessage());
+			LOGGER.warn("Could not get processor from context, instantiating new instance instead", e);
 			rv = (T) new BeanWrapperImpl(c).getWrappedInstance();
 		}
 		return rv;
