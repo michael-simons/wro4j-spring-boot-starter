@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package ac.simons.spring.boot.wro4j;
 import ac.simons.spring.boot.wro4j.Wro4jAutoConfigurationIntegrationTests.CustomCacheStrategyShouldWork;
 import ac.simons.spring.boot.wro4j.Wro4jAutoConfigurationIntegrationTests.DefaultConfigurationShouldWork;
 import ac.simons.spring.boot.wro4j.Wro4jAutoConfigurationIntegrationTests.NoAutoConfigurationShouldWork;
+import java.lang.reflect.Field;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +47,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.ReflectionUtils;
+import ro.isdc.wro.model.resource.support.ResourceAuthorizationManager;
 
 /**
  * Tests various szenarios of Autoconfiguration.
@@ -53,7 +56,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author Michael J. Simons, 2016-02-02
  */
 @RunWith(Wro4jAutoConfigurationIntegrationTests.class)
-@SuiteClasses({NoAutoConfigurationShouldWork.class, DefaultConfigurationShouldWork.class, CustomCacheStrategyShouldWork.class})
+@SuiteClasses({NoAutoConfigurationShouldWork.class, DefaultConfigurationShouldWork.class, CustomCacheStrategyShouldWork.class, Wro4jAutoConfigurationIntegrationTests.ShouldBeResourceAuthorizationManagerAware.class})
 public class Wro4jAutoConfigurationIntegrationTests extends Suite {
 
 	public Wro4jAutoConfigurationIntegrationTests(Class<?> klass, RunnerBuilder builder) throws InitializationError {
@@ -149,4 +152,36 @@ public class Wro4jAutoConfigurationIntegrationTests extends Suite {
 
 	}
 
+	@RunWith(SpringRunner.class)
+	@SpringBootTest(classes = ApplicationWithResourceAuthorizationManager.class)
+	public static class ShouldBeResourceAuthorizationManagerAware {
+
+		@Autowired
+		ApplicationContext applicationContext;
+
+		@Test
+		public void expectedBeansShouldBePresent() {
+			final ResourceAuthorizationManager resourceAuthorizationManager = this.applicationContext.getBean(ResourceAuthorizationManager.class);
+			Assert.assertNotNull(resourceAuthorizationManager);
+			final WroManagerFactory wroManagerFactory = this.applicationContext.getBean(WroManagerFactory.class);
+			final Field f = ReflectionUtils.findField(BaseWroManagerFactory.class, "authorizationManager");
+			f.setAccessible(true);
+			final Object actualResourceAuthorizationManager = ReflectionUtils.getField(f, wroManagerFactory);
+			System.out.println(actualResourceAuthorizationManager);
+			Assert.assertEquals(resourceAuthorizationManager, actualResourceAuthorizationManager);
+		}
+	}
+
+	@EnableAutoConfiguration
+	public static class ApplicationWithResourceAuthorizationManager {
+		@Bean
+		public ResourceAuthorizationManager resourceAuthorizationManager() {
+			return new ResourceAuthorizationManager() {
+				@Override
+				public boolean isAuthorized(String uri) {
+					return false;
+				}
+			};
+		}
+	}
 }

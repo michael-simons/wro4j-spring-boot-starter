@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,11 +37,11 @@ import ro.isdc.wro.model.resource.processor.factory.ConfigurableProcessorsFactor
 import ro.isdc.wro.model.resource.processor.factory.DefaultProcessorsFactory;
 import ro.isdc.wro.model.resource.processor.factory.ProcessorsFactory;
 import ro.isdc.wro.model.resource.processor.factory.SimpleProcessorsFactory;
-import ro.isdc.wro.model.resource.support.DefaultResourceAuthorizationManager;
 import ro.isdc.wro.model.resource.support.ResourceAuthorizationManager;
 
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -60,6 +60,7 @@ import org.springframework.core.annotation.Order;
  * Configures a Wro4j filter.
  *
  * @author Michael J. Simons, 2015-07-11
+ * @author Christophe Levesque
  */
 @Configuration
 @ConditionalOnClass(WroFilter.class)
@@ -75,6 +76,15 @@ public class Wro4jAutoConfiguration {
 	 */
 	private final ApplicationContext applicationContext;
 
+	/**
+	 * Optional {@link ResourceAuthorizationManager}. Can be made an Optional&lt;ResourceAuthorizationManager&gt;
+	 * to {@link #wroManagerFactory(ro.isdc.wro.model.factory.WroModelFactory, ro.isdc.wro.model.resource.processor.factory.ProcessorsFactory, ro.isdc.wro.cache.CacheStrategy) }
+	 * if Spring Boot goes pure Java 8 (this starter is aligned with Boot, so it
+	 * still supports Java 6.
+	 */
+	@Autowired(required = false)
+	private ResourceAuthorizationManager resourceAuthorizationManager;
+	
 	public Wro4jAutoConfiguration(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
@@ -196,12 +206,6 @@ public class Wro4jAutoConfiguration {
 		return new LruMemoryCacheStrategy<K, V>();
 	}
 
-	@Bean
-	@ConditionalOnMissingBean(ResourceAuthorizationManager.class)
-	ResourceAuthorizationManager defaultResourceAuthorizationManager() {
-		return new DefaultResourceAuthorizationManager();
-	}
-
 	/**
 	 * Builds the {@link WroManagerFactory} used for the Wro4j filter to be
 	 * created if no WroManagerFactory is already registered.
@@ -214,12 +218,15 @@ public class Wro4jAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean(WroManagerFactory.class)
-	WroManagerFactory wroManagerFactory(final WroModelFactory wroModelFactory, final ProcessorsFactory processorsFactory, final CacheStrategy cacheStrategy, final ResourceAuthorizationManager resourceAuthorizationManager) {
+	WroManagerFactory wroManagerFactory(
+			final WroModelFactory wroModelFactory, 
+			final ProcessorsFactory processorsFactory, 
+			final CacheStrategy cacheStrategy) {
 		return new BaseWroManagerFactory()
 				.setModelFactory(wroModelFactory)
 				.setProcessorsFactory(processorsFactory)
 				.setCacheStrategy(cacheStrategy)
-				.setResourceAuthorizationManager(resourceAuthorizationManager);
+				.setResourceAuthorizationManager(this.resourceAuthorizationManager);
 	}
 
 	/**
