@@ -19,7 +19,7 @@ This starter doesn't bring in the _wro4j-extension_ artifact which are a lot of 
 
 With the starter comes an additional resource processor _removeSourceMaps_ which removes stale source maps from minified and concatened files.
 
-This starter is in production at [euregjug.eu](http://www.euregjug.eu) and in will be in upcoming [ENERKO Informatik](http://www.enerko-informatik.de) products.
+This starter is in production at [euregjug.eu](http://www.euregjug.eu) and in various [ENERKO Informatik](http://www.enerko-informatik.de) products.
 
 ## Usage and configuration
 
@@ -29,7 +29,7 @@ Just include the starter in your pom.xml:
 <dependency>
     <groupId>eu.michael-simons</groupId>
     <artifactId>wro4j-spring-boot-starter</artifactId>
-    <version>0.2.1</version>	    
+    <version>0.3.2</version>	    
 </dependency>
 ```
 
@@ -98,6 +98,12 @@ If you do this, the `wro4j-spring-boot-starter` first checks, if a bean of the g
                 </tr>
         </tbody>
 </table>
+
+###  Misc
+
+Beans of the following types are recognized and added to wro4j
+
+* `ResourceAuthorizationManager`
 
 ### Not configurable at the moment
 
