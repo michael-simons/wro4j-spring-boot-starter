@@ -4,6 +4,8 @@ A Spring Boot starter and auto-configuration for wro4j:
 
 > [Wro4j](http://alexo.github.io/wro4j/) is a tool for analysis and optimization of web resources. It brings together almost all the modern web tools: JsHint, CssLint, JsMin, Google Closure compressor, YUI Compressor, UglifyJs, Dojo Shrinksafe, Css Variables Support, JSON Compression, Less, Sass, CoffeeScript and much more.
 
+[![Build Status](https://travis-ci.org/michael-simons/wro4j-spring-boot-starter.svg?branch=master)](https://travis-ci.org/michael-simons/wro4j-spring-boot-starter) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/eu.michael-simons/wro4j-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/eu.michael-simons/wro4j-spring-boot-starter)
+
 ## Introduction
 
 This starter does the following auto configuration for you:
