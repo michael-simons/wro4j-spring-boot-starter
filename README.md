@@ -31,7 +31,7 @@ Just include the starter in your pom.xml:
 <dependency>
     <groupId>eu.michael-simons</groupId>
     <artifactId>wro4j-spring-boot-starter</artifactId>
-    <version>0.3.2</version>	    
+    <version>0.3.4</version>	    
 </dependency>
 ```
 
