@@ -124,6 +124,6 @@ There's a another Wro4j [starter](https://github.com/sbuettner/spring-boot-autoc
 * [euregjug.eu](http://www.euregjug.eu), Source code here [github.com/EuregJUG-Maas-Rhine/site](https://github.com/EuregJUG-Maas-Rhine/site). Pretty standard site that uses a theme from [html5up](http://html5up.net), some JQuery.
 * [biking2](http://biking.michael-simons.eu), Source code here [github.com/michael-simons/biking2](https://github.com/michael-simons/biking2). A full blown AngularJS application.
 * [Minimal working example](https://github.com/michael-simons/wro4j-spring-boot-starter/files/901848/wro4jdemo.zip), created as a request in [#6](https://github.com/michael-simons/wro4j-spring-boot-starter/issues/6). Just download, unzip and run with `mvn spring-boot:run` to see it working.
-* [An example using the wroj4-extensions, especially the SASS/SCSS processor](https://github.com/michael-simons/wro4j-spring-boot-starter/files/947239/wro4jscssdemo.zip), again, just download, unzip and run with `mvn spring-boot:run` to see it working. See explanation in [#7].
+* [An example using the wroj4-extensions, especially the SASS/SCSS processor](https://github.com/michael-simons/wro4j-spring-boot-starter/files/947239/wro4jscssdemo.zip), again, just download, unzip and run with `mvn spring-boot:run` to see it working. See explanation in [#7](https://github.com/michael-simons/wro4j-spring-boot-starter/issues/7).
  
 [ENERKO Informatik GmbH](http://www.enerko-informatik.de) is using Wro4j and this starter in several products as well.
