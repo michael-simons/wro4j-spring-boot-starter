@@ -24,7 +24,6 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.util.ReflectionUtils;
 import ro.isdc.wro.cache.CacheStrategy;
 import ro.isdc.wro.cache.impl.LruMemoryCacheStrategy;
 import ro.isdc.wro.http.ConfigurableWroFilter;
@@ -35,8 +34,6 @@ import ro.isdc.wro.model.factory.WroModelFactory;
 import ro.isdc.wro.model.resource.processor.factory.ProcessorsFactory;
 import ro.isdc.wro.model.resource.support.ResourceAuthorizationManager;
 
-import java.lang.reflect.Field;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -46,12 +43,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class Wro4jAutoConfigurationIntegrationTests {
 
-	final ApplicationContextRunner applicationContextRunner = new ApplicationContextRunner();
+	final ApplicationContextRunner applicationContextRunner = new ApplicationContextRunner()
+			.withConfiguration(AutoConfigurations.of(CacheAutoConfiguration.class, Wro4jAutoConfiguration.class));
 
 	@Test
 	public void noAutoConfigurationShouldWork() {
-		applicationContextRunner.withConfiguration(AutoConfigurations.of(Wro4jAutoConfiguration.class))
-				.withUserConfiguration(ApplicationWithWroFilter.class)
+		applicationContextRunner.withUserConfiguration(ApplicationWithWroFilter.class)
 				.run(ctx -> assertThat(ctx)
 						.doesNotHaveBean(WroModelFactory.class)
 						.doesNotHaveBean(ProcessorsFactory.class)
@@ -75,8 +72,7 @@ public class Wro4jAutoConfigurationIntegrationTests {
 				p -> p.getPreProcessors().size() == 1 && p.getPreProcessors().toArray()[0] instanceof DefaultResourcePreProcessor,
 				"Has one preprocess of type DefaultResourcePreProcessor");
 
-		applicationContextRunner.withConfiguration(AutoConfigurations.of(Wro4jAutoConfiguration.class))
-				.withPropertyValues("wro4j.preProcessors = ac.simons.spring.boot.wro4j.DefaultResourcePreProcessor")
+		applicationContextRunner.withPropertyValues("wro4j.preProcessors = ac.simons.spring.boot.wro4j.DefaultResourcePreProcessor")
 				.run(ctx -> {
 					assertThat(ctx).getBean(WroModelFactory.class).isExactlyInstanceOf(ConfigurableXmlModelFactory.class);
 					assertThat(ctx).getBean(CacheStrategy.class).isExactlyInstanceOf(LruMemoryCacheStrategy.class);
@@ -91,7 +87,7 @@ public class Wro4jAutoConfigurationIntegrationTests {
 
 	@Test
 	public void customCacheStrategyShouldWork() {
-		applicationContextRunner.withConfiguration(AutoConfigurations.of(CacheAutoConfiguration.class, Wro4jAutoConfiguration.class))
+		applicationContextRunner
 				.withUserConfiguration(ApplicationWithCacheManager.class)
 				.withPropertyValues("wro4j.cacheName = foobar")
 				.run(ctx -> assertThat(ctx).getBean(CacheStrategy.class).isExactlyInstanceOf(SpringCacheStrategy.class));
@@ -103,16 +99,9 @@ public class Wro4jAutoConfigurationIntegrationTests {
 
 	@Test
 	public void shouldBeResourceAuthorizationManagerAware() {
-		applicationContextRunner.withConfiguration(AutoConfigurations.of(Wro4jAutoConfiguration.class))
-				.withUserConfiguration(ApplicationWithResourceAuthorizationManager.class)
-				.run(ctx -> {
-					final WroManagerFactory wroManagerFactory = ctx.getBean(WroManagerFactory.class);
-					final Field f = ReflectionUtils.findField(BaseWroManagerFactory.class, "authorizationManager");
-					f.setAccessible(true);
-					final Object actualResourceAuthorizationManager = ReflectionUtils.getField(f, wroManagerFactory);
-
-					assertThat(ctx).getBean(ResourceAuthorizationManager.class).isEqualTo(actualResourceAuthorizationManager);
-				});
+		applicationContextRunner.withUserConfiguration(ApplicationWithResourceAuthorizationManager.class)
+				.run(ctx -> assertThat(ctx).getBean(WroManagerFactory.class)
+						.hasFieldOrPropertyWithValue("authorizationManager", ctx.getBean(ResourceAuthorizationManager.class)));
 	}
 
 	static class ApplicationWithResourceAuthorizationManager {
