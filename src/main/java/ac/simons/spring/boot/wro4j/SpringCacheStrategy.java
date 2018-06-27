@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 
 package ac.simons.spring.boot.wro4j;
+
+import java.util.Optional;
 
 import ro.isdc.wro.cache.CacheStrategy;
 
@@ -35,20 +37,22 @@ class SpringCacheStrategy<K, V> implements CacheStrategy<K, V> {
 
 	private final String cacheName;
 
-	SpringCacheStrategy(CacheManager cacheManager, String cacheName) {
+	SpringCacheStrategy(final CacheManager cacheManager, final String cacheName) {
 		this.cacheManager = cacheManager;
 		this.cacheName = cacheName;
 	}
 
 	@Override
-	public void put(K key, V value) {
+	public void put(final K key, final V value) {
 		this.cacheManager.getCache(this.cacheName).put(key, value);
 	}
 
 	@Override
-	public V get(K key) {
-		final ValueWrapper valueWrapper = this.cacheManager.getCache(this.cacheName).get(key);
-		return (V) (valueWrapper == null ? null : valueWrapper.get());
+	public V get(final K key) {
+		return (V) Optional.of(this.cacheManager.getCache(this.cacheName))
+				.map(c -> c.get(key))
+				.map(ValueWrapper::get)
+				.orElse(null);
 	}
 
 	@Override
