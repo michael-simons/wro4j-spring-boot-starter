@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,10 +36,10 @@ public class Wro4jProcessorProvider implements ProcessorProvider {
 	private final Map<String, ResourcePostProcessor> postProcessors;
 
 	public Wro4jProcessorProvider() {
-		final Map<String, ResourcePreProcessor> tmp = new HashMap<String, ResourcePreProcessor>();
+		final Map<String, ResourcePreProcessor> tmp = new HashMap<>();
 		tmp.put("removeSourceMaps", new RemoveSourceMapsProcessor());
 		this.preProcessors = Collections.unmodifiableMap(tmp);
-		this.postProcessors = Collections.unmodifiableMap(new HashMap<String, ResourcePostProcessor>());
+		this.postProcessors = Collections.unmodifiableMap(new HashMap<>());
 	}
 
 	@Override

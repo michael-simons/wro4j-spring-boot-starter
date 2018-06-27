@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2017 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,13 +110,13 @@ public class Wro4jAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean({WroManagerFactory.class, ProcessorsFactory.class})
 	ProcessorsFactory processorsFactory(final Wro4jProperties wro4jProperties) {
-		final List<ResourcePreProcessor> preProcessors = new ArrayList<ResourcePreProcessor>();
+		final List<ResourcePreProcessor> preProcessors = new ArrayList<>();
 		if (wro4jProperties.getPreProcessors() != null) {
 			for (Class<? extends ResourcePreProcessor> c : wro4jProperties.getPreProcessors()) {
 				preProcessors.add(getBeanOrInstantiateProcessor(c));
 			}
 		}
-		final List<ResourcePostProcessor> postProcessors = new ArrayList<ResourcePostProcessor>();
+		final List<ResourcePostProcessor> postProcessors = new ArrayList<>();
 		if (wro4jProperties.getPostProcessors() != null) {
 			for (Class<? extends ResourcePostProcessor> c : wro4jProperties.getPostProcessors()) {
 				postProcessors.add(getBeanOrInstantiateProcessor(c));
@@ -187,7 +187,7 @@ public class Wro4jAutoConfiguration {
 	@Order(-100)
 	<K, V> CacheStrategy<K, V> springCacheStrategy(CacheManager cacheManager, Wro4jProperties wro4jProperties) {
 		LOGGER.debug("Creating cache strategy 'SpringCacheStrategy'");
-		return new SpringCacheStrategy<K, V>(cacheManager, wro4jProperties.getCacheName());
+		return new SpringCacheStrategy<>(cacheManager, wro4jProperties.getCacheName());
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class Wro4jAutoConfiguration {
 	@Order(-90)
 	<K, V> CacheStrategy<K, V> defaultCacheStrategy() {
 		LOGGER.debug("Creating cache strategy 'LruMemoryCacheStrategy'");
-		return new LruMemoryCacheStrategy<K, V>();
+		return new LruMemoryCacheStrategy<>();
 	}
 
 	/**
