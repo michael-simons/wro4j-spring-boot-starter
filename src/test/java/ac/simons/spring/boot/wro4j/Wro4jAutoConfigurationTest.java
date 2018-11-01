@@ -30,8 +30,6 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import ro.isdc.wro.config.jmx.ConfigConstants;
 import ro.isdc.wro.http.ConfigurableWroFilter;
 import ro.isdc.wro.manager.factory.WroManagerFactory;
-import ro.isdc.wro.model.resource.processor.ResourcePostProcessor;
-import ro.isdc.wro.model.resource.processor.ResourcePreProcessor;
 import ro.isdc.wro.model.resource.processor.decorator.ProcessorDecorator;
 import ro.isdc.wro.model.resource.processor.factory.ConfigurableProcessorsFactory;
 import ro.isdc.wro.model.resource.processor.factory.DefaultProcessorsFactory;
@@ -84,8 +82,8 @@ public class Wro4jAutoConfigurationTest {
 		processorsFactory = wro4jAutoConfiguration.processorsFactory(wro4jProperties);
 		Assert.assertTrue(processorsFactory instanceof DefaultProcessorsFactory);
 
-		wro4jProperties.setPreProcessors(Arrays.<Class<? extends ResourcePreProcessor>>asList(SemicolonAppenderPreProcessor.class));
-		wro4jProperties.setPostProcessors(Arrays.<Class<? extends ResourcePostProcessor>>asList(JSMinProcessor.class));
+		wro4jProperties.setPreProcessors(Arrays.asList(SemicolonAppenderPreProcessor.class));
+		wro4jProperties.setPostProcessors(Arrays.asList(JSMinProcessor.class));
 		processorsFactory = wro4jAutoConfiguration.processorsFactory(wro4jProperties);
 		Assert.assertTrue(processorsFactory instanceof SimpleProcessorsFactory);
 		Assert.assertEquals(1, processorsFactory.getPreProcessors().size());
