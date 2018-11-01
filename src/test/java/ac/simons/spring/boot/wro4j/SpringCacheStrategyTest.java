@@ -43,11 +43,11 @@ public class SpringCacheStrategyTest {
 	@Mock
 	private Cache cache;
 
-	private final String cacheName = "cacheName";
+	private static final String CACHE_NAME = "CACHE_NAME";
 
 	@Before
 	public void initCache() {
-		Mockito.when(this.cacheManager.getCache(this.cacheName)).thenReturn(this.cache);
+		Mockito.when(this.cacheManager.getCache(CACHE_NAME)).thenReturn(this.cache);
 	}
 
 	@After
@@ -57,10 +57,10 @@ public class SpringCacheStrategyTest {
 
 	@Test
 	public void putShouldWork() {
-		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, this.cacheName);
+		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, CACHE_NAME);
 		cacheStrategy.put("foo", "bar");
 
-		Mockito.verify(this.cacheManager, times(1)).getCache(this.cacheName);
+		Mockito.verify(this.cacheManager, times(1)).getCache(CACHE_NAME);
 		Mockito.verify(this.cache, times(1)).put("foo", "bar");
 	}
 
@@ -73,12 +73,12 @@ public class SpringCacheStrategyTest {
 			}
 		});
 
-		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, this.cacheName);
+		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, CACHE_NAME);
 
 		Assert.assertNull(cacheStrategy.get("foobar"));
 		Assert.assertThat((String) cacheStrategy.get("bazbar"), is("bazbaz"));
 
-		Mockito.verify(this.cacheManager, times(2)).getCache(this.cacheName);
+		Mockito.verify(this.cacheManager, times(2)).getCache(CACHE_NAME);
 		Mockito.verify(this.cache, times(1)).get("foobar");
 		Mockito.verify(this.cache, times(1)).get("bazbar");
 		Mockito.verifyNoMoreInteractions(this.cacheManager, this.cache);
@@ -86,11 +86,11 @@ public class SpringCacheStrategyTest {
 
 	@Test
 	public void clearAndDestroyShouldWork() {
-		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, this.cacheName);
+		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, CACHE_NAME);
 		cacheStrategy.clear();
 		cacheStrategy.destroy();
 
-		Mockito.verify(this.cacheManager, times(2)).getCache(this.cacheName);
+		Mockito.verify(this.cacheManager, times(2)).getCache(CACHE_NAME);
 		Mockito.verify(this.cache, times(2)).clear();
 	}
 }
