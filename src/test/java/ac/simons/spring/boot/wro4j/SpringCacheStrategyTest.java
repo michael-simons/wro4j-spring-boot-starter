@@ -66,12 +66,7 @@ public class SpringCacheStrategyTest {
 
 	@Test
 	public void getShouldWork() {
-		Mockito.when(this.cache.get("bazbar")).thenReturn(new Cache.ValueWrapper() {
-			@Override
-			public Object get() {
-				return "bazbaz";
-			}
-		});
+		Mockito.when(this.cache.get("bazbar")).thenReturn(() -> "bazbaz");
 
 		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, CACHE_NAME);
 
