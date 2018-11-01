@@ -89,9 +89,9 @@ public class Wro4jPropertiesTest {
 		properties.setModel("/owr.xml");
 		final WroManagerFactoryProperties managerFactory = new WroManagerFactoryProperties();
 		properties.setManagerFactory(managerFactory);
-		final List<Class<? extends ResourcePreProcessor>> preProcessors = new ArrayList<Class<? extends ResourcePreProcessor>>();
+		final List<Class<? extends ResourcePreProcessor>> preProcessors = new ArrayList<>();
 		properties.setPreProcessors(preProcessors);
-		final List<Class<? extends ResourcePostProcessor>> postProcessors = new ArrayList<Class<? extends ResourcePostProcessor>>();
+		final List<Class<? extends ResourcePostProcessor>> postProcessors = new ArrayList<>();
 		properties.setPostProcessors(postProcessors);
 		properties.setCacheName("super-duper-cache");
 

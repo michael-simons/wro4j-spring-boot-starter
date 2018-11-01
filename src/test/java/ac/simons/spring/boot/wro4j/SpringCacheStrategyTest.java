@@ -57,7 +57,7 @@ public class SpringCacheStrategyTest {
 
 	@Test
 	public void putShouldWork() {
-		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<Object, Object>(this.cacheManager, this.cacheName);
+		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, this.cacheName);
 		cacheStrategy.put("foo", "bar");
 
 		Mockito.verify(this.cacheManager, times(1)).getCache(this.cacheName);
@@ -73,7 +73,7 @@ public class SpringCacheStrategyTest {
 			}
 		});
 
-		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<Object, Object>(this.cacheManager, this.cacheName);
+		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, this.cacheName);
 
 		Assert.assertNull(cacheStrategy.get("foobar"));
 		Assert.assertThat((String) cacheStrategy.get("bazbar"), is("bazbaz"));
@@ -86,7 +86,7 @@ public class SpringCacheStrategyTest {
 
 	@Test
 	public void clearAndDestroyShouldWork() {
-		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<Object, Object>(this.cacheManager, this.cacheName);
+		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, this.cacheName);
 		cacheStrategy.clear();
 		cacheStrategy.destroy();
 
