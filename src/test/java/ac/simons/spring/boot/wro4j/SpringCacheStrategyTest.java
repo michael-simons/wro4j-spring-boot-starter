@@ -71,7 +71,7 @@ public class SpringCacheStrategyTest {
 		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, CACHE_NAME);
 
 		Assert.assertNull(cacheStrategy.get("foobar"));
-		Assert.assertThat((String) cacheStrategy.get("bazbar"), is("bazbaz"));
+		Assert.assertThat(cacheStrategy.get("bazbar"), is("bazbaz"));
 
 		Mockito.verify(this.cacheManager, times(2)).getCache(CACHE_NAME);
 		Mockito.verify(this.cache, times(1)).get("foobar");
