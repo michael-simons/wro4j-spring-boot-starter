@@ -18,6 +18,7 @@ package ac.simons.spring.boot.wro4j;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Properties;
 
 import ac.simons.spring.boot.wro4j.Wro4jProperties.WroManagerFactoryProperties;
@@ -47,17 +48,18 @@ import org.springframework.context.ApplicationContext;
 public class Wro4jAutoConfigurationTest {
 
 	private final ApplicationContext applicationContext;
-	
+
 	public Wro4jAutoConfigurationTest() {
 		this.applicationContext = mock(ApplicationContext.class);
 		when(this.applicationContext.getBean(Mockito.any(Class.class))).thenThrow(new NoSuchBeanDefinitionException("foo"));
 	}
-	
+
 	@Test
 	public void processorsFactoryShouldWork() {
 		final Wro4jProperties wro4jProperties = new Wro4jProperties();
 
-		final Wro4jAutoConfiguration wro4jAutoConfiguration = new Wro4jAutoConfiguration(this.applicationContext);
+		final Wro4jAutoConfiguration wro4jAutoConfiguration = new Wro4jAutoConfiguration(this.applicationContext,
+			Optional.empty());
 
 		ProcessorsFactory processorsFactory;
 
@@ -96,7 +98,7 @@ public class Wro4jAutoConfigurationTest {
 	public void wroFilterShouldWork() {
 		final WroManagerFactory wroManagerFactory = Mockito.mock(WroManagerFactory.class);
 
-		final Wro4jAutoConfiguration wro4jAutoConfiguration = new Wro4jAutoConfiguration(this.applicationContext);
+		final Wro4jAutoConfiguration wro4jAutoConfiguration = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty());
 		final ConfigurableWroFilter wroFilter = wro4jAutoConfiguration.wroFilter(wroManagerFactory, new Wro4jProperties());
 		Assert.assertSame(wroManagerFactory, wroFilter.getWroManagerFactory());
 	}
@@ -107,7 +109,7 @@ public class Wro4jAutoConfigurationTest {
 
 		Properties p;
 
-		p = new Wro4jAutoConfiguration(this.applicationContext).wroFilterProperties(wro4jProperties);
+		p = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wroFilterProperties(wro4jProperties);
 		Assert.assertEquals("true", p.get(ConfigConstants.debug.name()));
 		Assert.assertEquals("true", p.get(ConfigConstants.minimizeEnabled.name()));
 		Assert.assertEquals("true", p.get(ConfigConstants.gzipResources.name()));
@@ -133,7 +135,7 @@ public class Wro4jAutoConfigurationTest {
 		wro4jProperties.setConnectionTimeout(null);
 		wro4jProperties.setEncoding("\t ");
 		wro4jProperties.setMbeanName(" ");
-		p = new Wro4jAutoConfiguration(this.applicationContext).wroFilterProperties(wro4jProperties);
+		p = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wroFilterProperties(wro4jProperties);
 		Assert.assertNull(p.get(ConfigConstants.resourceWatcherUpdatePeriod.name()));
 		Assert.assertNull(p.get(ConfigConstants.cacheUpdatePeriod.name()));
 		Assert.assertNull(p.get(ConfigConstants.modelUpdatePeriod.name()));
@@ -145,13 +147,13 @@ public class Wro4jAutoConfigurationTest {
 		wro4jProperties.setHeader("If-Unmodified-Since: Sat, 29 Oct 1994 19:43:31 GMT");
 		wro4jProperties.setEncoding("ISO-8859-1");
 		wro4jProperties.setMbeanName("wro4j-bean");
-		p = new Wro4jAutoConfiguration(this.applicationContext).wroFilterProperties(wro4jProperties);
+		p = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wroFilterProperties(wro4jProperties);
 		Assert.assertEquals(wro4jProperties.getHeader(), p.get(ConfigConstants.header.name()));
 		Assert.assertEquals(wro4jProperties.getEncoding(), p.get(ConfigConstants.encoding.name()));
 		Assert.assertEquals(wro4jProperties.getMbeanName(), p.get(ConfigConstants.mbeanName.name()));
 
 		wro4jProperties.setEncoding(null);
-		p = new Wro4jAutoConfiguration(this.applicationContext).wroFilterProperties(wro4jProperties);
+		p = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wroFilterProperties(wro4jProperties);
 		Assert.assertNull(p.get(ConfigConstants.encoding.name()));
 	}
 
@@ -159,7 +161,7 @@ public class Wro4jAutoConfigurationTest {
 	public void wro4jFilterRegistrationShouldWork() {
 		final ConfigurableWroFilter wroFilter = Mockito.mock(ConfigurableWroFilter.class);
 
-		final FilterRegistrationBean filterRegistrationBean = new Wro4jAutoConfiguration(this.applicationContext).wro4jFilterRegistration(wroFilter, new Wro4jProperties());
+		final FilterRegistrationBean filterRegistrationBean = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wro4jFilterRegistration(wroFilter, new Wro4jProperties());
 		final Collection<String> urlPatterns = filterRegistrationBean.getUrlPatterns();
 		Assert.assertEquals(1, urlPatterns.size());
 		Assert.assertEquals("/wro4j/*", urlPatterns.iterator().next());

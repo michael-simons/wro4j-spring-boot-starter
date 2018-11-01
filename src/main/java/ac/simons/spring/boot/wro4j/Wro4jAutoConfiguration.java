@@ -18,6 +18,7 @@ package ac.simons.spring.boot.wro4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -70,25 +71,22 @@ import org.springframework.core.annotation.Order;
 public class Wro4jAutoConfiguration {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Wro4jAutoConfiguration.class.getName());
-	
+
 	/**
 	 * We use this to access possible processor beans inside the appplication context.
 	 */
 	private final ApplicationContext applicationContext;
 
 	/**
-	 * Optional {@link ResourceAuthorizationManager}. Can be made an Optional&lt;ResourceAuthorizationManager&gt;
-	 * to {@link #wroManagerFactory(ro.isdc.wro.model.factory.WroModelFactory, ro.isdc.wro.model.resource.processor.factory.ProcessorsFactory, ro.isdc.wro.cache.CacheStrategy) }
-	 * if Spring Boot goes pure Java 8 (this starter is aligned with Boot, so it
-	 * still supports Java 6.
+	 * Optional {@link ResourceAuthorizationManager}.
 	 */
-	@Autowired(required = false)
-	private ResourceAuthorizationManager resourceAuthorizationManager;
-	
-	public Wro4jAutoConfiguration(ApplicationContext applicationContext) {
+	private final ResourceAuthorizationManager resourceAuthorizationManager;
+
+	public Wro4jAutoConfiguration(ApplicationContext applicationContext, Optional<ResourceAuthorizationManager> resourceAuthorizationManager) {
 		this.applicationContext = applicationContext;
+		this.resourceAuthorizationManager = resourceAuthorizationManager.orElse(null);
 	}
-	
+
 	@Bean
 	@ConditionalOnMissingBean({WroManagerFactory.class, WroModelFactory.class})
 	WroModelFactory wroModelFactory(final Wro4jProperties wro4jProperties) {
@@ -124,7 +122,7 @@ public class Wro4jAutoConfiguration {
 		}
 
 		ProcessorsFactory rv;
-		
+
 		if (wro4jProperties.getManagerFactory() != null) {
 			final Properties properties = new Properties();
 			if (wro4jProperties.getManagerFactory().getPreProcessors() != null) {
@@ -148,12 +146,12 @@ public class Wro4jAutoConfiguration {
 
 		return rv;
 	}
-	
+
 	/**
 	 * This method tries to load a processor from the application context by class name.
-	 * 
+	 *
 	 * If it fails, the processor is instantiated manually bot not added to the context.
-	 * 
+	 *
 	 * @param <T> Type of the processor to load
 	 * @param c Class of the processor to load
 	 * @return A processor instance
@@ -219,8 +217,8 @@ public class Wro4jAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean(WroManagerFactory.class)
 	WroManagerFactory wroManagerFactory(
-			final WroModelFactory wroModelFactory, 
-			final ProcessorsFactory processorsFactory, 
+			final WroModelFactory wroModelFactory,
+			final ProcessorsFactory processorsFactory,
 			final CacheStrategy cacheStrategy) {
 		return new BaseWroManagerFactory()
 				.setModelFactory(wroModelFactory)
