@@ -4,3 +4,5 @@ var/
 /application.properties
 /activemq-data/
 /nbproject/
+*.iml
+.idea/
