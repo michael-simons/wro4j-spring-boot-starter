@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starters</artifactId>
@@ -15,8 +16,17 @@
   <name>Wro4j Spring Boot Starter</name>
   <description>A starter for Spring Boot that provides autoconfiguration for Wro4j.</description>
   <url>http://projects.spring.io/spring-boot/</url>
-
   <inceptionYear>2015</inceptionYear>
+  <organization>
+    <name>michael-simons.eu</name>
+    <url>http://michael-simons.eu</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
@@ -25,17 +35,18 @@
     </developer>
   </developers>
 
-  <organization>
-    <name>michael-simons.eu</name>
-    <url>http://michael-simons.eu</url>
-  </organization>
-
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-    </license>
-  </licenses>
+  <scm>
+    <connection>scm:git:git@github.com:michael-simons/wro4j-spring-boot-starter.git</connection>
+    <developerConnection>scm:git:git@github.com:michael-simons/wro4j-spring-boot-starter.git</developerConnection>
+    <url>https://github.com/michael-simons/wro4j-spring-boot-starter</url>
+    <tag>HEAD</tag>
+  </scm>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -50,12 +61,35 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>	
   </properties>
 
-  <scm>
-    <connection>scm:git:git@github.com:michael-simons/wro4j-spring-boot-starter.git</connection>
-    <developerConnection>scm:git:git@github.com:michael-simons/wro4j-spring-boot-starter.git</developerConnection>
-    <url>https://github.com/michael-simons/wro4j-spring-boot-starter</url>
-    <tag>HEAD</tag>
-  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>ro.isdc.wro4j</groupId>
+      <artifactId>wro4j-core</artifactId>
+      <version>${wro4j.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
   <build>
     <plugins>
@@ -219,7 +253,7 @@
       </plugin>
     </plugins>
   </build>
-  
+
   <profiles>
     <profile>
       <id>release</id>
@@ -243,42 +277,4 @@
       </build>
     </profile>
   </profiles>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-tomcat</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>ro.isdc.wro4j</groupId>
-      <artifactId>wro4j-core</artifactId>
-      <version>${wro4j.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-configuration-processor</artifactId>
-      <optional>true</optional>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
-
 </project>
