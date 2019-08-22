@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starters</artifactId>
-    <version>2.1.2.RELEASE</version>
+    <version>2.1.7.RELEASE</version>
   </parent>
 
   <groupId>eu.michael-simons</groupId>
