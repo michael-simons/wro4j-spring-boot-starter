@@ -75,7 +75,7 @@ public class Wro4jAutoConfigurationTest {
 
 		processorsFactory = wro4jAutoConfiguration.processorsFactory(wro4jProperties);
 		Assert.assertTrue(processorsFactory instanceof ConfigurableProcessorsFactory);
-		Assert.assertEquals(1, processorsFactory.getPreProcessors().size());
+		Assert.assertEquals(0, processorsFactory.getPreProcessors().size());
 		Assert.assertTrue(processorsFactory.getPreProcessors().iterator().next() instanceof SemicolonAppenderPreProcessor);
 		Assert.assertEquals(1, processorsFactory.getPostProcessors().size());
 		Assert.assertTrue(((ProcessorDecorator) processorsFactory.getPostProcessors().iterator().next()).getDecoratedObject() instanceof JSMinProcessor);
