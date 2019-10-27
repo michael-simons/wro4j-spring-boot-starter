@@ -44,22 +44,22 @@ class Wro4jPropertiesTest {
 		assertTrue(properties.isDebug());
 		assertTrue(properties.isMinimizeEnabled());
 		assertTrue(properties.isGzipResources());
-		assertEquals(properties.getResourceWatcherUpdatePeriod(), 0);
+		assertEquals(0, properties.getResourceWatcherUpdatePeriod());
 		assertFalse(properties.isResourceWatcherAsync());
-		assertEquals(properties.getCacheUpdatePeriod(), 0);
-		assertEquals(properties.getModelUpdatePeriod(), 0);
+		assertEquals(0, properties.getCacheUpdatePeriod());
+		assertEquals(0, properties.getModelUpdatePeriod());
 		assertNull(properties.getHeader());
 		assertFalse(properties.isParallelPreprocessing());
-		assertEquals(properties.getConnectionTimeout(), 2000L);
-		assertEquals(properties.getEncoding(), "UTF-8");
+		assertEquals(2000L, properties.getConnectionTimeout());
+		assertEquals("UTF-8", properties.getEncoding());
 		assertTrue(properties.isIgnoreMissingResources());
 		assertTrue(properties.isIgnoreEmptyGroup());
 		assertFalse(properties.isIgnoreFailingProcessor());
 		assertTrue(properties.isCacheGzippedContent());
 		assertFalse(properties.isJmxEnabled());
 		assertNull(properties.getMbeanName());
-		assertEquals(properties.getFilterUrl(), "/wro4j");
-		assertEquals(properties.getModel(), "/wro.xml");
+		assertEquals("/wro4j", properties.getFilterUrl());
+		assertEquals("/wro.xml", properties.getModel());
 		assertNull(properties.getManagerFactory());
 		assertNull(properties.getPreProcessors());
 		assertNull(properties.getPostProcessors());
@@ -100,26 +100,26 @@ class Wro4jPropertiesTest {
 		assertFalse(properties.isDebug());
 		assertFalse(properties.isMinimizeEnabled());
 		assertFalse(properties.isGzipResources());
-		assertEquals(properties.getResourceWatcherUpdatePeriod(), 23);
+		assertEquals(23, properties.getResourceWatcherUpdatePeriod());
 		assertTrue(properties.isResourceWatcherAsync());
-		assertEquals(properties.getCacheUpdatePeriod(), 42);
-		assertEquals(properties.getModelUpdatePeriod(), 7);
-		assertEquals(properties.getHeader(), "If-Unmodified-Since: Sat, 29 Oct 1994 19:43:31 GMT");
+		assertEquals(42, properties.getCacheUpdatePeriod());
+		assertEquals(7, properties.getModelUpdatePeriod());
+		assertEquals("If-Unmodified-Since: Sat, 29 Oct 1994 19:43:31 GMT", properties.getHeader());
 		assertTrue(properties.isParallelPreprocessing());
-		assertEquals(properties.getConnectionTimeout(), 100L);
-		assertEquals(properties.getEncoding(), "ISO-8859-1");
+		assertEquals(100L, properties.getConnectionTimeout());
+		assertEquals("ISO-8859-1", properties.getEncoding());
 		assertFalse(properties.isIgnoreMissingResources());
 		assertFalse(properties.isIgnoreEmptyGroup());
 		assertTrue(properties.isIgnoreFailingProcessor());
 		assertFalse(properties.isCacheGzippedContent());
 		assertTrue(properties.isJmxEnabled());
-		assertEquals(properties.getMbeanName(), "wro4jmbean");
-		assertEquals(properties.getFilterUrl(), "/owr");
-		assertEquals(properties.getModel(), "/owr.xml");
-		assertEquals(properties.getManagerFactory(), managerFactory);
-		assertEquals(properties.getPreProcessors(), preProcessors);
-		assertEquals(properties.getPostProcessors(), postProcessors);
-		assertEquals(properties.getCacheName(), "super-duper-cache");
+		assertEquals("wro4jmbean", properties.getMbeanName());
+		assertEquals("/owr", properties.getFilterUrl());
+		assertEquals("/owr.xml", properties.getModel());
+		assertEquals(managerFactory, properties.getManagerFactory());
+		assertEquals(preProcessors, properties.getPreProcessors());
+		assertEquals(postProcessors, properties.getPostProcessors());
+		assertEquals("super-duper-cache", properties.getCacheName());
 	}
 
 	@Test
@@ -129,7 +129,7 @@ class Wro4jPropertiesTest {
 		assertNull(wroManagerFactoryProperties.getPostProcessors());
 		wroManagerFactoryProperties.setPreProcessors("preProcessors");
 		wroManagerFactoryProperties.setPostProcessors("postProcessors");
-		assertEquals(wroManagerFactoryProperties.getPreProcessors(), "preProcessors");
-		assertEquals(wroManagerFactoryProperties.getPostProcessors(), "postProcessors");
+		assertEquals("preProcessors", wroManagerFactoryProperties.getPreProcessors());
+		assertEquals("postProcessors", wroManagerFactoryProperties.getPostProcessors());
 	}
 }
