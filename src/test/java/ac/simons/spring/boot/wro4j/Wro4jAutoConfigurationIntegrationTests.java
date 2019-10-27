@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2018 the original author or authors.
+ * Copyright 2015-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package ac.simons.spring.boot.wro4j;
 
 import org.assertj.core.api.Condition;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -37,17 +37,19 @@ import ro.isdc.wro.model.resource.support.ResourceAuthorizationManager;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests various szenarios of Autoconfiguration.
+ * Tests various scenarios of Autoconfiguration.
  *
- * @author Michael J. Simons, 2016-02-02
+ * @author Michael J. Simons
+ *
+ * @since 2016-02-02
  */
-public class Wro4jAutoConfigurationIntegrationTests {
+class Wro4jAutoConfigurationIntegrationTests {
 
 	final ApplicationContextRunner applicationContextRunner = new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(CacheAutoConfiguration.class, Wro4jAutoConfiguration.class));
 
 	@Test
-	public void noAutoConfigurationShouldWork() {
+	void noAutoConfigurationShouldWork() {
 		applicationContextRunner.withUserConfiguration(ApplicationWithWroFilter.class)
 				.run(ctx -> assertThat(ctx)
 						.doesNotHaveBean(WroModelFactory.class)
@@ -67,7 +69,7 @@ public class Wro4jAutoConfigurationIntegrationTests {
 	}
 
 	@Test
-	public void defaultConfigurationShouldWork() {
+	void defaultConfigurationShouldWork() {
 		final Condition<ProcessorsFactory> configuredProcessorsFactory = new Condition<>(
 				p -> p.getPreProcessors().size() == 1 && p.getPreProcessors().toArray()[0] instanceof DefaultResourcePreProcessor,
 				"Has one preprocess of type DefaultResourcePreProcessor");
@@ -86,7 +88,7 @@ public class Wro4jAutoConfigurationIntegrationTests {
 	}
 
 	@Test
-	public void customCacheStrategyShouldWork() {
+	void customCacheStrategyShouldWork() {
 		applicationContextRunner
 				.withUserConfiguration(ApplicationWithCacheManager.class)
 				.withPropertyValues("wro4j.cacheName = foobar")
@@ -98,7 +100,7 @@ public class Wro4jAutoConfigurationIntegrationTests {
 	}
 
 	@Test
-	public void shouldBeResourceAuthorizationManagerAware() {
+	void shouldBeResourceAuthorizationManagerAware() {
 		applicationContextRunner.withUserConfiguration(ApplicationWithResourceAuthorizationManager.class)
 				.run(ctx -> assertThat(ctx).getBean(WroManagerFactory.class)
 						.hasFieldOrPropertyWithValue("authorizationManager", ctx.getBean(ResourceAuthorizationManager.class)));

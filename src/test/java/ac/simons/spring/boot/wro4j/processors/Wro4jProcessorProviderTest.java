@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,35 @@
 
 package ac.simons.spring.boot.wro4j.processors;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import ro.isdc.wro.model.resource.processor.ResourcePostProcessor;
 import ro.isdc.wro.model.resource.processor.ResourcePreProcessor;
 
 /**
- * @author Michael J. Simons, 2016-01-31
+ * @author Michael J. Simons
+ *
+ * @since 2016-01-31
  */
-public class Wro4jProcessorProviderTest {
+class Wro4jProcessorProviderTest {
 
 	@Test
-	public void shouldProvideExpectedProcessors() {
+	void shouldProvideExpectedProcessors() {
 		final Wro4jProcessorProvider processorProvider = new Wro4jProcessorProvider();
 
 		final Map<String, ResourcePreProcessor> preProcessors = processorProvider.providePreProcessors();
-		Assert.assertNotNull(preProcessors);
-		Assert.assertEquals(1, preProcessors.size());
-		Assert.assertTrue(preProcessors.containsKey("removeSourceMaps"));
-		Assert.assertTrue(preProcessors.get("removeSourceMaps") instanceof RemoveSourceMapsProcessor);
-		Assert.assertEquals(new HashMap<String, ResourcePostProcessor>(), processorProvider.providePostProcessors());
+		assertNotNull(preProcessors);
+		assertEquals(1, preProcessors.size());
+		assertTrue(preProcessors.containsKey("removeSourceMaps"));
+		assertTrue(preProcessors.get("removeSourceMaps") instanceof RemoveSourceMapsProcessor);
+		assertEquals(new HashMap<String, ResourcePostProcessor>(), processorProvider.providePostProcessors());
 	}
 
 }

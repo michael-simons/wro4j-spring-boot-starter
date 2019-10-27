@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,44 +20,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ac.simons.spring.boot.wro4j.Wro4jProperties.WroManagerFactoryProperties;
-import org.junit.Test;
 import ro.isdc.wro.model.resource.processor.ResourcePostProcessor;
 import ro.isdc.wro.model.resource.processor.ResourcePreProcessor;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 
 /**
- * @author Michael J. Simons, 2016-01-31
+ * @author Michael J. Simons
+ *
+ * @since 2016-01-31
  */
-public class Wro4jPropertiesTest {
+class Wro4jPropertiesTest {
 
 	@Test
-	public void defaultsShouldWork() {
+	void defaultsShouldWork() {
 		final Wro4jProperties properties = new Wro4jProperties();
 		assertTrue(properties.isDebug());
 		assertTrue(properties.isMinimizeEnabled());
 		assertTrue(properties.isGzipResources());
-		assertThat(properties.getResourceWatcherUpdatePeriod(), is(0));
+		assertEquals(properties.getResourceWatcherUpdatePeriod(), 0);
 		assertFalse(properties.isResourceWatcherAsync());
-		assertThat(properties.getCacheUpdatePeriod(), is(0));
-		assertThat(properties.getModelUpdatePeriod(), is(0));
+		assertEquals(properties.getCacheUpdatePeriod(), 0);
+		assertEquals(properties.getModelUpdatePeriod(), 0);
 		assertNull(properties.getHeader());
 		assertFalse(properties.isParallelPreprocessing());
-		assertThat(properties.getConnectionTimeout(), is(2000L));
-		assertThat(properties.getEncoding(), is("UTF-8"));
+		assertEquals(properties.getConnectionTimeout(), 2000L);
+		assertEquals(properties.getEncoding(), "UTF-8");
 		assertTrue(properties.isIgnoreMissingResources());
 		assertTrue(properties.isIgnoreEmptyGroup());
 		assertFalse(properties.isIgnoreFailingProcessor());
 		assertTrue(properties.isCacheGzippedContent());
 		assertFalse(properties.isJmxEnabled());
 		assertNull(properties.getMbeanName());
-		assertThat(properties.getFilterUrl(), is("/wro4j"));
-		assertThat(properties.getModel(), is("/wro.xml"));
+		assertEquals(properties.getFilterUrl(), "/wro4j");
+		assertEquals(properties.getModel(), "/wro.xml");
 		assertNull(properties.getManagerFactory());
 		assertNull(properties.getPreProcessors());
 		assertNull(properties.getPostProcessors());
@@ -65,7 +67,7 @@ public class Wro4jPropertiesTest {
 	}
 
 	@Test
-	public void settersShouldWork() {
+	void settersShouldWork() {
 		final Wro4jProperties properties = new Wro4jProperties();
 
 		properties.setDebug(false);
@@ -98,36 +100,36 @@ public class Wro4jPropertiesTest {
 		assertFalse(properties.isDebug());
 		assertFalse(properties.isMinimizeEnabled());
 		assertFalse(properties.isGzipResources());
-		assertThat(properties.getResourceWatcherUpdatePeriod(), is(23));
+		assertEquals(properties.getResourceWatcherUpdatePeriod(), 23);
 		assertTrue(properties.isResourceWatcherAsync());
-		assertThat(properties.getCacheUpdatePeriod(), is(42));
-		assertThat(properties.getModelUpdatePeriod(), is(7));
-		assertThat(properties.getHeader(), is("If-Unmodified-Since: Sat, 29 Oct 1994 19:43:31 GMT"));
+		assertEquals(properties.getCacheUpdatePeriod(), 42);
+		assertEquals(properties.getModelUpdatePeriod(), 7);
+		assertEquals(properties.getHeader(), "If-Unmodified-Since: Sat, 29 Oct 1994 19:43:31 GMT");
 		assertTrue(properties.isParallelPreprocessing());
-		assertThat(properties.getConnectionTimeout(), is(100L));
-		assertThat(properties.getEncoding(), is("ISO-8859-1"));
+		assertEquals(properties.getConnectionTimeout(), 100L);
+		assertEquals(properties.getEncoding(), "ISO-8859-1");
 		assertFalse(properties.isIgnoreMissingResources());
 		assertFalse(properties.isIgnoreEmptyGroup());
 		assertTrue(properties.isIgnoreFailingProcessor());
 		assertFalse(properties.isCacheGzippedContent());
 		assertTrue(properties.isJmxEnabled());
-		assertThat(properties.getMbeanName(), is("wro4jmbean"));
-		assertThat(properties.getFilterUrl(), is("/owr"));
-		assertThat(properties.getModel(), is("/owr.xml"));
-		assertThat(properties.getManagerFactory(), is(managerFactory));
-		assertThat(properties.getPreProcessors(), is(preProcessors));
-		assertThat(properties.getPostProcessors(), is(postProcessors));
-		assertThat(properties.getCacheName(), is("super-duper-cache"));
+		assertEquals(properties.getMbeanName(), "wro4jmbean");
+		assertEquals(properties.getFilterUrl(), "/owr");
+		assertEquals(properties.getModel(), "/owr.xml");
+		assertEquals(properties.getManagerFactory(), managerFactory);
+		assertEquals(properties.getPreProcessors(), preProcessors);
+		assertEquals(properties.getPostProcessors(), postProcessors);
+		assertEquals(properties.getCacheName(), "super-duper-cache");
 	}
 
 	@Test
-	public void WroManagerFactoryPropertiesBeanShouldWork() {
+	void WroManagerFactoryPropertiesBeanShouldWork() {
 		final WroManagerFactoryProperties wroManagerFactoryProperties = new WroManagerFactoryProperties();
 		assertNull(wroManagerFactoryProperties.getPreProcessors());
 		assertNull(wroManagerFactoryProperties.getPostProcessors());
 		wroManagerFactoryProperties.setPreProcessors("preProcessors");
 		wroManagerFactoryProperties.setPostProcessors("postProcessors");
-		assertThat(wroManagerFactoryProperties.getPreProcessors(), is("preProcessors"));
-		assertThat(wroManagerFactoryProperties.getPostProcessors(), is("postProcessors"));
+		assertEquals(wroManagerFactoryProperties.getPreProcessors(), "preProcessors");
+		assertEquals(wroManagerFactoryProperties.getPostProcessors(), "postProcessors");
 	}
 }

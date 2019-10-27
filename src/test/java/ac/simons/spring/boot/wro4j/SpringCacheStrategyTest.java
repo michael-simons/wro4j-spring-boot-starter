@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,27 @@
 
 package ac.simons.spring.boot.wro4j;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.times;
 
 /**
- * @author Michael J. Simons, 2016-01-31
+ * @author Michael J. Simons
+ *
+ * @since 2016-01-31
  */
-@RunWith(MockitoJUnitRunner.class)
-public class SpringCacheStrategyTest {
+@ExtendWith(MockitoExtension.class)
+class SpringCacheStrategyTest {
 
 	@Mock
 	private CacheManager cacheManager;
@@ -45,18 +46,18 @@ public class SpringCacheStrategyTest {
 
 	private static final String CACHE_NAME = "CACHE_NAME";
 
-	@Before
-	public void initCache() {
+	@BeforeEach
+	void initCache() {
 		Mockito.when(this.cacheManager.getCache(CACHE_NAME)).thenReturn(this.cache);
 	}
 
-	@After
-	public void verifiyInteractions() {
+	@AfterEach
+	void verifiyInteractions() {
 		Mockito.verifyNoMoreInteractions(this.cacheManager, this.cache);
 	}
 
 	@Test
-	public void putShouldWork() {
+	void putShouldWork() {
 		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, CACHE_NAME);
 		cacheStrategy.put("foo", "bar");
 
@@ -65,13 +66,14 @@ public class SpringCacheStrategyTest {
 	}
 
 	@Test
-	public void getShouldWork() {
+	void getShouldWork() {
+		Mockito.when(this.cache.get("foobar")).thenReturn(null);
 		Mockito.when(this.cache.get("bazbar")).thenReturn(() -> "bazbaz");
 
 		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, CACHE_NAME);
 
-		Assert.assertNull(cacheStrategy.get("foobar"));
-		Assert.assertThat(cacheStrategy.get("bazbar"), is("bazbaz"));
+		Assertions.assertNull(cacheStrategy.get("foobar"));
+		Assertions.assertEquals(cacheStrategy.get("bazbar"), "bazbaz");
 
 		Mockito.verify(this.cacheManager, times(2)).getCache(CACHE_NAME);
 		Mockito.verify(this.cache, times(1)).get("foobar");
@@ -80,7 +82,7 @@ public class SpringCacheStrategyTest {
 	}
 
 	@Test
-	public void clearAndDestroyShouldWork() {
+	void clearAndDestroyShouldWork() {
 		final SpringCacheStrategy<Object, Object> cacheStrategy = new SpringCacheStrategy<>(this.cacheManager, CACHE_NAME);
 		cacheStrategy.clear();
 		cacheStrategy.destroy();

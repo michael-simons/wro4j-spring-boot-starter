@@ -59,10 +59,12 @@ import org.springframework.core.annotation.Order;
 /**
  * Configures a Wro4j filter.
  *
- * @author Michael J. Simons, 2015-07-11
+ * @author Michael J. Simons
  * @author Christophe Levesque
+ *
+ * @since 2015-07-11
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(WroFilter.class)
 @ConditionalOnMissingBean(WroFilter.class)
 @EnableConfigurationProperties(Wro4jProperties.class)

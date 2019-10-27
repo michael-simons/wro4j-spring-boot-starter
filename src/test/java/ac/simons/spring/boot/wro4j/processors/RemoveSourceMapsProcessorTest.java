@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,18 +20,20 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
- * @author Michael J. Simons, 2016-01-18
+ * @author Michael J. Simons
+ *
+ * @since 2016-01-18
  */
-public class RemoveSourceMapsProcessorTest {
+class RemoveSourceMapsProcessorTest {
 	
 	private final String lineSeparator = System.getProperty("line.separator");
 	
 	@Test
-	public void processShouldWork() throws IOException {		
+	void processShouldWork() throws IOException {
 		final String input
 				= "normal\n"
 				+ " blanks am anfang und ende \n"
@@ -50,7 +52,7 @@ public class RemoveSourceMapsProcessorTest {
 		final StringWriter writer = new StringWriter();
 		final RemoveSourceMapsProcessor processor = new RemoveSourceMapsProcessor();
 		processor.process(null, reader, writer);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 				"normal" + lineSeparator
 				+ " blanks am anfang und ende " + lineSeparator
 				+ "Javascript Single line" + lineSeparator
