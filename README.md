@@ -31,11 +31,20 @@ Just include the starter in your pom.xml:
 <dependency>
     <groupId>eu.michael-simons</groupId>
     <artifactId>wro4j-spring-boot-starter</artifactId>
-    <version>0.5.1</version>	    
+    <version>0.7.1</version>
 </dependency>
 ```
 
-*Note*: For Spring Boot 2.1 please use 0.5.1, for Spring Boot 2.x you'll need 0.4.2 or later, for Spring Boot 1.4 you need to use 0.1.1 or later, for Spring Boot 1.3.x please use 0.0.10.
+These versions have been tested together:
+
+| Spring Boot | Wro4j Starter |
+|-------------|---------------|
+| 2.0.x       | 0.4.2         |
+| 2.1.x       | 0.5.3         |
+| 2.2.x       | 0.6.3         |
+| 2.3.x       | 0.7.1         |
+
+
 
 Add a wro.xml to your resources:
 
@@ -67,7 +76,7 @@ You can configure Pre- and PostProcessors at two different points:
 
 If you use `wro4j.managerFactory.preProcessors` and `wro4j.managerFactory.postProcessors` you must use predefined [aliases](http://wro4j.readthedocs.io/en/stable/RegisterCustomProcessors/?highlight=alias) or register your own processor provider as described in the comments of [issue #3](https://github.com/michael-simons/wro4j-spring-boot-starter/issues/3).
 
-You can however use "our" custom options `wro4j.preProcessors` and `wro4j.postProcessors` (note the difference: No manager factory in between!). Those optionse take a comma separated list of classes that must implement `ResourcePreProcessor` and `ResourcePostProcessor` respectively. 
+You can however use "our" custom options `wro4j.preProcessors` and `wro4j.postProcessors` (note the difference: No manager factory in between!). Those optionse take a comma separated list of classes that must implement `ResourcePreProcessor` and `ResourcePostProcessor` respectively.
 
 If you do this, the `wro4j-spring-boot-starter` first checks, if a bean of the given type exists in the application context. This way, you can manage your proccessors as normal Spring beans. The only thing you have to take care of is to make sure that those are present in the context before `Wro4jAutoConfiguration` runs. See the example [Wro4jAutoConfigurationIntegrationTests](https://github.com/michael-simons/wro4j-spring-boot-starter/blob/master/src/test/java/ac/simons/spring/boot/wro4j/Wro4jAutoConfigurationIntegrationTests.java#L95).
 
@@ -92,7 +101,7 @@ If you do this, the `wro4j-spring-boot-starter` first checks, if a bean of the g
                         <td>wro4j.filterUrl</td>
                         <td>/wro4j</td>
                         <td>Url to which the filter is mapped. Will be expanded to <em>value/*</em></td>
-                </tr>                                
+                </tr>
                 <tr>
                         <td>wro4j.cacheName</td>
                         <td></td>
@@ -125,5 +134,5 @@ There's a another Wro4j [starter](https://github.com/sbuettner/spring-boot-autoc
 * [biking2](http://biking.michael-simons.eu), Source code here [github.com/michael-simons/biking2](https://github.com/michael-simons/biking2). A full blown AngularJS application.
 * [Minimal working example](https://github.com/michael-simons/wro4j-spring-boot-starter/files/901848/wro4jdemo.zip), created as a request in [#6](https://github.com/michael-simons/wro4j-spring-boot-starter/issues/6). Just download, unzip and run with `mvn spring-boot:run` to see it working.
 * [An example using the wroj4-extensions, especially the SASS/SCSS processor](https://github.com/michael-simons/wro4j-spring-boot-starter/files/947239/wro4jscssdemo.zip), again, just download, unzip and run with `mvn spring-boot:run` to see it working. See explanation in [#7](https://github.com/michael-simons/wro4j-spring-boot-starter/issues/7).
- 
+
 [ENERKO Informatik GmbH](http://www.enerko-informatik.de) is using Wro4j and this starter in several products as well.
