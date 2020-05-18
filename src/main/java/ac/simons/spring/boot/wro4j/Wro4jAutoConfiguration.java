@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2019 the original author or authors.
+ * Copyright 2015-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import ro.isdc.wro.cache.CacheStrategy;
 import ro.isdc.wro.cache.impl.LruMemoryCacheStrategy;
 import ro.isdc.wro.config.jmx.ConfigConstants;
@@ -97,8 +96,8 @@ public class Wro4jAutoConfiguration {
 	/**
 	 * Instantiates a {@link ProcessorsFactory} if there is no such factory
 	 * available. If the user decided to provide Pre- or PostProcessors through
-	 * {@link Wro4jProperties#preProcessors} or
-	 * {@link Wro4jProperties#postProcessors} those are used. If either type of
+	 * {@link Wro4jProperties#getPreProcessors()} or
+	 * {@link Wro4jProperties#getPostProcessors()} those are used. If either type of
 	 * processor is configured, a {@link DefaultProcessorsFactory} will be
 	 * returned, using the default set of processors Wro4j provides.
 	 *
@@ -161,7 +160,8 @@ public class Wro4jAutoConfiguration {
 		T rv;
 		try {
 			rv = this.applicationContext.getBean(c);
-		} catch (NoSuchBeanDefinitionException e) {
+		}
+		catch (NoSuchBeanDefinitionException e) {
 			LOGGER.warn("Could not get processor from context, instantiating new instance instead", e);
 			rv = (T) new BeanWrapperImpl(c).getWrappedInstance();
 		}
@@ -286,7 +286,7 @@ public class Wro4jAutoConfiguration {
 	}
 
 	/**
-	 * Registeres the {@code wroFilter} through a Spring
+	 * Registers the {@code wroFilter} through a Spring
 	 * {@link FilterRegistrationBean}.
 	 *
 	 * @param wroFilter The configured {@code wroFilter}

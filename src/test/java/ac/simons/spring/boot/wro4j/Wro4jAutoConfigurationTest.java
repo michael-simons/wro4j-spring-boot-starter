@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2019 the original author or authors.
+ * Copyright 2015-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,9 @@ import java.util.Optional;
 import java.util.Properties;
 
 import ac.simons.spring.boot.wro4j.Wro4jProperties.WroManagerFactoryProperties;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import ro.isdc.wro.config.jmx.ConfigConstants;
 import ro.isdc.wro.http.ConfigurableWroFilter;
 import ro.isdc.wro.manager.factory.WroManagerFactory;
@@ -40,8 +36,12 @@ import ro.isdc.wro.model.resource.processor.factory.SimpleProcessorsFactory;
 import ro.isdc.wro.model.resource.processor.impl.js.JSMinProcessor;
 import ro.isdc.wro.model.resource.processor.impl.js.SemicolonAppenderPreProcessor;
 
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Michael J. Simons

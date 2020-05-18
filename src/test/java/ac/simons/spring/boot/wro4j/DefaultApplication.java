@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,10 @@ package ac.simons.spring.boot.wro4j;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @author Michael J. Simons, 2016-12-15
+ * @author Michael J. Simons
+ *
+ * @since 2016-12-15
  */
 @SpringBootApplication
 public class DefaultApplication {
-	
 }

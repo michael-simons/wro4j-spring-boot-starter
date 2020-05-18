@@ -62,6 +62,9 @@
 
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
+
+    <checkstyle.version>8.32</checkstyle.version>
+    <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
   </properties>
 
   <dependencies>
@@ -120,6 +123,35 @@
               <goal>enforce</goal>
             </goals>
             <phase>validate</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven-checkstyle-plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>${checkstyle.version}</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <configLocation>etc/checkstyle/config.xml</configLocation>
+          <suppressionsLocation>etc/checkstyle/suppressions.xml</suppressionsLocation>
+          <headerLocation>etc/checkstyle/java-header.txt</headerLocation>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <consoleOutput>true</consoleOutput>
+          <failsOnError>true</failsOnError>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>validate</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>

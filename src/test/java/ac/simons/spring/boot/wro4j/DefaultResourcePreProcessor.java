@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,15 +19,19 @@ package ac.simons.spring.boot.wro4j;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import org.springframework.stereotype.Component;
+
 import ro.isdc.wro.model.resource.Resource;
 import ro.isdc.wro.model.resource.processor.ResourcePreProcessor;
+
+import org.springframework.stereotype.Component;
 
 /**
  * This processor does nothing. It exists to show that one can use beans as
  * processors.
  *
- * @author Michael J. Simons, 2016-12-15
+ * @author Michael J. Simons
+ *
+ * @since 2016-12-15
  */
 @Component
 public class DefaultResourcePreProcessor implements ResourcePreProcessor {

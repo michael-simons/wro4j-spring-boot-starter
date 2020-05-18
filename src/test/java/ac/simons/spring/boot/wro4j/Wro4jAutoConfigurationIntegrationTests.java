@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2019 the original author or authors.
+ * Copyright 2015-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,6 @@ package ac.simons.spring.boot.wro4j;
 
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
-import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.Bean;
 import ro.isdc.wro.cache.CacheStrategy;
 import ro.isdc.wro.cache.impl.LruMemoryCacheStrategy;
 import ro.isdc.wro.http.ConfigurableWroFilter;
@@ -33,6 +27,13 @@ import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.model.factory.WroModelFactory;
 import ro.isdc.wro.model.resource.processor.factory.ProcessorsFactory;
 import ro.isdc.wro.model.resource.support.ResourceAuthorizationManager;
+
+import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -59,13 +60,6 @@ class Wro4jAutoConfigurationIntegrationTests {
 						.doesNotHaveBean(FilterRegistrationBean.class)
 						.hasSingleBean(ConfigurableWroFilter.class)
 				);
-	}
-
-	static class ApplicationWithWroFilter {
-		@Bean
-		public WroFilter wroFilter() {
-			return new ConfigurableWroFilter();
-		}
 	}
 
 	@Test
@@ -95,15 +89,22 @@ class Wro4jAutoConfigurationIntegrationTests {
 				.run(ctx -> assertThat(ctx).getBean(CacheStrategy.class).isExactlyInstanceOf(SpringCacheStrategy.class));
 	}
 
-	@EnableCaching
-	static class ApplicationWithCacheManager {
-	}
-
 	@Test
 	void shouldBeResourceAuthorizationManagerAware() {
 		applicationContextRunner.withUserConfiguration(ApplicationWithResourceAuthorizationManager.class)
 				.run(ctx -> assertThat(ctx).getBean(WroManagerFactory.class)
 						.hasFieldOrPropertyWithValue("authorizationManager", ctx.getBean(ResourceAuthorizationManager.class)));
+	}
+
+	static class ApplicationWithWroFilter {
+		@Bean
+		public WroFilter wroFilter() {
+			return new ConfigurableWroFilter();
+		}
+	}
+
+	@EnableCaching
+	static class ApplicationWithCacheManager {
 	}
 
 	static class ApplicationWithResourceAuthorizationManager {
