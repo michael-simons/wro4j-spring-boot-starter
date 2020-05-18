@@ -50,6 +50,8 @@
   </distributionManagement>
 
   <properties>
+    <java-module-name>ac.simons.spring.boot.wro4j.autoconfigure</java-module-name>
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
@@ -178,6 +180,22 @@
             <include>**/*Tests.java</include>
           </includes>
           <argLine>${jacocoArgLine} -Xmx1024m</argLine>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <addBuildEnvironmentEntries>true</addBuildEnvironmentEntries>
+            </manifest>
+            <manifestEntries>
+              <Automatic-Module-Name>${java-module-name}</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
         </configuration>
       </plugin>
       <plugin>
