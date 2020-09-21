@@ -15,11 +15,11 @@ This starter does the following auto configuration for you:
 
 Furthermore it provides a Spring Based caching strategy if a [CacheManager](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/cache/CacheManager.html) is present (which is the case if you're Spring Boot Application is configured with [@EnableCaching](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/cache/annotation/EnableCaching.html)) and a cache name is configured.
 
-The wro4j-spring-boot-starter expecteds the Wro4j model configuration in xml format. If you want the Groovy version you have to role your own _WroModelFactory_, which is recognised by the auto configuration.
+The wro4j-spring-boot-starter expecteds the Wro4j model configuration in xml format. If you want the Groovy version you have to role your own _WroModelFactory_, which is recognized by the auto configuration.
 
 This starter doesn't bring in the _wro4j-extension_ artifact which are a lot of third party libraries. If you need them, you have to include this in your Maven or Gradle build file.
 
-With the starter comes an additional resource processor _removeSourceMaps_ which removes stale source maps from minified and concatened files.
+With the starter comes an additional resource processor _removeSourceMaps_ which removes stale source maps from minified and concatenated files.
 
 This starter is in production at [euregjug.eu](http://www.euregjug.eu) and in various [ENERKO Informatik](http://www.enerko-informatik.de) products.
 
@@ -54,7 +54,7 @@ Add a wro.xml to your resources:
 </groups>
 ```
 
-including your CSS and JS files and you're pretty much good to go. Be aware that this file belongs to your resources (i.e. /src/main/resources) and not under your WEB-INF directory as without the starter. I prefer having those configuration in one place. Read more about the wro.xml format at the official [Wro4j documentation](http://wro4j.readthedocs.org/en/stable/GettingStarted/#step-3-create-wroxml-under-web-inf-directory-and-organize-your-resources-in-groups).
+including your CSS and JS files and you're pretty much good to go. Be aware that this file belongs to your resources (i.e. /src/main/resources) and not under your WEB-INF directory as without the starter. I prefer having those configurations in one place. Read more about the wro.xml format at the official [Wro4j documentation](http://wro4j.readthedocs.org/en/stable/GettingStarted/#step-3-create-wroxml-under-web-inf-directory-and-organize-your-resources-in-groups).
 
 To actually minify your resources, you have to configure some processors. The starter is used at [euregjug.eu](http://www.euregjug.eu) for example with the following configuration:
 
@@ -76,9 +76,9 @@ You can configure Pre- and PostProcessors at two different points:
 
 If you use `wro4j.managerFactory.preProcessors` and `wro4j.managerFactory.postProcessors` you must use predefined [aliases](http://wro4j.readthedocs.io/en/stable/RegisterCustomProcessors/?highlight=alias) or register your own processor provider as described in the comments of [issue #3](https://github.com/michael-simons/wro4j-spring-boot-starter/issues/3).
 
-You can however use "our" custom options `wro4j.preProcessors` and `wro4j.postProcessors` (note the difference: No manager factory in between!). Those optionse take a comma separated list of classes that must implement `ResourcePreProcessor` and `ResourcePostProcessor` respectively.
+You can however use "our" custom options `wro4j.preProcessors` and `wro4j.postProcessors` (note the difference: No manager factory in between!). Those options take a comma separated list of classes that must implement `ResourcePreProcessor` and `ResourcePostProcessor` respectively.
 
-If you do this, the `wro4j-spring-boot-starter` first checks, if a bean of the given type exists in the application context. This way, you can manage your proccessors as normal Spring beans. The only thing you have to take care of is to make sure that those are present in the context before `Wro4jAutoConfiguration` runs. See the example [Wro4jAutoConfigurationIntegrationTests](https://github.com/michael-simons/wro4j-spring-boot-starter/blob/master/src/test/java/ac/simons/spring/boot/wro4j/Wro4jAutoConfigurationIntegrationTests.java#L95).
+If you do this, the `wro4j-spring-boot-starter` first checks, if a bean of the given type exists in the application context. This way, you can manage your processors as normal Spring beans. The only thing you have to take care of is to make sure that those are present in the context before `Wro4jAutoConfiguration` runs. See the example [Wro4jAutoConfigurationIntegrationTests](https://github.com/michael-simons/wro4j-spring-boot-starter/blob/master/src/test/java/ac/simons/spring/boot/wro4j/Wro4jAutoConfigurationIntegrationTests.java#L95).
 
 ### Options not present in the original Wro4j version
 
@@ -126,12 +126,12 @@ I've been using Wro4j as a runtime solution since 2012 on [dailyfratze.de](https
 
 As always, the Spring documentation is a valuable resource. Here's how to start your own auto-configuration or starter: [Creating your own auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html). Thanks to all the people involved.
 
-There's a another Wro4j [starter](https://github.com/sbuettner/spring-boot-autoconfigure-wro4j) by Simon Buettner from which i had the basic idea, but i didn't like the fact that it centers around the Groovy model and especially the whole wro4-extensions.
+There's an another Wro4j [starter](https://github.com/sbuettner/spring-boot-autoconfigure-wro4j) by Simon Buettner from which I had the basic idea, but I didn't like the fact that it centers around the Groovy model and especially the whole wro4-extensions.
 
 ## Examples
 
 * [euregjug.eu](http://www.euregjug.eu), Source code here [github.com/EuregJUG-Maas-Rhine/site](https://github.com/EuregJUG-Maas-Rhine/site). Pretty standard site that uses a theme from [html5up](http://html5up.net), some JQuery.
-* [biking2](http://biking.michael-simons.eu), Source code here [github.com/michael-simons/biking2](https://github.com/michael-simons/biking2). A full blown AngularJS application.
+* [biking2](http://biking.michael-simons.eu), Source code here [github.com/michael-simons/biking2](https://github.com/michael-simons/biking2). A full-blown AngularJS application.
 * [Minimal working example](https://github.com/michael-simons/wro4j-spring-boot-starter/files/901848/wro4jdemo.zip), created as a request in [#6](https://github.com/michael-simons/wro4j-spring-boot-starter/issues/6). Just download, unzip and run with `mvn spring-boot:run` to see it working.
 * [An example using the wroj4-extensions, especially the SASS/SCSS processor](https://github.com/michael-simons/wro4j-spring-boot-starter/files/947239/wro4jscssdemo.zip), again, just download, unzip and run with `mvn spring-boot:run` to see it working. See explanation in [#7](https://github.com/michael-simons/wro4j-spring-boot-starter/issues/7).
 
