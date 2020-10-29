@@ -31,7 +31,7 @@ Just include the starter in your pom.xml:
 <dependency>
     <groupId>eu.michael-simons</groupId>
     <artifactId>wro4j-spring-boot-starter</artifactId>
-    <version>0.7.1</version>
+    <version>0.7.2</version>
 </dependency>
 ```
 
@@ -42,7 +42,7 @@ These versions have been tested together:
 | 2.0.x       | 0.4.2         |
 | 2.1.x       | 0.5.3         |
 | 2.2.x       | 0.6.3         |
-| 2.3.x       | 0.7.1         |
+| 2.3.x       | 0.7.2         |
 
 
 
@@ -126,7 +126,7 @@ I've been using Wro4j as a runtime solution since 2012 on [dailyfratze.de](https
 
 As always, the Spring documentation is a valuable resource. Here's how to start your own auto-configuration or starter: [Creating your own auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html). Thanks to all the people involved.
 
-There's an another Wro4j [starter](https://github.com/sbuettner/spring-boot-autoconfigure-wro4j) by Simon Buettner from which I had the basic idea, but I didn't like the fact that it centers around the Groovy model and especially the whole wro4-extensions.
+There's another Wro4j [starter](https://github.com/sbuettner/spring-boot-autoconfigure-wro4j) by Simon Buettner from which I had the basic idea, but I didn't like the fact that it centers around the Groovy model and especially the whole wro4-extensions.
 
 ## Examples
 
