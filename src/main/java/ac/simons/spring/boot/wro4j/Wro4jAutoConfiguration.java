@@ -21,8 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.LogFactory;
 import ro.isdc.wro.cache.CacheStrategy;
 import ro.isdc.wro.cache.impl.LruMemoryCacheStrategy;
 import ro.isdc.wro.config.jmx.ConfigConstants;
@@ -54,6 +53,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.log.LogAccessor;
 
 /**
  * Configures a Wro4j filter.
@@ -70,7 +70,7 @@ import org.springframework.core.annotation.Order;
 @AutoConfigureAfter(CacheAutoConfiguration.class)
 public class Wro4jAutoConfiguration {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Wro4jAutoConfiguration.class.getName());
+	private static final LogAccessor LOGGER = new LogAccessor(LogFactory.getLog(Wro4jAutoConfiguration.class.getName()));
 
 	/**
 	 * We use this to access possible processor beans inside the appplication context.
@@ -142,7 +142,7 @@ public class Wro4jAutoConfiguration {
 			((SimpleProcessorsFactory) rv).setResourcePreProcessors(preProcessors);
 			((SimpleProcessorsFactory) rv).setResourcePostProcessors(postProcessors);
 		}
-		LOGGER.debug("Using ProcessorsFactory of type '{}'", rv.getClass().getName());
+		LOGGER.debug(() -> String.format("Using ProcessorsFactory of type '%s'", rv.getClass().getName()));
 
 		return rv;
 	}
@@ -162,7 +162,7 @@ public class Wro4jAutoConfiguration {
 			rv = this.applicationContext.getBean(c);
 		}
 		catch (NoSuchBeanDefinitionException e) {
-			LOGGER.warn("Could not get processor from context, instantiating new instance instead", e);
+			LOGGER.warn(e, "Could not get processor from context, instantiating new instance instead");
 			rv = (T) new BeanWrapperImpl(c).getWrappedInstance();
 		}
 		return rv;
