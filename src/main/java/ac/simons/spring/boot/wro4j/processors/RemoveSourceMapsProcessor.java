@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,21 +31,24 @@ import ro.isdc.wro.model.resource.processor.ResourcePreProcessor;
  * <a href="https://blog.mayflower.de/4491-Source-Maps-in-JavaScript.html">Komprimiertes
  * JavaScript unter Kontrolle: Source Maps</a>.
  *
- * @author Michael J. Simons, 2016-01-18
+ * @author Michael J. Simons
+ * @since 2016-01-18
  */
-
 public class RemoveSourceMapsProcessor implements ResourcePreProcessor {
 
 	/**
 	 * Pattern to match sourceMappingUrls.
 	 */
-	public static final Pattern SOURCE_MAP_PATTERN = Pattern.compile("^/(?:\\*|/)?(?:#|@) sourceMappingURL=.+(?:\\s+\\*/)?$");
+	public static final Pattern SOURCE_MAP_PATTERN = Pattern
+		.compile("^/(?:\\*|/)?(?:#|@) sourceMappingURL=.+(?:\\s+\\*/)?$");
 
 	@Override
 	public void process(Resource resource, Reader reader, Writer writer) throws IOException {
-		BufferedReader bufferedReader = new BufferedReader(reader);
-		BufferedWriter bufferedWriter = new BufferedWriter(writer);
-		try {
+
+		try (
+			BufferedReader bufferedReader = new BufferedReader(reader);
+			BufferedWriter bufferedWriter = new BufferedWriter(writer)
+		) {
 
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
@@ -54,11 +57,7 @@ public class RemoveSourceMapsProcessor implements ResourcePreProcessor {
 					bufferedWriter.newLine();
 				}
 			}
-		}
-		finally {
-			bufferedReader.close();
 			bufferedWriter.flush();
-			bufferedWriter.close();
 		}
 	}
 }

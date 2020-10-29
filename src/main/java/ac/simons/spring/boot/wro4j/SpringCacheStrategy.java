@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2018 the original author or authors.
+ * Copyright 2015-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package ac.simons.spring.boot.wro4j;
 
-import java.util.Optional;
-
 import ro.isdc.wro.cache.CacheStrategy;
 
 import org.springframework.cache.Cache.ValueWrapper;
@@ -29,7 +27,8 @@ import org.springframework.cache.CacheManager;
  *
  * @param <K> Type of the keys
  * @param <V> Type of the values
- * @author Michael J. Simons, 2016-01-18
+ * @author Michael J. Simons
+ * @since 2016-01-18
  */
 class SpringCacheStrategy<K, V> implements CacheStrategy<K, V> {
 
@@ -49,10 +48,8 @@ class SpringCacheStrategy<K, V> implements CacheStrategy<K, V> {
 
 	@Override
 	public V get(final K key) {
-		return (V) Optional.of(this.cacheManager.getCache(this.cacheName))
-				.map(c -> c.get(key))
-				.map(ValueWrapper::get)
-				.orElse(null);
+		ValueWrapper w = this.cacheManager.getCache(this.cacheName).get(key);
+		return w == null ? null : (V) w.get();
 	}
 
 	@Override
