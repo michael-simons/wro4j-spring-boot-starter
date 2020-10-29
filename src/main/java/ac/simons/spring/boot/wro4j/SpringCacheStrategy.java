@@ -16,8 +16,11 @@
 
 package ac.simons.spring.boot.wro4j;
 
+import java.util.function.Function;
+
 import ro.isdc.wro.cache.CacheStrategy;
 
+import org.springframework.cache.Cache;
 import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
 
@@ -43,18 +46,35 @@ class SpringCacheStrategy<K, V> implements CacheStrategy<K, V> {
 
 	@Override
 	public void put(final K key, final V value) {
-		this.cacheManager.getCache(this.cacheName).put(key, value);
+
+		doWithCache(cache -> {
+			cache.put(key, value);
+			return null;
+		});
 	}
 
 	@Override
 	public V get(final K key) {
-		ValueWrapper w = this.cacheManager.getCache(this.cacheName).get(key);
-		return w == null ? null : (V) w.get();
+		return (V) doWithCache(cache -> {
+			ValueWrapper w = cache.get(key);
+			return w == null ? null : w.get();
+		});
 	}
 
 	@Override
 	public void clear() {
-		this.cacheManager.getCache(this.cacheName).clear();
+		doWithCache(cache -> {
+			cache.clear();
+			return null;
+		});
+	}
+
+	private Object doWithCache(Function<Cache, Object> consumer) {
+		Cache cache = this.cacheManager.getCache(cacheName);
+		if (cache == null) {
+			return null;
+		}
+		return consumer.apply(cache);
 	}
 
 	@Override
