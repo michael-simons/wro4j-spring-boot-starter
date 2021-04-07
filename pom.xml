@@ -68,7 +68,7 @@
 		<nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
-		<sortpom-maven-plugin.version>2.12.0</sortpom-maven-plugin.version>
+		<sortpom-maven-plugin.version>2.15.0</sortpom-maven-plugin.version>
 		<wro4j.version>1.8.0</wro4j.version>
 	</properties>
 
