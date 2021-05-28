@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.0</version>
-		<relativePath />
+		<relativePath></relativePath>
 	</parent>
 
 	<groupId>eu.michael-simons</groupId>
@@ -109,14 +109,6 @@
 				<groupId>com.github.ekryd.sortpom</groupId>
 				<artifactId>sortpom-maven-plugin</artifactId>
 				<version>${sortpom-maven-plugin.version}</version>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>sort</goal>
-						</goals>
-					</execution>
-				</executions>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<keepBlankLines>true</keepBlankLines>
@@ -125,6 +117,14 @@
 					<sortDependencies>groupId,artifactId</sortDependencies>
 					<createBackupFile>false</createBackupFile>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>sort</goal>
+						</goals>
+						<phase>verify</phase>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -132,13 +132,13 @@
 				<executions>
 					<execution>
 						<id>enforce</id>
-						<phase>validate</phase>
 						<goals>
 							<goal>enforce</goal>
 						</goals>
+						<phase>validate</phase>
 						<configuration>
 							<rules>
-								<DependencyConvergence />
+								<DependencyConvergence></DependencyConvergence>
 								<requireMavenVersion>
 									<version>${maven.version}</version>
 								</requireMavenVersion>
@@ -150,22 +150,6 @@
 			<plugin>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>${maven-checkstyle-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>validate</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>com.puppycrawl.tools</groupId>
-						<artifactId>checkstyle</artifactId>
-						<version>${checkstyle.version}</version>
-					</dependency>
-				</dependencies>
 				<configuration>
 					<configLocation>etc/checkstyle/config.xml</configLocation>
 					<suppressionsLocation>etc/checkstyle/suppressions.xml</suppressionsLocation>
@@ -175,6 +159,22 @@
 					<failsOnError>true</failsOnError>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>${checkstyle.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>validate</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<phase>validate</phase>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>
@@ -185,6 +185,9 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>${jacoco-maven-plugin.version}</version>
+				<configuration>
+					<propertyName>jacocoArgLine</propertyName>
+				</configuration>
 				<executions>
 					<execution>
 						<id>pre-unit-test</id>
@@ -194,11 +197,11 @@
 					</execution>
 					<execution>
 						<id>post-unit-test</id>
-						<phase>test</phase>
 						<goals>
 							<goal>report</goal>
 							<goal>check</goal>
 						</goals>
+						<phase>test</phase>
 						<configuration>
 							<rules>
 								<rule>
@@ -220,9 +223,6 @@
 						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<propertyName>jacocoArgLine</propertyName>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -305,10 +305,10 @@
 				<executions>
 					<execution>
 						<id>duplicate-dependencies</id>
-						<phase>validate</phase>
 						<goals>
 							<goal>check</goal>
 						</goals>
+						<phase>validate</phase>
 						<configuration>
 							<exceptions>
 								<exception>
@@ -342,10 +342,10 @@
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
-								<phase>verify</phase>
 								<goals>
 									<goal>sign</goal>
 								</goals>
+								<phase>verify</phase>
 							</execution>
 						</executions>
 					</plugin>
