@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 class ConfigurableXmlModelFactoryTest {
 
 	@Test
-	public void getModelResourceAsStreamShouldWork() throws IOException {
+	void getModelResourceAsStreamShouldWork() throws IOException {
 		final InputStream in = new ConfigurableXmlModelFactory("/test.xml").getModelResourceAsStream();
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		Assertions.assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root />", reader.readLine());
