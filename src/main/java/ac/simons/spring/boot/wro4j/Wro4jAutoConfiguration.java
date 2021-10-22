@@ -22,7 +22,6 @@ import java.util.Optional;
 import java.util.Properties;
 
 import org.apache.commons.logging.LogFactory;
-
 import ro.isdc.wro.cache.CacheKey;
 import ro.isdc.wro.cache.CacheStrategy;
 import ro.isdc.wro.cache.CacheValue;
