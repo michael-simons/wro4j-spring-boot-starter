@@ -107,6 +107,7 @@ class Wro4jAutoConfigurationTest {
 	}
 
 	@Test
+	@SuppressWarnings({"squid:S5961"})
 	void wroFilterPropertiesShouldWork() {
 		final Wro4jProperties wro4jProperties = new Wro4jProperties();
 
