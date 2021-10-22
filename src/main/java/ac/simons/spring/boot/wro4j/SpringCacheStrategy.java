@@ -55,10 +55,12 @@ class SpringCacheStrategy<K, V> implements CacheStrategy<K, V> {
 
 	@Override
 	public V get(final K key) {
-		return (V) doWithCache(cache -> {
+		@SuppressWarnings("unchecked")
+		V result = (V) doWithCache(cache -> {
 			ValueWrapper w = cache.get(key);
 			return w == null ? null : w.get();
 		});
+		return result;
 	}
 
 	@Override

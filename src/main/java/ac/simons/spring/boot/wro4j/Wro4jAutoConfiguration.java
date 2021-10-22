@@ -22,7 +22,10 @@ import java.util.Optional;
 import java.util.Properties;
 
 import org.apache.commons.logging.LogFactory;
+
+import ro.isdc.wro.cache.CacheKey;
 import ro.isdc.wro.cache.CacheStrategy;
+import ro.isdc.wro.cache.CacheValue;
 import ro.isdc.wro.cache.impl.LruMemoryCacheStrategy;
 import ro.isdc.wro.config.jmx.ConfigConstants;
 import ro.isdc.wro.http.ConfigurableWroFilter;
@@ -157,15 +160,15 @@ public class Wro4jAutoConfiguration {
 	 * @return A processor instance
 	 */
 	<T> T getBeanOrInstantiateProcessor(final Class<? extends T> c) {
-		T rv;
 		try {
-			rv = this.applicationContext.getBean(c);
+			return this.applicationContext.getBean(c);
 		}
 		catch (NoSuchBeanDefinitionException e) {
 			LOGGER.warn(e, "Could not get processor from context, instantiating new instance instead");
-			rv = (T) new BeanWrapperImpl(c).getWrappedInstance();
+			@SuppressWarnings("unchecked")
+			T rv = (T) new BeanWrapperImpl(c).getWrappedInstance();
+			return rv;
 		}
-		return rv;
 	}
 
 	/**
@@ -220,7 +223,7 @@ public class Wro4jAutoConfiguration {
 	WroManagerFactory wroManagerFactory(
 			final WroModelFactory wroModelFactory,
 			final ProcessorsFactory processorsFactory,
-			final CacheStrategy cacheStrategy) {
+			final CacheStrategy<CacheKey, CacheValue> cacheStrategy) {
 		return new BaseWroManagerFactory()
 				.setModelFactory(wroModelFactory)
 				.setProcessorsFactory(processorsFactory)
@@ -296,8 +299,8 @@ public class Wro4jAutoConfiguration {
 	 * @return The Spring {@code FilterRegistrationBean}
 	 */
 	@Bean
-	FilterRegistrationBean wro4jFilterRegistration(ConfigurableWroFilter wroFilter, Wro4jProperties wro4jProperties) {
-		final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(wroFilter);
+	FilterRegistrationBean<ConfigurableWroFilter> wro4jFilterRegistration(ConfigurableWroFilter wroFilter, Wro4jProperties wro4jProperties) {
+		final FilterRegistrationBean<ConfigurableWroFilter> filterRegistrationBean = new FilterRegistrationBean<>(wroFilter);
 		filterRegistrationBean.addUrlPatterns(wro4jProperties.getFilterUrl() + "/*");
 		return filterRegistrationBean;
 	}
