@@ -45,6 +45,7 @@ These versions have been tested together:
 | 2.3.x       | 0.7.2         |
 | 2.4.x       | 0.8.x         |
 | 2.5.x       | 0.9.x         |
+| 2.6.x       | 0.10.x        |
 
 Add a wro.xml to your resources:
 
