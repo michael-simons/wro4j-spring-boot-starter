@@ -65,7 +65,7 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<maven.version>3.6.3</maven.version>
-		<nexus-staging-maven-plugin.version>1.6.11</nexus-staging-maven-plugin.version>
+		<nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
 		<sortpom-maven-plugin.version>3.0.1</sortpom-maven-plugin.version>
