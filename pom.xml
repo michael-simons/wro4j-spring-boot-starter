@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.6.3</version>
-		<relativePath />
+		<relativePath></relativePath>
 	</parent>
 
 	<groupId>eu.michael-simons</groupId>
@@ -57,14 +57,16 @@
 		<checkstyle.version>9.3</checkstyle.version>
 		<jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
 		<java-module-name>ac.simons.spring.boot.wro4j.autoconfigure</java-module-name>
-		<java.version>1.8</java.version>
+		<java.version>8</java.version>
 		<maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
+		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
 		<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<maven.version>3.6.3</maven.version>
+		<maven.compiler.debug>true</maven.compiler.debug>
+		<maven.compiler.parameters>true</maven.compiler.parameters>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
+		<maven.version>3.8.5</maven.version>
 		<nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
@@ -138,7 +140,10 @@
 						<phase>validate</phase>
 						<configuration>
 							<rules>
-								<DependencyConvergence />
+								<requireJavaVersion>
+									<version>11</version>
+								</requireJavaVersion>
+								<DependencyConvergence></DependencyConvergence>
 								<requireMavenVersion>
 									<version>${maven.version}</version>
 								</requireMavenVersion>
@@ -175,6 +180,20 @@
 						<phase>validate</phase>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<forceJavacCompilerUse>true</forceJavacCompilerUse>
+					<compilerArgs>
+						<arg>-Xlint:all,-options,-path,-processing,-classfile</arg>
+						<!-- -classfile due to some weird stuff happening in testCompile. -->
+						<arg>-Werror</arg>
+						<arg>-parameters</arg>
+					</compilerArgs>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>

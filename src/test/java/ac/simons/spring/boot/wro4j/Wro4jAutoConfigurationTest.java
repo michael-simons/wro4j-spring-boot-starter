@@ -54,7 +54,8 @@ class Wro4jAutoConfigurationTest {
 
 	Wro4jAutoConfigurationTest() {
 		this.applicationContext = mock(ApplicationContext.class);
-		when(this.applicationContext.getBean(Mockito.any(Class.class))).thenThrow(new NoSuchBeanDefinitionException("foo"));
+		Class<?> any = Mockito.any(Class.class);
+		when(this.applicationContext.getBean(any)).thenThrow(new NoSuchBeanDefinitionException("foo"));
 	}
 
 	@Test
@@ -165,7 +166,7 @@ class Wro4jAutoConfigurationTest {
 	void wro4jFilterRegistrationShouldWork() {
 		final ConfigurableWroFilter wroFilter = Mockito.mock(ConfigurableWroFilter.class);
 
-		final FilterRegistrationBean filterRegistrationBean = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wro4jFilterRegistration(wroFilter, new Wro4jProperties());
+		final FilterRegistrationBean<?> filterRegistrationBean = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wro4jFilterRegistration(wroFilter, new Wro4jProperties());
 		final Collection<String> urlPatterns = filterRegistrationBean.getUrlPatterns();
 		Assertions.assertEquals(1, urlPatterns.size());
 		Assertions.assertEquals("/wro4j/*", urlPatterns.iterator().next());
