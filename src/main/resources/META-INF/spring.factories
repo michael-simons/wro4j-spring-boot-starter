@@ -1,1 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration = ac.simons.spring.boot.wro4j.Wro4jAutoConfiguration
