@@ -6,12 +6,12 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.7.8</version>
-		<relativePath></relativePath>
+		<relativePath />
 	</parent>
 
 	<groupId>eu.michael-simons</groupId>
 	<artifactId>wro4j-spring-boot-starter</artifactId>
-	<version>0.11.3</version>
+	<version>0.11.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Wro4j Spring Boot Starter</name>
 	<description>A starter for Spring Boot that provides autoconfiguration for Wro4j.</description>
@@ -41,7 +41,7 @@
 	<scm>
 		<connection>scm:git:git@github.com:michael-simons/wro4j-spring-boot-starter.git</connection>
 		<developerConnection>scm:git:git@github.com:michael-simons/wro4j-spring-boot-starter.git</developerConnection>
-		<tag>0.11.3</tag>
+		<tag>HEAD</tag>
 		<url>https://github.com/michael-simons/wro4j-spring-boot-starter</url>
 	</scm>
 
@@ -143,7 +143,7 @@
 								<requireJavaVersion>
 									<version>11</version>
 								</requireJavaVersion>
-								<DependencyConvergence></DependencyConvergence>
+								<DependencyConvergence />
 								<requireMavenVersion>
 									<version>${maven.version}</version>
 								</requireMavenVersion>
