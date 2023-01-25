@@ -6,6 +6,8 @@ A Spring Boot starter and auto-configuration for wro4j:
 
 [![Build Status](https://github.com/michael-simons/wro4j-spring-boot-starter/workflows/build/badge.svg)](https://github.com/michael-simons/wro4j-spring-boot-starter/actions) [![Test coverage](https://sonarcloud.io/api/project_badges/measure?project=eu.michael-simons%3Awro4j-spring-boot-starter&metric=coverage)](https://sonarcloud.io/dashboard?id=eu.michael-simons%3Awro4j-spring-boot-starter) [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=eu.michael-simons%3Awro4j-spring-boot-starter&metric=alert_status)](https://sonarcloud.io/dashboard?id=eu.michael-simons%3Awro4j-spring-boot-starter) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/eu.michael-simons/wro4j-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/eu.michael-simons/wro4j-spring-boot-starter)
 
+*NOTE* Wro4j has not been updated to the Jakarta Servlet API. Spring Boot 3 has. For now, this project has come to an end. It was good while it lasted and I will keep on updating it with the latest Spring Boot 2.7.x versions, but that's it.
+
 ## Introduction
 
 This starter does the following auto configuration for you:
