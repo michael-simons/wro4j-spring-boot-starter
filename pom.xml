@@ -159,7 +159,7 @@
 					<configLocation>etc/checkstyle/config.xml</configLocation>
 					<suppressionsLocation>etc/checkstyle/suppressions.xml</suppressionsLocation>
 					<headerLocation>etc/checkstyle/java-header.txt</headerLocation>
-					<encoding>${project.build.sourceEncoding}</encoding>
+					<inputEncoding>${project.build.sourceEncoding}</inputEncoding>
 					<consoleOutput>true</consoleOutput>
 					<failsOnError>true</failsOnError>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
@@ -204,9 +204,6 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>${jacoco-maven-plugin.version}</version>
-				<configuration>
-					<propertyName>jacocoArgLine</propertyName>
-				</configuration>
 				<executions>
 					<execution>
 						<id>pre-unit-test</id>
@@ -251,7 +248,7 @@
 						<include>**/*Test.java</include>
 						<include>**/*Tests.java</include>
 					</includes>
-					<argLine>${jacocoArgLine} -Xmx1024m</argLine>
+					<argLine>@{argLine} -Xmx1024m</argLine>
 				</configuration>
 			</plugin>
 			<plugin>
