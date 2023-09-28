@@ -49,6 +49,7 @@ These versions have been tested together:
 | 2.5.x       | 0.9.x         |
 | 2.6.x       | 0.10.x        |
 | 2.7.x       | 0.11.x        |
+| 3.1.x       | 0.12.x        |
 
 Add a wro.xml to your resources:
 
@@ -58,7 +59,7 @@ Add a wro.xml to your resources:
 </groups>
 ```
 
-including your CSS and JS files and you're pretty much good to go. Be aware that this file belongs to your resources (i.e. /src/main/resources) and not under your WEB-INF directory as without the starter. I prefer having those configurations in one place. Read more about the wro.xml format at the official [Wro4j documentation](http://wro4j.readthedocs.org/en/stable/GettingStarted/#step-3-create-wroxml-under-web-inf-directory-and-organize-your-resources-in-groups).
+including your CSS and JS files, and you're pretty much good to go. Be aware that this file belongs to your resources (i.e. /src/main/resources) and not under your WEB-INF directory as without the starter. I prefer having those configurations in one place. Read more about the wro.xml format at the official [Wro4j documentation](http://wro4j.readthedocs.org/en/stable/GettingStarted/#step-3-create-wroxml-under-web-inf-directory-and-organize-your-resources-in-groups).
 
 To actually minify your resources, you have to configure some processors. The starter is used at [euregjug.eu](http://www.euregjug.eu) for example with the following configuration:
 
