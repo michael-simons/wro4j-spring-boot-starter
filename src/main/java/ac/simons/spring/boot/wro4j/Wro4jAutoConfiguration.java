@@ -90,7 +90,7 @@ public class Wro4jAutoConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean({WroManagerFactory.class, WroModelFactory.class})
+	@ConditionalOnMissingBean(WroModelFactory.class)
 	WroModelFactory wroModelFactory(final Wro4jProperties wro4jProperties) {
 		return new ConfigurableXmlModelFactory(wro4jProperties.getModel());
 	}

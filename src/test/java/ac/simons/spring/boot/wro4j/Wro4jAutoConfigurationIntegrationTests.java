@@ -16,17 +16,22 @@
 
 package ac.simons.spring.boot.wro4j;
 
+import java.lang.reflect.Field;
+
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Test;
 import ro.isdc.wro.cache.CacheStrategy;
 import ro.isdc.wro.cache.impl.LruMemoryCacheStrategy;
+import ro.isdc.wro.cache.impl.NoCacheStrategy;
 import ro.isdc.wro.http.ConfigurableWroFilter;
 import ro.isdc.wro.http.WroFilter;
 import ro.isdc.wro.manager.factory.BaseWroManagerFactory;
+import ro.isdc.wro.manager.factory.ConfigurableWroManagerFactory;
 import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.model.factory.WroModelFactory;
 import ro.isdc.wro.model.resource.processor.factory.ProcessorsFactory;
 import ro.isdc.wro.model.resource.support.ResourceAuthorizationManager;
+import ro.isdc.wro.model.resource.support.naming.DefaultHashEncoderNamingStrategy;
 
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
@@ -34,8 +39,10 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Tests various scenarios of Autoconfiguration.
@@ -60,6 +67,27 @@ class Wro4jAutoConfigurationIntegrationTests {
 						.doesNotHaveBean(FilterRegistrationBean.class)
 						.hasSingleBean(ConfigurableWroFilter.class)
 				);
+	}
+
+	@Test // GH-142
+	void customWroManagerFactoryShouldWork() {
+		applicationContextRunner.withUserConfiguration(ApplicationWithCustomManagerFactory.class)
+			.run(ctx -> {
+					assertThat(ctx)
+						.hasSingleBean(WroModelFactory.class)
+						.doesNotHaveBean(ProcessorsFactory.class)
+						.hasSingleBean(CacheStrategy.class)
+						.hasSingleBean(WroManagerFactory.class)
+						.hasSingleBean(FilterRegistrationBean.class)
+						.hasSingleBean(ConfigurableWroFilter.class);
+					WroManagerFactory bean = ctx.getBean(WroManagerFactory.class);
+					assertThat(bean).isInstanceOf(ConfigurableWroManagerFactory.class);
+					Field cacheStrategyField = BaseWroManagerFactory.class.getDeclaredField("cacheStrategy");
+					cacheStrategyField.setAccessible(true);
+					Object cacheStrategy = ReflectionUtils.getField(cacheStrategyField, bean);
+					assertThat(cacheStrategy).isInstanceOf(NoCacheStrategy.class);
+				}
+			);
 	}
 
 	@Test
@@ -98,8 +126,21 @@ class Wro4jAutoConfigurationIntegrationTests {
 
 	static class ApplicationWithWroFilter {
 		@Bean
-		public WroFilter wroFilter() {
+		WroFilter wroFilter() {
 			return new ConfigurableWroFilter();
+		}
+	}
+
+	static class ApplicationWithCustomManagerFactory {
+		@Bean
+		WroManagerFactory wroManagerFactory(WroModelFactory modelFactory) {
+
+			ConfigurableWroManagerFactory wroManagerFactory = new ConfigurableWroManagerFactory();
+			wroManagerFactory.setNamingStrategy(new DefaultHashEncoderNamingStrategy());
+			wroManagerFactory.setModelFactory(modelFactory);
+			wroManagerFactory.setCacheStrategy(new NoCacheStrategy<>());
+
+			return wroManagerFactory;
 		}
 	}
 
