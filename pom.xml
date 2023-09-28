@@ -5,8 +5,8 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.16</version>
-		<relativePath />
+		<version>3.1.4</version>
+		<relativePath></relativePath>
 	</parent>
 
 	<groupId>eu.michael-simons</groupId>
@@ -57,7 +57,7 @@
 		<checkstyle.version>10.12.3</checkstyle.version>
 		<jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
 		<java-module-name>ac.simons.spring.boot.wro4j.autoconfigure</java-module-name>
-		<java.version>8</java.version>
+		<java.version>17</java.version>
 		<maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version>
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 		<maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
