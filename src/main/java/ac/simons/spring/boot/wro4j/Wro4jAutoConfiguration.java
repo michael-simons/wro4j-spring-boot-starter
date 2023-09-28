@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import ro.isdc.wro.cache.CacheKey;
 import ro.isdc.wro.cache.CacheStrategy;
 import ro.isdc.wro.cache.CacheValue;
 import ro.isdc.wro.cache.impl.LruMemoryCacheStrategy;
-import ro.isdc.wro.config.jmx.ConfigConstants;
+import ro.isdc.wro.config.support.ConfigConstants;
 import ro.isdc.wro.http.ConfigurableWroFilter;
 import ro.isdc.wro.http.WroFilter;
 import ro.isdc.wro.manager.factory.BaseWroManagerFactory;
@@ -163,7 +163,7 @@ public class Wro4jAutoConfiguration {
 			return this.applicationContext.getBean(c);
 		}
 		catch (NoSuchBeanDefinitionException e) {
-			LOGGER.warn(e, "Could not get processor from context, instantiating new instance instead");
+			LOGGER.warn("Could not get processor from context, instantiating new instance instead");
 			@SuppressWarnings("unchecked")
 			T rv = (T) new BeanWrapperImpl(c).getWrappedInstance();
 			return rv;

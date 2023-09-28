@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import ac.simons.spring.boot.wro4j.Wro4jProperties.WroManagerFactoryProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import ro.isdc.wro.config.jmx.ConfigConstants;
+import ro.isdc.wro.config.support.ConfigConstants;
 import ro.isdc.wro.http.ConfigurableWroFilter;
 import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.model.resource.processor.decorator.ProcessorDecorator;

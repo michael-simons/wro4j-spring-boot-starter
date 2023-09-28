@@ -5,8 +5,8 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.16</version>
-		<relativePath />
+		<version>3.1.4</version>
+		<relativePath></relativePath>
 	</parent>
 
 	<groupId>eu.michael-simons</groupId>
@@ -57,7 +57,7 @@
 		<checkstyle.version>10.12.3</checkstyle.version>
 		<jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
 		<java-module-name>ac.simons.spring.boot.wro4j.autoconfigure</java-module-name>
-		<java.version>8</java.version>
+		<java.version>17</java.version>
 		<maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version>
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 		<maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
@@ -66,12 +66,12 @@
 		<maven.compiler.debug>true</maven.compiler.debug>
 		<maven.compiler.parameters>true</maven.compiler.parameters>
 		<maven.compiler.release>${java.version}</maven.compiler.release>
-		<maven.version>3.8.5</maven.version>
+		<maven.version>3.9.4</maven.version>
 		<nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
 		<sortpom-maven-plugin.version>3.3.0</sortpom-maven-plugin.version>
-		<wro4j.version>1.8.0</wro4j.version>
+		<wro4j.version>2.0.0</wro4j.version>
 	</properties>
 
 	<dependencies>
