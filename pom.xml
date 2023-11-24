@@ -55,7 +55,7 @@
 	<properties>
 		<build-date>${maven.build.timestamp}</build-date>
 		<checkstyle.version>10.12.3</checkstyle.version>
-		<jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
 		<java-module-name>ac.simons.spring.boot.wro4j.autoconfigure</java-module-name>
 		<java.version>17</java.version>
 		<maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version>
