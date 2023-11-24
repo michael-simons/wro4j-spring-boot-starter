@@ -71,7 +71,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
 		<sortpom-maven-plugin.version>3.3.0</sortpom-maven-plugin.version>
-		<wro4j.version>2.0.0</wro4j.version>
+		<wro4j.version>2.1.1</wro4j.version>
 	</properties>
 
 	<dependencies>
