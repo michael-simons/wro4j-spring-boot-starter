@@ -40,19 +40,19 @@ Just include the starter in your pom.xml:
 
 These versions have been tested together:
 
-| Spring Boot | Wro4j Starter |
-|-------------|---------------|
-| 2.0.x       | 0.4.2         |
-| 2.1.x       | 0.5.3         |
-| 2.2.x       | 0.6.3         |
-| 2.3.x       | 0.7.2         |
-| 2.4.x       | 0.8.x         |
-| 2.5.x       | 0.9.x         |
-| 2.6.x       | 0.10.x        |
-| 2.7.x       | 0.11.x        |
-| 3.1.x       | 0.12.x        |
-| 3.2.x       | 0.13.x        |
-| 3.3.x       | 0.14.x        |
+| Spring Boot | Wro4j Starter    |
+|-------------|------------------|
+| 2.0.x       | 0.4.2            |
+| 2.1.x       | 0.5.3            |
+| 2.2.x       | 0.6.3            |
+| 2.3.x       | 0.7.2            |
+| 2.4.x       | 0.8.x            |
+| 2.5.x       | 0.9.x            |
+| 2.6.x       | 0.10.x           |
+| 2.7.x       | 0.11.x           |
+| 3.1.x       | 0.12.x           |
+| 3.2.x       | 0.13.x           |
+| 3.3.x       | 0.14.x or 0.15.x |
 
 Add a wro.xml to your resources:
 
