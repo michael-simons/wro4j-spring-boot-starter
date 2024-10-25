@@ -186,7 +186,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<forceJavacCompilerUse>true</forceJavacCompilerUse>
+					<forceLegacyJavacApi>true</forceLegacyJavacApi>
 					<compilerArgs>
 						<arg>-Xlint:all,-options,-path,-processing,-classfile</arg>
 						<!-- -classfile due to some weird stuff happening in testCompile. -->

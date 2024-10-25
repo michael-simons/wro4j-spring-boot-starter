@@ -84,6 +84,11 @@ public class Wro4jAutoConfiguration {
 	 */
 	private final ResourceAuthorizationManager resourceAuthorizationManager;
 
+	/**
+	 * Creates a new instance of the autoconfiguration.
+	 * @param applicationContext autowired application context
+	 * @param resourceAuthorizationManager optional {@link ResourceAuthorizationManager}
+	 */
 	public Wro4jAutoConfiguration(ApplicationContext applicationContext, Optional<ResourceAuthorizationManager> resourceAuthorizationManager) {
 		this.applicationContext = applicationContext;
 		this.resourceAuthorizationManager = resourceAuthorizationManager.orElse(null);

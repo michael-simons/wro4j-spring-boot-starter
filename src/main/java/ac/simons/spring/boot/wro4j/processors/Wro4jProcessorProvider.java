@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2018 the original author or authors.
+ * Copyright 2015-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package ac.simons.spring.boot.wro4j.processors;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import ro.isdc.wro.model.resource.processor.ResourcePostProcessor;
@@ -35,11 +33,12 @@ public class Wro4jProcessorProvider implements ProcessorProvider {
 
 	private final Map<String, ResourcePostProcessor> postProcessors;
 
+	/**
+	 * Required no-arg constructor for the service loader mechanism.
+	 */
 	public Wro4jProcessorProvider() {
-		final Map<String, ResourcePreProcessor> tmp = new HashMap<>();
-		tmp.put("removeSourceMaps", new RemoveSourceMapsProcessor());
-		this.preProcessors = Collections.unmodifiableMap(tmp);
-		this.postProcessors = Collections.unmodifiableMap(new HashMap<>());
+		this.preProcessors = Map.of("removeSourceMaps", new RemoveSourceMapsProcessor());
+		this.postProcessors = Map.of();
 	}
 
 	@Override
