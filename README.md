@@ -118,6 +118,22 @@ If you do this, the `wro4j-spring-boot-starter` first checks, if a bean of the g
         </tbody>
 </table>
 
+### Custom filter registrations
+
+Since 0.15.1 you are able to customize the registration of the Wro4jFilter with a custom `FilterRegistrationBean` by defining such a bean in one of your configuration classes like this:
+
+```java
+@Bean
+FilterRegistrationBean<ConfigurableWroFilter> wro4jFilterRegistration(ConfigurableWroFilter wroFilter, Wro4jProperties wro4jProperties) {
+
+    var filterRegistrationBean = new FilterRegistrationBean<>(wroFilter);
+    filterRegistrationBean.setUrlPatterns(List.of("/whatever/*"));
+    filterRegistrationBean.setOrder(4711);
+    // whatever else you want to configure
+    return filterRegistrationBean;
+}
+```
+
 ###  Misc
 
 Beans of the following types are recognized and added to wro4j

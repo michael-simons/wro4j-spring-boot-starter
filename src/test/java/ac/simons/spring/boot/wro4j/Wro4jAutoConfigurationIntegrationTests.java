@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 the original author or authors.
+ * Copyright 2015-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package ac.simons.spring.boot.wro4j;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Test;
@@ -90,6 +91,19 @@ class Wro4jAutoConfigurationIntegrationTests {
 			);
 	}
 
+	@Test // GH-192
+	void customFilterRegistrationBean() {
+		applicationContextRunner.withUserConfiguration(ApplicationWithFilterRegistrationBean.class)
+			.run(ctx -> {
+					assertThat(ctx)
+						.hasSingleBean(FilterRegistrationBean.class);
+					FilterRegistrationBean<?> filterRegistrationBean = ctx.getBean(FilterRegistrationBean.class);
+					assertThat(filterRegistrationBean.getUrlPatterns()).containsExactly("/whatever");
+					assertThat(filterRegistrationBean.getOrder()).isEqualTo(4711);
+				}
+			);
+	}
+
 	@Test
 	void defaultConfigurationShouldWork() {
 		final Condition<ProcessorsFactory> configuredProcessorsFactory = new Condition<>(
@@ -141,6 +155,17 @@ class Wro4jAutoConfigurationIntegrationTests {
 			wroManagerFactory.setCacheStrategy(new NoCacheStrategy<>());
 
 			return wroManagerFactory;
+		}
+	}
+
+	static class ApplicationWithFilterRegistrationBean {
+		@Bean
+		FilterRegistrationBean<ConfigurableWroFilter> wro4jFilterRegistration(ConfigurableWroFilter wroFilter, Wro4jProperties wro4jProperties) {
+
+			var filterRegistrationBean = new FilterRegistrationBean<>(wroFilter);
+			filterRegistrationBean.setUrlPatterns(List.of("/whatever"));
+			filterRegistrationBean.setOrder(4711);
+			return filterRegistrationBean;
 		}
 	}
 
