@@ -53,6 +53,7 @@ These versions have been tested together:
 | 3.1.x       | 0.12.x           |
 | 3.2.x       | 0.13.x           |
 | 3.3.x       | 0.14.x or 0.15.x |
+| 3.4.x       | 0.16.x           |
 
 Add a wro.xml to your resources:
 
