@@ -11,7 +11,7 @@
 
 	<groupId>eu.michael-simons</groupId>
 	<artifactId>wro4j-spring-boot-starter</artifactId>
-	<version>0.16.1-SNAPSHOT</version>
+	<version>0.16.1</version>
 	<packaging>jar</packaging>
 	<name>Wro4j Spring Boot Starter</name>
 	<description>A starter for Spring Boot that provides autoconfiguration for Wro4j.</description>
@@ -41,12 +41,13 @@
 	<scm>
 		<connection>scm:git:git@github.com:michael-simons/wro4j-spring-boot-starter.git</connection>
 		<developerConnection>scm:git:git@github.com:michael-simons/wro4j-spring-boot-starter.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>0.16.1</tag>
 		<url>https://github.com/michael-simons/wro4j-spring-boot-starter</url>
 	</scm>
 
 	<properties>
 		<build-date>${maven.build.timestamp}</build-date>
+		<central-publishing-maven-plugin.version>0.7.0</central-publishing-maven-plugin.version>
 		<checkstyle.version>10.21.3</checkstyle.version>
 		<jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
 		<java-module-name>ac.simons.spring.boot.wro4j.autoconfigure</java-module-name>
@@ -64,7 +65,6 @@
 		<sonar-maven-plugin.version>5.1.0.4751</sonar-maven-plugin.version>
 		<sortpom-maven-plugin.version>4.0.0</sortpom-maven-plugin.version>
 		<wro4j.version>2.1.1</wro4j.version>
-		<central-publishing-maven-plugin.version>0.7.0</central-publishing-maven-plugin.version>
 	</properties>
 
 	<dependencies>
