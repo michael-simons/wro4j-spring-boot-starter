@@ -45,13 +45,6 @@
 		<url>https://github.com/michael-simons/wro4j-spring-boot-starter</url>
 	</scm>
 
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
-
 	<properties>
 		<build-date>${maven.build.timestamp}</build-date>
 		<checkstyle.version>10.21.3</checkstyle.version>
@@ -67,11 +60,11 @@
 		<maven.compiler.parameters>true</maven.compiler.parameters>
 		<maven.compiler.release>${java.version}</maven.compiler.release>
 		<maven.version>3.9.4</maven.version>
-		<nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar-maven-plugin.version>5.1.0.4751</sonar-maven-plugin.version>
 		<sortpom-maven-plugin.version>4.0.0</sortpom-maven-plugin.version>
 		<wro4j.version>2.1.1</wro4j.version>
+		<central-publishing-maven-plugin.version>0.7.0</central-publishing-maven-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -268,14 +261,12 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>${nexus-staging-maven-plugin.version}</version>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>${central-publishing-maven-plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					<publishingServerId>central</publishingServerId>
 				</configuration>
 			</plugin>
 			<plugin>
