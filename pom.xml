@@ -62,7 +62,7 @@
 		<maven.compiler.release>${java.version}</maven.compiler.release>
 		<maven.version>3.9.4</maven.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sonar-maven-plugin.version>5.1.0.4751</sonar-maven-plugin.version>
+		<sonar-maven-plugin.version>5.4.0.6343</sonar-maven-plugin.version>
 		<sortpom-maven-plugin.version>4.0.0</sortpom-maven-plugin.version>
 		<wro4j.version>2.1.1</wro4j.version>
 	</properties>
