@@ -1,11 +1,11 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package ac.simons.spring.boot.wro4j;
 
 import java.util.List;
@@ -38,8 +37,8 @@ public class Wro4jProperties {
 
 	/**
 	 * boolean flag (former known as configuration), with possible values: true
-	 * (DEVELOPMENT) or false (PRODUCTION). Find out more about differences at
-	 * the bottom of this page.
+	 * (DEVELOPMENT) or false (PRODUCTION). Find out more about differences at the bottom
+	 * of this page.
 	 */
 	private boolean debug = true;
 
@@ -54,53 +53,48 @@ public class Wro4jProperties {
 	private boolean gzipResources = true;
 
 	/**
-	 * integer value for specifying how often (in seconds) the resource changes
-	 * should be checked. When this value is 0, the cache is never refreshed.
-	 * When a resource change is detected, the cached group containing changed
-	 * resource will be invalidated. This is useful during development, when
-	 * resources are changed often.
+	 * integer value for specifying how often (in seconds) the resource changes should be
+	 * checked. When this value is 0, the cache is never refreshed. When a resource change
+	 * is detected, the cached group containing changed resource will be invalidated. This
+	 * is useful during development, when resources are changed often.
 	 */
 	private Integer resourceWatcherUpdatePeriod = 0;
 
 	/**
-	 * A boolean which enables/disables asynchronous resource watcher. The true
-	 * value does make sense when resourceWatcherUpdatePeriod is greater than 0.
+	 * A boolean which enables/disables asynchronous resource watcher. The true value does
+	 * make sense when resourceWatcherUpdatePeriod is greater than 0.
 	 */
 	private boolean resourceWatcherAsync = false;
 
 	/**
-	 * integer value for specifying how often (in seconds) the cache should be
-	 * refreshed. When this value is 0, the cache is never refreshed. Defaults
-	 * to 0.
+	 * integer value for specifying how often (in seconds) the cache should be refreshed.
+	 * When this value is 0, the cache is never refreshed. Defaults to 0.
 	 */
 	private Integer cacheUpdatePeriod = 0;
 
 	/**
-	 * Integer value for specifying how often (in seconds) the model (wro.xml)
-	 * should be refreshed. When this value is 0, the model is never refreshed.
-	 * Defaults to 0.
+	 * Integer value for specifying how often (in seconds) the model (wro.xml) should be
+	 * refreshed. When this value is 0, the model is never refreshed. Defaults to 0.
 	 */
 	private Integer modelUpdatePeriod = 0;
 
 	/**
-	 * allow explicit configuration of headers (for controlling expiration date,
-	 * etc). The implementation was inspired from
-	 * [http://juliusdev.blogspot.com/2008/06/tomcat-add-expires-header.html
-	 * here]. The headers can be defined using this format: ```:
+	 * allow explicit configuration of headers (for controlling expiration date, etc). The
+	 * implementation was inspired from
+	 * [http://juliusdev.blogspot.com/2008/06/tomcat-add-expires-header.html here]. The
+	 * headers can be defined using this format: ```:
 	 */
 	private String header;
 
 	/**
-	 * A flag for enabling parallel execution of pre processors which may
-	 * improve overall performance, especially when there are slow
-	 * preProcessors.
+	 * A flag for enabling parallel execution of pre processors which may improve overall
+	 * performance, especially when there are slow preProcessors.
 	 */
 	private boolean parallelPreprocessing = false;
 
 	/**
-	 * Timeout (milliseconds) of the url connection for external resources. This
-	 * is used to ensure that locator doesn't spend too much time on slow
-	 * end-point.
+	 * Timeout (milliseconds) of the url connection for external resources. This is used
+	 * to ensure that locator doesn't spend too much time on slow end-point.
 	 */
 	private Long connectionTimeout = 2000L;
 
@@ -110,30 +104,29 @@ public class Wro4jProperties {
 	private String encoding = "UTF-8";
 
 	/**
-	 * When this flag is disabled (false), any missing resource will cause an
-	 * exception. This is useful to easy identify invalid resources.
+	 * When this flag is disabled (false), any missing resource will cause an exception.
+	 * This is useful to easy identify invalid resources.
 	 */
 	private boolean ignoreMissingResources = true;
 
 	/**
-	 * When a group is empty and this flag is false, the processing will fail.
-	 * This is useful for runtime solution to allow filter chaining when there
-	 * is nothing to process for a given request.
+	 * When a group is empty and this flag is false, the processing will fail. This is
+	 * useful for runtime solution to allow filter chaining when there is nothing to
+	 * process for a given request.
 	 */
 	private boolean ignoreEmptyGroup = true;
 
 	/**
-	 * Available since 1.4.7. When this flag is true, any failure during
-	 * processing will leave the content unchanged.
+	 * Available since 1.4.7. When this flag is true, any failure during processing will
+	 * leave the content unchanged.
 	 */
 	private boolean ignoreFailingProcessor = false;
 
 	/**
-	 * When this flag is enabled, the raw processed content will be gzipped only
-	 * the first time and all subsequent requests will use the cached gzipped
-	 * content. Otherwise, the gzip operation will be performed for each
-	 * request. This flag allow to control the memory vs processing power
-	 * trade-off. Defaults to true.
+	 * When this flag is enabled, the raw processed content will be gzipped only the first
+	 * time and all subsequent requests will use the cached gzipped content. Otherwise,
+	 * the gzip operation will be performed for each request. This flag allow to control
+	 * the memory vs processing power trade-off. Defaults to true.
 	 */
 	private boolean cacheGzippedContent = true;
 
@@ -143,14 +136,13 @@ public class Wro4jProperties {
 	private boolean jmxEnabled = false;
 
 	/**
-	 * The name of MBean object (how it is displayed in JMX console). If
-	 * contextPath is empty, the name is wro4j-ROOT.
+	 * The name of MBean object (how it is displayed in JMX console). If contextPath is
+	 * empty, the name is wro4j-ROOT.
 	 */
 	private String mbeanName;
 
 	/**
-	 * Url under which the wro4j filter is registered. Defaults to
-	 * "/wro4j".
+	 * Url under which the wro4j filter is registered. Defaults to "/wro4j".
 	 */
 	private String filterUrl = "/wro4j";
 
@@ -162,28 +154,25 @@ public class Wro4jProperties {
 	private WroManagerFactoryProperties managerFactory;
 
 	/**
-	 * A comma separated list of pre processor classes to be used during
-	 * processing. Those can either be classes of existing Spring beans or
-	 * "normal" classes. If there is a bean of the given type, than that bean is
-	 * used. Otherwise, it tries to instantiate a new instance using the default
-	 * constructor.
+	 * A comma separated list of pre processor classes to be used during processing. Those
+	 * can either be classes of existing Spring beans or "normal" classes. If there is a
+	 * bean of the given type, than that bean is used. Otherwise, it tries to instantiate
+	 * a new instance using the default constructor.
 	 */
 	private List<Class<? extends ResourcePreProcessor>> preProcessors;
 
 	/**
-	 * A comma separated list of post processor classes to be used during
-	 * processing. Those can either be classes of existing Spring beans or
-	 * "normal" classes. If there is a bean of the given type, than that bean is
-	 * used. Otherwise, it tries to instantiate a new instance using the default
-	 * constructor.
+	 * A comma separated list of post processor classes to be used during processing.
+	 * Those can either be classes of existing Spring beans or "normal" classes. If there
+	 * is a bean of the given type, than that bean is used. Otherwise, it tries to
+	 * instantiate a new instance using the default constructor.
 	 */
 	private List<Class<? extends ResourcePostProcessor>> postProcessors;
 
 	/**
-	 * The name of a Spring Cache. If this property is set and a
-	 * {@link CacheManager} is configured (for example through
-	 * {@link EnableCaching @EnableCaching}, then a {@link CacheStrategy} based
-	 * on Spring cache abstraction will be used.
+	 * The name of a Spring Cache. If this property is set and a {@link CacheManager} is
+	 * configured (for example through {@link EnableCaching @EnableCaching}, then a
+	 * {@link CacheStrategy} based on Spring cache abstraction will be used.
 	 */
 	private String cacheName;
 
@@ -395,5 +384,7 @@ public class Wro4jProperties {
 		public void setPostProcessors(String postProcessors) {
 			this.postProcessors = postProcessors;
 		}
+
 	}
+
 }

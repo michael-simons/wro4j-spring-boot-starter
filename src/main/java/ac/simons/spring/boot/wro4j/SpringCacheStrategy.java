@@ -1,11 +1,11 @@
 /*
- * Copyright 2015-2020 the original author or authors.
+ * Copyright 2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package ac.simons.spring.boot.wro4j;
 
 import java.util.function.Function;
@@ -25,11 +24,11 @@ import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
 
 /**
- * A simple strategy based on Spring caches. Delegates the heavy lifting to the
- * cache configured by or through Spring.
+ * A simple strategy based on Spring caches. Delegates the heavy lifting to the cache
+ * configured by or through Spring.
  *
- * @param <K> Type of the keys
- * @param <V> Type of the values
+ * @param <K> type of the keys
+ * @param <V> type of the values
  * @author Michael J. Simons
  * @since 2016-01-18
  */
@@ -58,7 +57,7 @@ class SpringCacheStrategy<K, V> implements CacheStrategy<K, V> {
 		@SuppressWarnings("unchecked")
 		V result = (V) doWithCache(cache -> {
 			ValueWrapper w = cache.get(key);
-			return w == null ? null : w.get();
+			return (w != null) ? w.get() : null;
 		});
 		return result;
 	}
@@ -72,7 +71,7 @@ class SpringCacheStrategy<K, V> implements CacheStrategy<K, V> {
 	}
 
 	private Object doWithCache(Function<Cache, Object> consumer) {
-		Cache cache = this.cacheManager.getCache(cacheName);
+		Cache cache = this.cacheManager.getCache(this.cacheName);
 		if (cache == null) {
 			return null;
 		}

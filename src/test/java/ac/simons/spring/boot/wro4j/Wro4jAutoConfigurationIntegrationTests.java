@@ -1,11 +1,11 @@
 /*
- * Copyright 2015-2024 the original author or authors.
+ * Copyright 2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package ac.simons.spring.boot.wro4j;
 
 import java.lang.reflect.Field;
@@ -44,108 +43,101 @@ import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 /**
  * Tests various scenarios of Autoconfiguration.
  *
  * @author Michael J. Simons
- *
  * @since 2016-02-02
  */
 class Wro4jAutoConfigurationIntegrationTests {
 
 	final ApplicationContextRunner applicationContextRunner = new ApplicationContextRunner()
-			.withConfiguration(AutoConfigurations.of(CacheAutoConfiguration.class, Wro4jAutoConfiguration.class));
+		.withConfiguration(AutoConfigurations.of(CacheAutoConfiguration.class, Wro4jAutoConfiguration.class));
 
 	@Test
 	void noAutoConfigurationShouldWork() {
-		applicationContextRunner.withUserConfiguration(ApplicationWithWroFilter.class)
-				.run(ctx -> assertThat(ctx)
-						.doesNotHaveBean(WroModelFactory.class)
-						.doesNotHaveBean(ProcessorsFactory.class)
-						.doesNotHaveBean(CacheStrategy.class)
-						.doesNotHaveBean(WroManagerFactory.class)
-						.doesNotHaveBean(FilterRegistrationBean.class)
-						.hasSingleBean(ConfigurableWroFilter.class)
-				);
+		this.applicationContextRunner.withUserConfiguration(ApplicationWithWroFilter.class)
+			.run(ctx -> assertThat(ctx).doesNotHaveBean(WroModelFactory.class)
+				.doesNotHaveBean(ProcessorsFactory.class)
+				.doesNotHaveBean(CacheStrategy.class)
+				.doesNotHaveBean(WroManagerFactory.class)
+				.doesNotHaveBean(FilterRegistrationBean.class)
+				.hasSingleBean(ConfigurableWroFilter.class));
 	}
 
 	@Test // GH-142
 	void customWroManagerFactoryShouldWork() {
-		applicationContextRunner.withUserConfiguration(ApplicationWithCustomManagerFactory.class)
-			.run(ctx -> {
-					assertThat(ctx)
-						.hasSingleBean(WroModelFactory.class)
-						.doesNotHaveBean(ProcessorsFactory.class)
-						.hasSingleBean(CacheStrategy.class)
-						.hasSingleBean(WroManagerFactory.class)
-						.hasSingleBean(FilterRegistrationBean.class)
-						.hasSingleBean(ConfigurableWroFilter.class);
-					WroManagerFactory bean = ctx.getBean(WroManagerFactory.class);
-					assertThat(bean).isInstanceOf(ConfigurableWroManagerFactory.class);
-					Field cacheStrategyField = BaseWroManagerFactory.class.getDeclaredField("cacheStrategy");
-					cacheStrategyField.setAccessible(true);
-					Object cacheStrategy = ReflectionUtils.getField(cacheStrategyField, bean);
-					assertThat(cacheStrategy).isInstanceOf(NoCacheStrategy.class);
-				}
-			);
+		this.applicationContextRunner.withUserConfiguration(ApplicationWithCustomManagerFactory.class).run(ctx -> {
+			assertThat(ctx).hasSingleBean(WroModelFactory.class)
+				.doesNotHaveBean(ProcessorsFactory.class)
+				.hasSingleBean(CacheStrategy.class)
+				.hasSingleBean(WroManagerFactory.class)
+				.hasSingleBean(FilterRegistrationBean.class)
+				.hasSingleBean(ConfigurableWroFilter.class);
+			WroManagerFactory bean = ctx.getBean(WroManagerFactory.class);
+			assertThat(bean).isInstanceOf(ConfigurableWroManagerFactory.class);
+			Field cacheStrategyField = BaseWroManagerFactory.class.getDeclaredField("cacheStrategy");
+			cacheStrategyField.setAccessible(true);
+			Object cacheStrategy = ReflectionUtils.getField(cacheStrategyField, bean);
+			assertThat(cacheStrategy).isInstanceOf(NoCacheStrategy.class);
+		});
 	}
 
 	@Test // GH-192
 	void customFilterRegistrationBean() {
-		applicationContextRunner.withUserConfiguration(ApplicationWithFilterRegistrationBean.class)
-			.run(ctx -> {
-					assertThat(ctx)
-						.hasSingleBean(FilterRegistrationBean.class);
-					FilterRegistrationBean<?> filterRegistrationBean = ctx.getBean(FilterRegistrationBean.class);
-					assertThat(filterRegistrationBean.getUrlPatterns()).containsExactly("/whatever");
-					assertThat(filterRegistrationBean.getOrder()).isEqualTo(4711);
-				}
-			);
+		this.applicationContextRunner.withUserConfiguration(ApplicationWithFilterRegistrationBean.class).run(ctx -> {
+			assertThat(ctx).hasSingleBean(FilterRegistrationBean.class);
+			FilterRegistrationBean<?> filterRegistrationBean = ctx.getBean(FilterRegistrationBean.class);
+			assertThat(filterRegistrationBean.getUrlPatterns()).containsExactly("/whatever");
+			assertThat(filterRegistrationBean.getOrder()).isEqualTo(4711);
+		});
 	}
 
 	@Test
 	void defaultConfigurationShouldWork() {
 		final Condition<ProcessorsFactory> configuredProcessorsFactory = new Condition<>(
-				p -> p.getPreProcessors().size() == 1 && p.getPreProcessors().toArray()[0] instanceof DefaultResourcePreProcessor,
+				p -> p.getPreProcessors().size() == 1
+						&& p.getPreProcessors().toArray()[0] instanceof DefaultResourcePreProcessor,
 				"Has one preprocess of type DefaultResourcePreProcessor");
 
-		applicationContextRunner.withPropertyValues("wro4j.preProcessors = ac.simons.spring.boot.wro4j.DefaultResourcePreProcessor")
-				.run(ctx -> {
-					assertThat(ctx).getBean(WroModelFactory.class).isExactlyInstanceOf(ConfigurableXmlModelFactory.class);
-					assertThat(ctx).getBean(CacheStrategy.class).isExactlyInstanceOf(LruMemoryCacheStrategy.class);
-					assertThat(ctx).getBean(WroManagerFactory.class).isExactlyInstanceOf(BaseWroManagerFactory.class);
-					assertThat(ctx)
-							.hasSingleBean(ConfigurableWroFilter.class)
-							.hasSingleBean(FilterRegistrationBean.class)
-							.getBean(ProcessorsFactory.class)
-								.has(configuredProcessorsFactory);
-				});
+		this.applicationContextRunner
+			.withPropertyValues("wro4j.preProcessors = ac.simons.spring.boot.wro4j.DefaultResourcePreProcessor")
+			.run(ctx -> {
+				assertThat(ctx).getBean(WroModelFactory.class).isExactlyInstanceOf(ConfigurableXmlModelFactory.class);
+				assertThat(ctx).getBean(CacheStrategy.class).isExactlyInstanceOf(LruMemoryCacheStrategy.class);
+				assertThat(ctx).getBean(WroManagerFactory.class).isExactlyInstanceOf(BaseWroManagerFactory.class);
+				assertThat(ctx).hasSingleBean(ConfigurableWroFilter.class)
+					.hasSingleBean(FilterRegistrationBean.class)
+					.getBean(ProcessorsFactory.class)
+					.has(configuredProcessorsFactory);
+			});
 	}
 
 	@Test
 	void customCacheStrategyShouldWork() {
-		applicationContextRunner
-				.withUserConfiguration(ApplicationWithCacheManager.class)
-				.withPropertyValues("wro4j.cacheName = foobar")
-				.run(ctx -> assertThat(ctx).getBean(CacheStrategy.class).isExactlyInstanceOf(SpringCacheStrategy.class));
+		this.applicationContextRunner.withUserConfiguration(ApplicationWithCacheManager.class)
+			.withPropertyValues("wro4j.cacheName = foobar")
+			.run(ctx -> assertThat(ctx).getBean(CacheStrategy.class).isExactlyInstanceOf(SpringCacheStrategy.class));
 	}
 
 	@Test
 	void shouldBeResourceAuthorizationManagerAware() {
-		applicationContextRunner.withUserConfiguration(ApplicationWithResourceAuthorizationManager.class)
-				.run(ctx -> assertThat(ctx).getBean(WroManagerFactory.class)
-						.hasFieldOrPropertyWithValue("authorizationManager", ctx.getBean(ResourceAuthorizationManager.class)));
+		this.applicationContextRunner.withUserConfiguration(ApplicationWithResourceAuthorizationManager.class)
+			.run(ctx -> assertThat(ctx).getBean(WroManagerFactory.class)
+				.hasFieldOrPropertyWithValue("authorizationManager", ctx.getBean(ResourceAuthorizationManager.class)));
 	}
 
 	static class ApplicationWithWroFilter {
+
 		@Bean
 		WroFilter wroFilter() {
 			return new ConfigurableWroFilter();
 		}
+
 	}
 
 	static class ApplicationWithCustomManagerFactory {
+
 		@Bean
 		WroManagerFactory wroManagerFactory(WroModelFactory modelFactory) {
 
@@ -156,27 +148,35 @@ class Wro4jAutoConfigurationIntegrationTests {
 
 			return wroManagerFactory;
 		}
+
 	}
 
 	static class ApplicationWithFilterRegistrationBean {
+
 		@Bean
-		FilterRegistrationBean<ConfigurableWroFilter> wro4jFilterRegistration(ConfigurableWroFilter wroFilter, Wro4jProperties wro4jProperties) {
+		FilterRegistrationBean<ConfigurableWroFilter> wro4jFilterRegistration(ConfigurableWroFilter wroFilter,
+				Wro4jProperties wro4jProperties) {
 
 			var filterRegistrationBean = new FilterRegistrationBean<>(wroFilter);
 			filterRegistrationBean.setUrlPatterns(List.of("/whatever"));
 			filterRegistrationBean.setOrder(4711);
 			return filterRegistrationBean;
 		}
+
 	}
 
 	@EnableCaching
 	static class ApplicationWithCacheManager {
+
 	}
 
 	static class ApplicationWithResourceAuthorizationManager {
+
 		@Bean
-		public ResourceAuthorizationManager resourceAuthorizationManager() {
+		ResourceAuthorizationManager resourceAuthorizationManager() {
 			return uri -> false;
 		}
+
 	}
+
 }

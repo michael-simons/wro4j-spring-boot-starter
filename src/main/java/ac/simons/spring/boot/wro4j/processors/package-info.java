@@ -13,15 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ac.simons.spring.boot.wro4j;
-
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 /**
- * @author Michael J. Simons
- * @since 2016-12-15
+ * Some custom processors.
  */
-@SpringBootApplication
-public class DefaultApplication {
-
-}
+package ac.simons.spring.boot.wro4j.processors;

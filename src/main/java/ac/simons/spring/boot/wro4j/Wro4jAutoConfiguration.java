@@ -1,11 +1,11 @@
 /*
- * Copyright 2015-2024 the original author or authors.
+ * Copyright 2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package ac.simons.spring.boot.wro4j;
 
 import java.util.ArrayList;
@@ -62,7 +61,6 @@ import org.springframework.core.log.LogAccessor;
  *
  * @author Michael J. Simons
  * @author Christophe Levesque
- *
  * @since 2015-07-11
  */
 @AutoConfiguration
@@ -72,7 +70,8 @@ import org.springframework.core.log.LogAccessor;
 @AutoConfigureAfter(CacheAutoConfiguration.class)
 public class Wro4jAutoConfiguration {
 
-	private static final LogAccessor LOGGER = new LogAccessor(LogFactory.getLog(Wro4jAutoConfiguration.class.getName()));
+	private static final LogAccessor LOGGER = new LogAccessor(
+			LogFactory.getLog(Wro4jAutoConfiguration.class.getName()));
 
 	/**
 	 * We use this to access possible processor beans inside the appplication context.
@@ -89,7 +88,8 @@ public class Wro4jAutoConfiguration {
 	 * @param applicationContext autowired application context
 	 * @param resourceAuthorizationManager optional {@link ResourceAuthorizationManager}
 	 */
-	public Wro4jAutoConfiguration(ApplicationContext applicationContext, Optional<ResourceAuthorizationManager> resourceAuthorizationManager) {
+	public Wro4jAutoConfiguration(ApplicationContext applicationContext,
+			Optional<ResourceAuthorizationManager> resourceAuthorizationManager) {
 		this.applicationContext = applicationContext;
 		this.resourceAuthorizationManager = resourceAuthorizationManager.orElse(null);
 	}
@@ -101,19 +101,18 @@ public class Wro4jAutoConfiguration {
 	}
 
 	/**
-	 * Instantiates a {@link ProcessorsFactory} if there is no such factory
-	 * available. If the user decided to provide Pre- or PostProcessors through
+	 * Instantiates a {@link ProcessorsFactory} if there is no such factory available. If
+	 * the user decided to provide Pre- or PostProcessors through
 	 * {@link Wro4jProperties#getPreProcessors()} or
 	 * {@link Wro4jProperties#getPostProcessors()} those are used. If either type of
-	 * processor is configured, a {@link DefaultProcessorsFactory} will be
-	 * returned, using the default set of processors Wro4j provides.
-	 *
-	 * @param wro4jProperties Configurational properties used
-	 * @return A DefaultProcessorsFactory or a ProcessorsFactory configured to
-	 * used the specified processors
+	 * processor is configured, a {@link DefaultProcessorsFactory} will be returned, using
+	 * the default set of processors Wro4j provides.
+	 * @param wro4jProperties configurational properties used
+	 * @return a DefaultProcessorsFactory or a ProcessorsFactory configured to used the
+	 * specified processors
 	 */
 	@Bean
-	@ConditionalOnMissingBean({WroManagerFactory.class, ProcessorsFactory.class})
+	@ConditionalOnMissingBean({ WroManagerFactory.class, ProcessorsFactory.class })
 	ProcessorsFactory processorsFactory(final Wro4jProperties wro4jProperties) {
 		final List<ResourcePreProcessor> preProcessors = new ArrayList<>();
 		if (wro4jProperties.getPreProcessors() != null) {
@@ -156,18 +155,16 @@ public class Wro4jAutoConfiguration {
 
 	/**
 	 * This method tries to load a processor from the application context by class name.
-	 *
 	 * If it fails, the processor is instantiated manually bot not added to the context.
-	 *
-	 * @param <T> Type of the processor to load
-	 * @param c Class of the processor to load
-	 * @return A processor instance
+	 * @param <T> type of the processor to load
+	 * @param c class of the processor to load
+	 * @return a processor instance
 	 */
 	<T> T getBeanOrInstantiateProcessor(final Class<? extends T> c) {
 		try {
 			return this.applicationContext.getBean(c);
 		}
-		catch (NoSuchBeanDefinitionException e) {
+		catch (NoSuchBeanDefinitionException ex) {
 			LOGGER.warn("Could not get processor from context, instantiating new instance instead");
 			@SuppressWarnings("unchecked")
 			T rv = (T) new BeanWrapperImpl(c).getWrappedInstance();
@@ -176,15 +173,13 @@ public class Wro4jAutoConfiguration {
 	}
 
 	/**
-	 * This cache strategy will be configured if there's not already a cache
-	 * strategy, a {@link CacheManager} is present and the name of the cache to
-	 * use is configured.
-	 *
-	 * @param <K> Type of the cache keys
-	 * @param <V> Type of the cache values
-	 * @param cacheManager The cache manager to use
-	 * @param wro4jProperties The properties (needed for the cache name)
-	 * @return The Spring backed cache strategy
+	 * This cache strategy will be configured if there's not already a cache strategy, a
+	 * {@link CacheManager} is present and the name of the cache to use is configured.
+	 * @param <K> type of the cache keys
+	 * @param <V> type of the cache values
+	 * @param cacheManager the cache manager to use
+	 * @param wro4jProperties the properties (needed for the cache name)
+	 * @return the Spring backed cache strategy
 	 */
 	@Bean
 	@ConditionalOnBean(CacheManager.class)
@@ -197,12 +192,11 @@ public class Wro4jAutoConfiguration {
 	}
 
 	/**
-	 * This is the default "Least recently used memory cache" strategy of Wro4j
-	 * which will be configured per default.
-	 *
-	 * @param <K> Type of the cache keys
-	 * @param <V> Type of the cache values
-	 * @return A default Wro4j cache strategy
+	 * This is the default "Least recently used memory cache" strategy of Wro4j which will
+	 * be configured per default.
+	 * @param <K> type of the cache keys
+	 * @param <V> type of the cache values
+	 * @return a default Wro4j cache strategy
 	 */
 	@Bean
 	@ConditionalOnMissingBean(CacheStrategy.class)
@@ -213,37 +207,29 @@ public class Wro4jAutoConfiguration {
 	}
 
 	/**
-	 * Builds the {@link WroManagerFactory} used for the Wro4j filter to be
-	 * created if no WroManagerFactory is already registered.
-	 *
-	 * @param wroModelFactory THe model factory to use for the manager factory
-	 * @param processorsFactory The processors factory to use for the manager
-	 * @param cacheStrategy The cache strategy to use
-	 *
-	 * @return A new WroManagerFactory
+	 * Builds the {@link WroManagerFactory} used for the Wro4j filter to be created if no
+	 * WroManagerFactory is already registered.
+	 * @param wroModelFactory the model factory to use for the manager factory
+	 * @param processorsFactory the processors factory to use for the manager
+	 * @param cacheStrategy the cache strategy to use
+	 * @return a new WroManagerFactory
 	 */
 	@Bean
 	@ConditionalOnMissingBean(WroManagerFactory.class)
-	WroManagerFactory wroManagerFactory(
-			final WroModelFactory wroModelFactory,
-			final ProcessorsFactory processorsFactory,
-			final CacheStrategy<CacheKey, CacheValue> cacheStrategy) {
-		return new BaseWroManagerFactory()
-				.setModelFactory(wroModelFactory)
-				.setProcessorsFactory(processorsFactory)
-				.setCacheStrategy(cacheStrategy)
-				.setResourceAuthorizationManager(this.resourceAuthorizationManager);
+	WroManagerFactory wroManagerFactory(final WroModelFactory wroModelFactory,
+			final ProcessorsFactory processorsFactory, final CacheStrategy<CacheKey, CacheValue> cacheStrategy) {
+		return new BaseWroManagerFactory().setModelFactory(wroModelFactory)
+			.setProcessorsFactory(processorsFactory)
+			.setCacheStrategy(cacheStrategy)
+			.setResourceAuthorizationManager(this.resourceAuthorizationManager);
 	}
 
 	/**
-	 * The final step in configuring the Wro4j filter based on the existing or
-	 * previously configured {@code WroManagerFactory} and the additional
-	 * properties.
-	 *
-	 * @param wroManagerFactory An existing or the newly configured manager
-	 * @param wro4jProperties The properties used to setup this starter
-	 *
-	 * @return A servlet filter which later is registered through Spring means
+	 * The final step in configuring the Wro4j filter based on the existing or previously
+	 * configured {@code WroManagerFactory} and the additional properties.
+	 * @param wroManagerFactory an existing or the newly configured manager
+	 * @param wro4jProperties the properties used to setup this starter
+	 * @return a servlet filter which later is registered through Spring means
 	 */
 	@Bean
 	ConfigurableWroFilter wroFilter(WroManagerFactory wroManagerFactory, Wro4jProperties wro4jProperties) {
@@ -253,37 +239,48 @@ public class Wro4jAutoConfiguration {
 		return wroFilter;
 	}
 
-	@SuppressWarnings({"squid:MethodCyclomaticComplexity"})
+	@SuppressWarnings({ "squid:MethodCyclomaticComplexity" })
 	Properties wroFilterProperties(Wro4jProperties wro4jProperties) {
 		final Properties properties = new Properties();
 
 		properties.setProperty(ConfigConstants.debug.name(), String.valueOf(wro4jProperties.isDebug()));
-		properties.setProperty(ConfigConstants.minimizeEnabled.name(), String.valueOf(wro4jProperties.isMinimizeEnabled()));
+		properties.setProperty(ConfigConstants.minimizeEnabled.name(),
+				String.valueOf(wro4jProperties.isMinimizeEnabled()));
 		properties.setProperty(ConfigConstants.gzipResources.name(), String.valueOf(wro4jProperties.isGzipResources()));
 		if (wro4jProperties.getResourceWatcherUpdatePeriod() != null) {
-			properties.setProperty(ConfigConstants.resourceWatcherUpdatePeriod.name(), String.valueOf(wro4jProperties.getResourceWatcherUpdatePeriod()));
+			properties.setProperty(ConfigConstants.resourceWatcherUpdatePeriod.name(),
+					String.valueOf(wro4jProperties.getResourceWatcherUpdatePeriod()));
 		}
-		properties.setProperty(ConfigConstants.resourceWatcherAsync.name(), String.valueOf(wro4jProperties.isResourceWatcherAsync()));
+		properties.setProperty(ConfigConstants.resourceWatcherAsync.name(),
+				String.valueOf(wro4jProperties.isResourceWatcherAsync()));
 		if (wro4jProperties.getCacheUpdatePeriod() != null) {
-			properties.setProperty(ConfigConstants.cacheUpdatePeriod.name(), String.valueOf(wro4jProperties.getCacheUpdatePeriod()));
+			properties.setProperty(ConfigConstants.cacheUpdatePeriod.name(),
+					String.valueOf(wro4jProperties.getCacheUpdatePeriod()));
 		}
 		if (wro4jProperties.getModelUpdatePeriod() != null) {
-			properties.setProperty(ConfigConstants.modelUpdatePeriod.name(), String.valueOf(wro4jProperties.getModelUpdatePeriod()));
+			properties.setProperty(ConfigConstants.modelUpdatePeriod.name(),
+					String.valueOf(wro4jProperties.getModelUpdatePeriod()));
 		}
 		if (!(wro4jProperties.getHeader() == null || wro4jProperties.getHeader().trim().isEmpty())) {
 			properties.setProperty(ConfigConstants.header.name(), wro4jProperties.getHeader());
 		}
-		properties.setProperty(ConfigConstants.parallelPreprocessing.name(), String.valueOf(wro4jProperties.isParallelPreprocessing()));
+		properties.setProperty(ConfigConstants.parallelPreprocessing.name(),
+				String.valueOf(wro4jProperties.isParallelPreprocessing()));
 		if (wro4jProperties.getConnectionTimeout() != null) {
-			properties.setProperty(ConfigConstants.connectionTimeout.name(), String.valueOf(wro4jProperties.getConnectionTimeout()));
+			properties.setProperty(ConfigConstants.connectionTimeout.name(),
+					String.valueOf(wro4jProperties.getConnectionTimeout()));
 		}
 		if (!(wro4jProperties.getEncoding() == null || wro4jProperties.getEncoding().trim().isEmpty())) {
 			properties.setProperty(ConfigConstants.encoding.name(), wro4jProperties.getEncoding());
 		}
-		properties.setProperty(ConfigConstants.ignoreMissingResources.name(), String.valueOf(wro4jProperties.isIgnoreMissingResources()));
-		properties.setProperty(ConfigConstants.ignoreEmptyGroup.name(), String.valueOf(wro4jProperties.isIgnoreEmptyGroup()));
-		properties.setProperty(ConfigConstants.ignoreFailingProcessor.name(), String.valueOf(wro4jProperties.isIgnoreFailingProcessor()));
-		properties.setProperty(ConfigConstants.cacheGzippedContent.name(), String.valueOf(wro4jProperties.isCacheGzippedContent()));
+		properties.setProperty(ConfigConstants.ignoreMissingResources.name(),
+				String.valueOf(wro4jProperties.isIgnoreMissingResources()));
+		properties.setProperty(ConfigConstants.ignoreEmptyGroup.name(),
+				String.valueOf(wro4jProperties.isIgnoreEmptyGroup()));
+		properties.setProperty(ConfigConstants.ignoreFailingProcessor.name(),
+				String.valueOf(wro4jProperties.isIgnoreFailingProcessor()));
+		properties.setProperty(ConfigConstants.cacheGzippedContent.name(),
+				String.valueOf(wro4jProperties.isCacheGzippedContent()));
 		properties.setProperty(ConfigConstants.jmxEnabled.name(), String.valueOf(wro4jProperties.isJmxEnabled()));
 		if (!(wro4jProperties.getMbeanName() == null || wro4jProperties.getMbeanName().trim().isEmpty())) {
 			properties.setProperty(ConfigConstants.mbeanName.name(), wro4jProperties.getMbeanName());
@@ -293,20 +290,20 @@ public class Wro4jAutoConfiguration {
 	}
 
 	/**
-	 * Registers the {@code wroFilter} through a Spring
-	 * {@link FilterRegistrationBean}.
-	 *
-	 * @param wroFilter The configured {@code wroFilter}
-	 * @param wro4jProperties Needed for the url pattern to which the filter
-	 * should be registered
-	 *
-	 * @return The Spring {@code FilterRegistrationBean}
+	 * Registers the {@code wroFilter} through a Spring {@link FilterRegistrationBean}.
+	 * @param wroFilter the configured {@code wroFilter}
+	 * @param wro4jProperties needed for the url pattern to which the filter should be
+	 * registered
+	 * @return the Spring {@code FilterRegistrationBean}
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	FilterRegistrationBean<ConfigurableWroFilter> wro4jFilterRegistration(ConfigurableWroFilter wroFilter, Wro4jProperties wro4jProperties) {
-		final FilterRegistrationBean<ConfigurableWroFilter> filterRegistrationBean = new FilterRegistrationBean<>(wroFilter);
+	FilterRegistrationBean<ConfigurableWroFilter> wro4jFilterRegistration(ConfigurableWroFilter wroFilter,
+			Wro4jProperties wro4jProperties) {
+		final FilterRegistrationBean<ConfigurableWroFilter> filterRegistrationBean = new FilterRegistrationBean<>(
+				wroFilter);
 		filterRegistrationBean.addUrlPatterns(wro4jProperties.getFilterUrl() + "/*");
 		return filterRegistrationBean;
 	}
+
 }
