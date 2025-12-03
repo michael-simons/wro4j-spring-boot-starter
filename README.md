@@ -1,24 +1,24 @@
 # wro4j-spring-boot-starter
 
-A Spring Boot starter and auto-configuration for wro4j:
+A Spring Boot starter and autoconfiguration for wro4j:
 
 > [Wro4j](http://alexo.github.io/wro4j/) is a tool for analysis and optimization of web resources. It brings together almost all the modern web tools: JsHint, CssLint, JsMin, Google Closure compressor, YUI Compressor, UglifyJs, Dojo Shrinksafe, Css Variables Support, JSON Compression, Less, Sass, CoffeeScript and much more.
 
 [![Build Status](https://github.com/michael-simons/wro4j-spring-boot-starter/workflows/build/badge.svg)](https://github.com/michael-simons/wro4j-spring-boot-starter/actions) [![Test coverage](https://sonarcloud.io/api/project_badges/measure?project=eu.michael-simons%3Awro4j-spring-boot-starter&metric=coverage)](https://sonarcloud.io/dashboard?id=eu.michael-simons%3Awro4j-spring-boot-starter) [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=eu.michael-simons%3Awro4j-spring-boot-starter&metric=alert_status)](https://sonarcloud.io/dashboard?id=eu.michael-simons%3Awro4j-spring-boot-starter) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/eu.michael-simons/wro4j-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/eu.michael-simons/wro4j-spring-boot-starter)
 
-*NOTE* Wro4j has been updated to the Jakarta Servlet API with Wro4j 2 and it does now require Java 17, similar to Spring Boot 3. This integration has been upgraded to support Wro4j 2 on Spring Boot 3 since release 0.12.1.
+*NOTE* Wro4j has been updated to the Jakarta Servlet API with Wro4j 2, and it does now require Java 17, similar to Spring Boot 3. This integration has been upgraded to support Wro4j 2 on Spring Boot 3 since release 0.12.1.
 
 
 ## Introduction
 
-This starter does the following auto configuration for you:
+This starter does the following autoconfiguration for you:
 
 * Creating the _WroFilter_ and the _WroModelFactory_
 * Registering them as a ServletFilter through a Spring _FilterRegistrationBean_
 
-Furthermore it provides a Spring Based caching strategy if a [CacheManager](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/cache/CacheManager.html) is present (which is the case if you're Spring Boot Application is configured with [@EnableCaching](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/cache/annotation/EnableCaching.html)) and a cache name is configured.
+Furthermore, it provides a Spring Based caching strategy if a [CacheManager](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/cache/CacheManager.html) is present (which is the case if you're Spring Boot Application is configured with [@EnableCaching](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/cache/annotation/EnableCaching.html)) and a cache name is configured.
 
-The wro4j-spring-boot-starter expecteds the Wro4j model configuration in xml format. If you want the Groovy version you have to role your own _WroModelFactory_, which is recognized by the auto configuration.
+The wro4j-spring-boot-starter expects the Wro4j model configuration in xml format. If you want the Groovy version you have to role your own _WroModelFactory_, which is recognized by the autoconfiguration.
 
 This starter doesn't bring in the _wro4j-extension_ artifact which are a lot of third party libraries. If you need them, you have to include this in your Maven or Gradle build file.
 
@@ -34,7 +34,7 @@ Just include the starter in your pom.xml:
 <dependency>
     <groupId>eu.michael-simons</groupId>
     <artifactId>wro4j-spring-boot-starter</artifactId>
-    <version>0.14.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -55,6 +55,7 @@ These versions have been tested together:
 | 3.3.x       | 0.14.x or 0.15.x |
 | 3.4.x       | 0.16.x           |
 | 3.5.x       | 0.17.x           |
+| 4.0.x       | 1.0.x            |
 
 Add a wro.xml to your resources:
 
@@ -150,7 +151,7 @@ The options _uriLocators_, _namingStrategy_ and _hashStrategy_ are not configura
 
 I've been using Wro4j as a runtime solution since 2012 on [dailyfratze.de](https://dailyfratze.de) and it really worked well for me. Thanks [Alex](https://twitter.com/wro4j) for your work.
 
-As always, the Spring documentation is a valuable resource. Here's how to start your own auto-configuration or starter: [Creating your own auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html). Thanks to all the people involved.
+As always, the Spring documentation is a valuable resource. Here's how to start your own autoconfiguration or starter: [Creating your own auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html). Thanks to all the people involved.
 
 There's another Wro4j [starter](https://github.com/sbuettner/spring-boot-autoconfigure-wro4j) by Simon Buettner from which I had the basic idea, but I didn't like the fact that it centers around the Groovy model and especially the whole wro4-extensions.
 
