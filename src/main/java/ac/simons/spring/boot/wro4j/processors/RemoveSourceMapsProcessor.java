@@ -38,7 +38,8 @@ public class RemoveSourceMapsProcessor implements ResourcePreProcessor {
 	/**
 	 * Pattern to match sourceMappingUrls.
 	 */
-	public static final Pattern SOURCE_MAP_PATTERN = Pattern.compile("^/[*/]?[#@] sourceMappingURL=.+(?:\\s+\\*/)?$");
+	public static final Pattern SOURCE_MAP_PATTERN = Pattern
+		.compile("^/[*/]?[#@] sourceMappingURL=[\\S]++(?:\\s++\\*/)?$");
 
 	@Override
 	public void process(Resource resource, Reader reader, Writer writer) throws IOException {

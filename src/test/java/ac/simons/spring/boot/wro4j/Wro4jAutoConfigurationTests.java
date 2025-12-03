@@ -15,8 +15,8 @@
  */
 package ac.simons.spring.boot.wro4j;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -68,35 +68,35 @@ class Wro4jAutoConfigurationTests {
 		final WroManagerFactoryProperties managerFactory = new WroManagerFactoryProperties();
 		wro4jProperties.setManagerFactory(managerFactory);
 		processorsFactory = wro4jAutoConfiguration.processorsFactory(wro4jProperties);
-		assertThat(processorsFactory instanceof ConfigurableProcessorsFactory).isTrue();
-		assertThat(processorsFactory.getPreProcessors().isEmpty()).isTrue();
-		assertThat(processorsFactory.getPostProcessors().isEmpty()).isTrue();
+		assertThat(processorsFactory).isInstanceOf(ConfigurableProcessorsFactory.class);
+		assertThat(processorsFactory.getPreProcessors()).isEmpty();
+		assertThat(processorsFactory.getPostProcessors()).isEmpty();
 
 		managerFactory.setPreProcessors("semicolonAppender");
 		managerFactory.setPostProcessors("jsMin");
 
 		processorsFactory = wro4jAutoConfiguration.processorsFactory(wro4jProperties);
-		assertThat(processorsFactory instanceof ConfigurableProcessorsFactory).isTrue();
-		assertThat(processorsFactory.getPreProcessors().size()).isEqualTo(1);
-		assertThat(processorsFactory.getPreProcessors().iterator().next() instanceof SemicolonAppenderPreProcessor)
-			.isTrue();
-		assertThat(processorsFactory.getPostProcessors().size()).isEqualTo(1);
+		assertThat(processorsFactory).isInstanceOf(ConfigurableProcessorsFactory.class);
+		assertThat(processorsFactory.getPreProcessors()).hasSize(1);
+		assertThat(processorsFactory.getPreProcessors().iterator().next())
+			.isInstanceOf(SemicolonAppenderPreProcessor.class);
+		assertThat(processorsFactory.getPostProcessors()).hasSize(1);
 		assertThat(((ProcessorDecorator) processorsFactory.getPostProcessors().iterator().next())
 			.getDecoratedObject() instanceof JSMinProcessor).isTrue();
 
 		wro4jProperties.setManagerFactory(null);
 		processorsFactory = wro4jAutoConfiguration.processorsFactory(wro4jProperties);
-		assertThat(processorsFactory instanceof DefaultProcessorsFactory).isTrue();
+		assertThat(processorsFactory).isInstanceOf(DefaultProcessorsFactory.class);
 
-		wro4jProperties.setPreProcessors(Arrays.asList(SemicolonAppenderPreProcessor.class));
-		wro4jProperties.setPostProcessors(Arrays.asList(JSMinProcessor.class));
+		wro4jProperties.setPreProcessors(List.of(SemicolonAppenderPreProcessor.class));
+		wro4jProperties.setPostProcessors(List.of(JSMinProcessor.class));
 		processorsFactory = wro4jAutoConfiguration.processorsFactory(wro4jProperties);
 		assertThat(processorsFactory instanceof SimpleProcessorsFactory).isTrue();
-		assertThat(processorsFactory.getPreProcessors().size()).isEqualTo(1);
-		assertThat(processorsFactory.getPreProcessors().iterator().next() instanceof SemicolonAppenderPreProcessor)
-			.isTrue();
-		assertThat(processorsFactory.getPostProcessors().size()).isEqualTo(1);
-		assertThat(processorsFactory.getPostProcessors().iterator().next() instanceof JSMinProcessor).isTrue();
+		assertThat(processorsFactory.getPreProcessors()).hasSize(1);
+		assertThat(processorsFactory.getPreProcessors().iterator().next())
+			.isInstanceOf(SemicolonAppenderPreProcessor.class);
+		assertThat(processorsFactory.getPostProcessors()).hasSize(1);
+		assertThat(processorsFactory.getPostProcessors().iterator().next()).isInstanceOf(JSMinProcessor.class);
 	}
 
 	@Test
@@ -118,23 +118,23 @@ class Wro4jAutoConfigurationTests {
 		Properties p;
 
 		p = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wroFilterProperties(wro4jProperties);
-		assertThat(p.get(ConfigConstants.debug.name())).isEqualTo("true");
-		assertThat(p.get(ConfigConstants.minimizeEnabled.name())).isEqualTo("true");
-		assertThat(p.get(ConfigConstants.gzipResources.name())).isEqualTo("true");
-		assertThat(p.get(ConfigConstants.resourceWatcherUpdatePeriod.name())).isEqualTo("0");
-		assertThat(p.get(ConfigConstants.resourceWatcherAsync.name())).isEqualTo("false");
-		assertThat(p.get(ConfigConstants.cacheUpdatePeriod.name())).isEqualTo("0");
-		assertThat(p.get(ConfigConstants.modelUpdatePeriod.name())).isEqualTo("0");
-		assertThat(p.get(ConfigConstants.header.name())).isNull();
-		assertThat(p.get(ConfigConstants.parallelPreprocessing.name())).isEqualTo("false");
-		assertThat(p.get(ConfigConstants.connectionTimeout.name())).isEqualTo("2000");
-		assertThat(p.get(ConfigConstants.encoding.name())).isEqualTo("UTF-8");
-		assertThat(p.get(ConfigConstants.ignoreMissingResources.name())).isEqualTo("true");
-		assertThat(p.get(ConfigConstants.ignoreEmptyGroup.name())).isEqualTo("true");
-		assertThat(p.get(ConfigConstants.ignoreFailingProcessor.name())).isEqualTo("false");
-		assertThat(p.get(ConfigConstants.cacheGzippedContent.name())).isEqualTo("true");
-		assertThat(p.get(ConfigConstants.jmxEnabled.name())).isEqualTo("false");
-		assertThat(p.get(ConfigConstants.mbeanName.name())).isNull();
+		assertThat(p).containsEntry(ConfigConstants.debug.name(), "true");
+		assertThat(p).containsEntry(ConfigConstants.minimizeEnabled.name(), "true");
+		assertThat(p).containsEntry(ConfigConstants.gzipResources.name(), "true");
+		assertThat(p).containsEntry(ConfigConstants.resourceWatcherUpdatePeriod.name(), "0");
+		assertThat(p).containsEntry(ConfigConstants.resourceWatcherAsync.name(), "false");
+		assertThat(p).containsEntry(ConfigConstants.cacheUpdatePeriod.name(), "0");
+		assertThat(p).containsEntry(ConfigConstants.modelUpdatePeriod.name(), "0");
+		assertThat(p).doesNotContainKey(ConfigConstants.header.name());
+		assertThat(p).containsEntry(ConfigConstants.parallelPreprocessing.name(), "false");
+		assertThat(p).containsEntry(ConfigConstants.connectionTimeout.name(), "2000");
+		assertThat(p).containsEntry(ConfigConstants.encoding.name(), "UTF-8");
+		assertThat(p).containsEntry(ConfigConstants.ignoreMissingResources.name(), "true");
+		assertThat(p).containsEntry(ConfigConstants.ignoreEmptyGroup.name(), "true");
+		assertThat(p).containsEntry(ConfigConstants.ignoreFailingProcessor.name(), "false");
+		assertThat(p).containsEntry(ConfigConstants.cacheGzippedContent.name(), "true");
+		assertThat(p).containsEntry(ConfigConstants.jmxEnabled.name(), "false");
+		assertThat(p).doesNotContainKey(ConfigConstants.mbeanName.name());
 
 		wro4jProperties.setResourceWatcherUpdatePeriod(null);
 		wro4jProperties.setCacheUpdatePeriod(null);
@@ -156,9 +156,9 @@ class Wro4jAutoConfigurationTests {
 		wro4jProperties.setEncoding("ISO-8859-1");
 		wro4jProperties.setMbeanName("wro4j-bean");
 		p = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wroFilterProperties(wro4jProperties);
-		assertThat(p.get(ConfigConstants.header.name())).isEqualTo(wro4jProperties.getHeader());
-		assertThat(p.get(ConfigConstants.encoding.name())).isEqualTo(wro4jProperties.getEncoding());
-		assertThat(p.get(ConfigConstants.mbeanName.name())).isEqualTo(wro4jProperties.getMbeanName());
+		assertThat(p).containsEntry(ConfigConstants.header.name(), wro4jProperties.getHeader());
+		assertThat(p).containsEntry(ConfigConstants.encoding.name(), wro4jProperties.getEncoding());
+		assertThat(p).containsEntry(ConfigConstants.mbeanName.name(), wro4jProperties.getMbeanName());
 
 		wro4jProperties.setEncoding(null);
 		p = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wroFilterProperties(wro4jProperties);
@@ -173,8 +173,7 @@ class Wro4jAutoConfigurationTests {
 				Optional.empty())
 			.wro4jFilterRegistration(wroFilter, new Wro4jProperties());
 		final Collection<String> urlPatterns = filterRegistrationBean.getUrlPatterns();
-		assertThat(urlPatterns.size()).isEqualTo(1);
-		assertThat(urlPatterns.iterator().next()).isEqualTo("/wro4j/*");
+		assertThat(urlPatterns).hasSize(1).first().isEqualTo("/wro4j/*");
 	}
 
 }
