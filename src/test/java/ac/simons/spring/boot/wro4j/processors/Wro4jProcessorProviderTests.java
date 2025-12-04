@@ -35,10 +35,8 @@ class Wro4jProcessorProviderTests {
 		final Wro4jProcessorProvider processorProvider = new Wro4jProcessorProvider();
 
 		final Map<String, ResourcePreProcessor> preProcessors = processorProvider.providePreProcessors();
-		assertThat(preProcessors).isNotNull();
-		assertThat(preProcessors.size()).isEqualTo(1);
-		assertThat(preProcessors.containsKey("removeSourceMaps")).isTrue();
-		assertThat(preProcessors.get("removeSourceMaps") instanceof RemoveSourceMapsProcessor).isTrue();
+		assertThat(preProcessors).isNotNull().hasSize(1).containsKey("removeSourceMaps");
+		assertThat(preProcessors.get("removeSourceMaps")).isInstanceOf(RemoveSourceMapsProcessor.class);
 		assertThat(processorProvider.providePostProcessors()).isEqualTo(new HashMap<String, ResourcePostProcessor>());
 	}
 

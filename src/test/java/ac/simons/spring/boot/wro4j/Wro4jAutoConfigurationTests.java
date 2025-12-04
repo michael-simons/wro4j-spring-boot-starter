@@ -81,8 +81,8 @@ class Wro4jAutoConfigurationTests {
 		assertThat(processorsFactory.getPreProcessors().iterator().next())
 			.isInstanceOf(SemicolonAppenderPreProcessor.class);
 		assertThat(processorsFactory.getPostProcessors()).hasSize(1);
-		assertThat(((ProcessorDecorator) processorsFactory.getPostProcessors().iterator().next())
-			.getDecoratedObject() instanceof JSMinProcessor).isTrue();
+		assertThat(((ProcessorDecorator) processorsFactory.getPostProcessors().iterator().next()).getDecoratedObject())
+			.isInstanceOf(JSMinProcessor.class);
 
 		wro4jProperties.setManagerFactory(null);
 		processorsFactory = wro4jAutoConfiguration.processorsFactory(wro4jProperties);
@@ -91,7 +91,7 @@ class Wro4jAutoConfigurationTests {
 		wro4jProperties.setPreProcessors(List.of(SemicolonAppenderPreProcessor.class));
 		wro4jProperties.setPostProcessors(List.of(JSMinProcessor.class));
 		processorsFactory = wro4jAutoConfiguration.processorsFactory(wro4jProperties);
-		assertThat(processorsFactory instanceof SimpleProcessorsFactory).isTrue();
+		assertThat(processorsFactory).isInstanceOf(SimpleProcessorsFactory.class);
 		assertThat(processorsFactory.getPreProcessors()).hasSize(1);
 		assertThat(processorsFactory.getPreProcessors().iterator().next())
 			.isInstanceOf(SemicolonAppenderPreProcessor.class);
@@ -118,23 +118,23 @@ class Wro4jAutoConfigurationTests {
 		Properties p;
 
 		p = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wroFilterProperties(wro4jProperties);
-		assertThat(p).containsEntry(ConfigConstants.debug.name(), "true");
-		assertThat(p).containsEntry(ConfigConstants.minimizeEnabled.name(), "true");
-		assertThat(p).containsEntry(ConfigConstants.gzipResources.name(), "true");
-		assertThat(p).containsEntry(ConfigConstants.resourceWatcherUpdatePeriod.name(), "0");
-		assertThat(p).containsEntry(ConfigConstants.resourceWatcherAsync.name(), "false");
-		assertThat(p).containsEntry(ConfigConstants.cacheUpdatePeriod.name(), "0");
-		assertThat(p).containsEntry(ConfigConstants.modelUpdatePeriod.name(), "0");
-		assertThat(p).doesNotContainKey(ConfigConstants.header.name());
-		assertThat(p).containsEntry(ConfigConstants.parallelPreprocessing.name(), "false");
-		assertThat(p).containsEntry(ConfigConstants.connectionTimeout.name(), "2000");
-		assertThat(p).containsEntry(ConfigConstants.encoding.name(), "UTF-8");
-		assertThat(p).containsEntry(ConfigConstants.ignoreMissingResources.name(), "true");
-		assertThat(p).containsEntry(ConfigConstants.ignoreEmptyGroup.name(), "true");
-		assertThat(p).containsEntry(ConfigConstants.ignoreFailingProcessor.name(), "false");
-		assertThat(p).containsEntry(ConfigConstants.cacheGzippedContent.name(), "true");
-		assertThat(p).containsEntry(ConfigConstants.jmxEnabled.name(), "false");
-		assertThat(p).doesNotContainKey(ConfigConstants.mbeanName.name());
+		assertThat(p).containsEntry(ConfigConstants.debug.name(), "true")
+			.containsEntry(ConfigConstants.minimizeEnabled.name(), "true")
+			.containsEntry(ConfigConstants.gzipResources.name(), "true")
+			.containsEntry(ConfigConstants.resourceWatcherUpdatePeriod.name(), "0")
+			.containsEntry(ConfigConstants.resourceWatcherAsync.name(), "false")
+			.containsEntry(ConfigConstants.cacheUpdatePeriod.name(), "0")
+			.containsEntry(ConfigConstants.modelUpdatePeriod.name(), "0")
+			.doesNotContainKey(ConfigConstants.header.name())
+			.containsEntry(ConfigConstants.parallelPreprocessing.name(), "false")
+			.containsEntry(ConfigConstants.connectionTimeout.name(), "2000")
+			.containsEntry(ConfigConstants.encoding.name(), "UTF-8")
+			.containsEntry(ConfigConstants.ignoreMissingResources.name(), "true")
+			.containsEntry(ConfigConstants.ignoreEmptyGroup.name(), "true")
+			.containsEntry(ConfigConstants.ignoreFailingProcessor.name(), "false")
+			.containsEntry(ConfigConstants.cacheGzippedContent.name(), "true")
+			.containsEntry(ConfigConstants.jmxEnabled.name(), "false")
+			.doesNotContainKey(ConfigConstants.mbeanName.name());
 
 		wro4jProperties.setResourceWatcherUpdatePeriod(null);
 		wro4jProperties.setCacheUpdatePeriod(null);
@@ -144,21 +144,21 @@ class Wro4jAutoConfigurationTests {
 		wro4jProperties.setEncoding("\t ");
 		wro4jProperties.setMbeanName(" ");
 		p = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wroFilterProperties(wro4jProperties);
-		assertThat(p.get(ConfigConstants.resourceWatcherUpdatePeriod.name())).isNull();
-		assertThat(p.get(ConfigConstants.cacheUpdatePeriod.name())).isNull();
-		assertThat(p.get(ConfigConstants.modelUpdatePeriod.name())).isNull();
-		assertThat(p.get(ConfigConstants.header.name())).isNull();
-		assertThat(p.get(ConfigConstants.connectionTimeout.name())).isNull();
-		assertThat(p.get(ConfigConstants.encoding.name())).isNull();
-		assertThat(p.get(ConfigConstants.mbeanName.name())).isNull();
+		assertThat(p).doesNotContainKey(ConfigConstants.resourceWatcherUpdatePeriod.name())
+			.doesNotContainKey(ConfigConstants.cacheUpdatePeriod.name())
+			.doesNotContainKey(ConfigConstants.modelUpdatePeriod.name())
+			.doesNotContainKey(ConfigConstants.header.name())
+			.doesNotContainKey(ConfigConstants.connectionTimeout.name())
+			.doesNotContainKey(ConfigConstants.encoding.name())
+			.doesNotContainKey(ConfigConstants.mbeanName.name());
 
 		wro4jProperties.setHeader("If-Unmodified-Since: Sat, 29 Oct 1994 19:43:31 GMT");
 		wro4jProperties.setEncoding("ISO-8859-1");
 		wro4jProperties.setMbeanName("wro4j-bean");
 		p = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wroFilterProperties(wro4jProperties);
-		assertThat(p).containsEntry(ConfigConstants.header.name(), wro4jProperties.getHeader());
-		assertThat(p).containsEntry(ConfigConstants.encoding.name(), wro4jProperties.getEncoding());
-		assertThat(p).containsEntry(ConfigConstants.mbeanName.name(), wro4jProperties.getMbeanName());
+		assertThat(p).containsEntry(ConfigConstants.header.name(), wro4jProperties.getHeader())
+			.containsEntry(ConfigConstants.encoding.name(), wro4jProperties.getEncoding())
+			.containsEntry(ConfigConstants.mbeanName.name(), wro4jProperties.getMbeanName());
 
 		wro4jProperties.setEncoding(null);
 		p = new Wro4jAutoConfiguration(this.applicationContext, Optional.empty()).wroFilterProperties(wro4jProperties);

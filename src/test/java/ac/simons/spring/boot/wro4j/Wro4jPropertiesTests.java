@@ -37,10 +37,10 @@ class Wro4jPropertiesTests {
 		assertThat(properties.isDebug()).isTrue();
 		assertThat(properties.isMinimizeEnabled()).isTrue();
 		assertThat(properties.isGzipResources()).isTrue();
-		assertThat(properties.getResourceWatcherUpdatePeriod()).isEqualTo(0);
+		assertThat(properties.getResourceWatcherUpdatePeriod()).isZero();
 		assertThat(properties.isResourceWatcherAsync()).isFalse();
-		assertThat(properties.getCacheUpdatePeriod()).isEqualTo(0);
-		assertThat(properties.getModelUpdatePeriod()).isEqualTo(0);
+		assertThat(properties.getCacheUpdatePeriod()).isZero();
+		assertThat(properties.getModelUpdatePeriod()).isZero();
 		assertThat(properties.getHeader()).isNull();
 		assertThat(properties.isParallelPreprocessing()).isFalse();
 		assertThat(properties.getConnectionTimeout()).isEqualTo(2000L);

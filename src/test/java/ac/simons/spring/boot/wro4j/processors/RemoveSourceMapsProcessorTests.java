@@ -51,7 +51,7 @@ class RemoveSourceMapsProcessorTests {
 		final StringWriter writer = new StringWriter();
 		final RemoveSourceMapsProcessor processor = new RemoveSourceMapsProcessor();
 		processor.process(null, reader, writer);
-		assertThat(writer.toString()).isEqualTo("normal" + this.lineSeparator + " blanks am anfang und ende "
+		assertThat(writer).hasToString("normal" + this.lineSeparator + " blanks am anfang und ende "
 				+ this.lineSeparator + "Javascript Single line" + this.lineSeparator + "Javascript Multi line"
 				+ this.lineSeparator + "CSS Multi line" + this.lineSeparator + "Depecrated formats" + this.lineSeparator
 				+ "ende" + this.lineSeparator);
